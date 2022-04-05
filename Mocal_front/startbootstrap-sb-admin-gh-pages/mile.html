@@ -150,55 +150,64 @@
             <main>
                 <div class="container-fluid px-4">
                     <div class="mt-4"></div>
-                    <div class="row">
-                        <div class="col-xl-6">
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <i class="fas fa-chart-area me-1"></i>
-                                    내 일정
-                                </div>
-                                <div class="card-body">
-                                    <div id="calendar" class="mt-2"></div>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-table me-1"></i>
+                            내 마일스톤
+                        </div>
+                        <div class="card-body container-fluid" id="milestone">
+                            <!-- 첫줄 -->
+                            <div class="row mb-4">
+                                <div class="p-2 offset-4 col-8 btn-primary">
+                                    기간
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-xl-6">
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <i class="fas fa-chart-bar me-1"></i>
-                                    내 프로젝트
+                            
+                            <!-- 월 추가 row -->
+                            <div class="row"> 
+                                <div class="col-4">
+                                    <div class="row mb-1">
+                                        <div class="p-3 col-5 btn-primary">단계</div>
+                                        <div class="p-3 offset-1 col-5 btn-primary">항목<input class="form-control" type="text" placeholder="항목명"></div>
+                                        
+                                    </div>
                                 </div>
-                                <div class="card-body row justify-content-center">
-                                    <div class="card" style="width: 18rem;">
-                                        <div class="card-body btn btn-warning">
-                                            <h6 class="card-subtitle mb-2 text-muted">아직 마일스톤이 없습니다</h6>
-                                            <p class="card-text">마일스톤 추가하기</p>
+                                
+                                <div class="col-8">
+                                    <div class="row">
+                                        <div class="p-3 col-1 btn-primary">n월</div>
+                                        
+                                        
+                                    </div>
+                                
+                                </div>
+                                <div class="col-4">
+                                    
+                                </div>
+                                
+                                <div class="col-8">
+                                    <div class="row">
+                                        
+                                    </div>
+                                
+                                </div>
+                                
+                            </div>
+                            <!-- 단계, 항목 추가 row -->
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="row justify-content-center">
+                                        <div class="col-5">
+                                            <button type="button" class="btn btn-secondary btn-sm">단계 추가</button>
+                                        </div>
+                                        
+                                        <div class="offset-1 col-5">
+                                            <button type="button" class="btn btn-secondary btn-sm">항목 추가</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-table me-1"></i>
-                            DataTable Example
-                        </div>
-                        <div class="card-body">
-                            <table id="datatablesSimple">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
-                                        <th>Salary</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
+                            
                         </div>
                     </div>
                 </div>
@@ -215,37 +224,6 @@
                     </div>
                 </div>
             </footer>
-        </div>
-    </div>
-    
-    <!-- Event Modal -->
-    <div class="modal fade" id="addEvent" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <form class="modal-content" onsubmit="makeEvent(event)">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">새 일정</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">일정 제목</label>
-                        <input type="text" name="title" class="form-control" autocomplete="off" id="title" required>
-
-                    </div>
-                    <label for="exampleFormControlInput1" class="form-label">시작날짜</label>
-                    <input type="text" name="month" autocomplete="off" id="startdatepicker" required>
-                    <br />
-                    <label for="exampleFormControlInput2" class="form-label">종료날짜</label>
-                    <input type="text" name="month" autocomplete="off" id="enddatepicker">
-                    <br />
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                    <button type="submit" class="btn btn-primary">생성</button>
-                </div>
-            </form>
         </div>
     </div>
 
