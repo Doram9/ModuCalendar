@@ -51,7 +51,7 @@
             color: red;
         }
     </style>
-    
+
 </head>
 
 <body class="sb-nav-fixed">
@@ -158,91 +158,99 @@
                             <button type="button" class="btn btn-outline-danger">취소</button>
                             <button type="submit" class="btn btn-outline-success">저장</button>
                         </div>
-                        
+
                         <!-- 마일스톤 container -->
                         <div class="card-body container-fluid" id="milestone">
                             <!-- 첫줄 row-->
                             <div class="row mb-1">
-                                <div class="offset-3 col-9 btn-primary"><!-- 3:9 비율 -->
+                                <div class="offset-5 col-7 btn-primary">
+                                    <!-- 3:9 비율 -->
                                     기간 :
                                     <input type="text" name="month" autocomplete="off" id="startdatepicker" required>
-                                    
+
                                     <input type="text" name="month" autocomplete="off" id="enddatepicker">
                                 </div>
-                                
+
                             </div>
-                            
+
                             <!-- 기간 추가 row-->
-                            <div class="row mb-1">
-                                <div class="col-3">
+                            <div class="row">
+                                <div class="col-5">
                                     <div class="row justify-content-around">
                                         <div class="col-5 btn-primary">
                                             단계
                                         </div>
-                                        
+
                                         <div class="col-5 btn-primary">
                                             항목
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-9">
-                                    <!-- 마일스톤 생성row -->
-                                    <div class="row">
-                                        <div class="col-1 btn-primary">a</div>
+                                <!-- 기간 생성 col -->
+                                <div class="col-7">
+                                    <!-- 기간 생성 row -->
+                                    <div class="row" id="m_period">
+                                        
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <!-- object 추가 row -->
-                            <div class="row">
-                                <div class="col-3">
-                                    <div class="row justify-content-around">
-                                        <div class="col-5">
-                                            
-                                            <!-- 단계 obj 추가 row -->
-                                            <div class="row justify-content-center">
-                                                <div class="col-9 btn-primary">
-                                                    <input class="form-control" type="text" placeholder="단계명" aria-label="default input example">
-                                                </div>
-                                                <button type="button" class="offset-1 col-2 btn btn-secondary">-</button>
-                                            </div>
-                                            
-                                        </div>
-                                        <div class="col-5">
-                                            
-                                            <!-- 항목 obj 추가 row -->
-                                            <div class="row justify-content-center">
-                                                <div class="col-9 btn-primary">
-                                                    <input class="form-control" type="text" placeholder="항목명" aria-label="default input example">
-                                                </div>
-                                                <button type="button" class="offset-1 col-2 btn btn-secondary">-</button>
-                                            </div>
-                                            
-                                            
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            
-                            <!-- 버튼 row -->
                             <div class="row mt-2">
-                                <div class="col-3">
+                                <div class="col-5">
                                     <div class="row justify-content-around">
-                                        <div class="col-5">
-                                            <div class="row justify-content-center">
-                                                <button type="button" class="btn btn-secondary col-8">추가</button>
+                                        <div class="col-6">
+                                            <!-- 단계 obj 추가 row -->
+                                            <div class="justify-content-center btn-group">
+                                                <button type="button" class="btn btn-secondary">+</button>
+
+
+                                                <input class="form-control" type="text" placeholder="단계명" aria-label="default input example">
+
+                                                <button type="button" class="btn btn-secondary">-</button>
                                             </div>
+
                                         </div>
-                                        <div class="col-5">
-                                            <div class="row justify-content-center">
-                                                <button type="button" class="btn btn-secondary col-8">추가</button>
+                                        <div class="col-6">
+
+                                            <!-- 항목 obj 추가 row -->
+                                            <div class="justify-content-center btn-group">
+                                                <button type="button" class="btn btn-xs btn-secondary">+</button>
+
+                                                <input class="form-control" type="text" placeholder="단계명" aria-label="default input example">
+
+                                                <button type="button" class="btn btn-secondary">-</button>
                                             </div>
+
+
                                         </div>
                                     </div>
                                 </div>
+                                
+                                <!-- 마일스톤 생성col -->
+                                <div class="col-7">
+                                    <div class="row">
+                                        <div class="col-1 btn btn-outline-primary">`</div>
+                                        <div class="col-1 btn btn-outline-primary"></div>
+                                        <div class="col-1 btn btn-outline-primary"></div>
+                                        <div class="col-1 btn btn-outline-primary"></div>
+                                        <div class="col-1 btn btn-outline-primary"></div>
+                                        <div class="col-1 btn btn-outline-primary"></div>
+                                        <div class="col-1 btn btn-outline-primary"></div>
+                                        <div class="col-1 btn btn-outline-primary"></div>
+                                        <div class="col-1 btn btn-outline-primary"></div>
+                                        <div class="col-1 btn btn-outline-primary"></div>
+                                        <div class="col-1 btn btn-outline-primary"></div>
+                                        <div class="col-1 btn btn-outline-primary"></div>
+                                    </div>
+                                    
+                                    
+                                </div>
                             </div>
-                            
+
+
+
+
                         </div>
                     </form>
                 </div>
@@ -278,7 +286,7 @@
     <!-- 데이트피커용 j쿼리 -->
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    
+
     <script>
         $.datepicker.setDefaults({
             dateFormat: 'yy-mm-dd',
@@ -294,45 +302,48 @@
             changeMonth: true,
             changeYear: true,
             showButtonPanel: true
-            
-        });
 
+        });
         
         $("#startdatepicker").datepicker();
         $("#enddatepicker").datepicker();
-        
-        $("#startdatepicker").datepicker("option", "onClose", function( selectedDate ) {
-                let seDate = new Date(selectedDate);
-            alert(seDate);
-                        let maxDate = new Date().setFullYear(seDate);
-            alert(maxDate);
-                        $("#enddatepicker").datepicker( "option", "minDate", selectedDate );
-                    });
-        /*
-        function(info) {
-            
-            //데이트 피커 구현
-                	$("#startdatepicker").datepicker();
-                    $("#enddatepicker").datepicker();
-            
-            
-            //데이트피커 시작 날짜를 info 날짜로    	
-                	$("#startdatepicker").datepicker("setDate", info.dateStr);
-                
-                    $('#startdatepicker').datepicker("option", "maxDate", $("#enddatepicker").val());
-                    
-                    $('#startdatepicker').datepicker("option", "onClose", function ( selectedDate ) {
-                        $("#enddatepicker").datepicker( "option", "minDate", selectedDate );
-                    });
-                    
-                    $('#enddatepicker').datepicker("option", "minDate", $("#startdatepicker").val());
-                	
-                	$('#addEvent').modal('show');
-                }
-        
-        */
     </script>
     
+    <script>
+        //시작일 선택시 종료일 제한걸기-선택일자로 부터 1년뒤 전달의 마지막날로
+        $("#startdatepicker").datepicker("option", "onClose", function(selectedDate) {
+            //yyyy-mm-dd를 split으로 나누고 년,월에 하나씩 넣기, 일은 전달의 마지막 날을 넣기 때문에 0
+            let yyyymmdd = selectedDate.split('-');
+            let maxDate = new Date(Number(yyyymmdd[0]) + 1, Number(yyyymmdd[1]) - 1, 0);
+            $("#enddatepicker").datepicker("option", "minDate", selectedDate);
+            $("#enddatepicker").datepicker("option", "maxDate", maxDate);
+        });
+        
+        //종료일 선택시 마일스톤 생성
+        $("#enddatepicker").datepicker("option", "onClose", function(selectedDate) {
+            //#m_period 하위의 모든 태그 제거
+            $("#m_period").empty();
+            //기간이 총 몇달인지 계산
+            let startY = $("#startdatepicker").datepicker('getDate').getFullYear();
+            let startM = $("#startdatepicker").datepicker('getDate').getMonth();
+            let endY = $("#enddatepicker").datepicker('getDate').getFullYear();
+            let endM = $("#enddatepicker").datepicker('getDate').getMonth();
+            
+            //기간 = 년도가 같으면 끝달 - 시작달, 년도가 다르면 12 - (시작달 - 끝달)
+            let periodM = (Number(startY) - Number(endY) == 0) ? Number(endM) - Number(startM) : 12 - (Number(startM) - Number(endM));
+            
+            console.log(periodM);
+            
+            //달 개수 만큼 div 생성, 텍스트에는 해당 월입력
+            
+            //periodM까지 반복 즉, 최소 1번은 반복
+            for(let i = 0; i <= periodM; i++) {
+                let mileM = new Date(Number(startY), Number(startM + i), 1).getMonth();
+                $("#m_period").append($("<div class='col-1 btn-primary'>").text(mileM + 1));
+            }
+        });
+    </script>
+
 
 </body>
 
