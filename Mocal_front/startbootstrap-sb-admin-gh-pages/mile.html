@@ -150,66 +150,101 @@
             <main>
                 <div class="container-fluid px-4">
                     <div class="mt-4"></div>
-                    <div class="card mb-4">
+                    <form class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
                             내 마일스톤
+
+                            <button type="button" class="btn btn-outline-danger">취소</button>
+                            <button type="submit" class="btn btn-outline-success">저장</button>
                         </div>
+                        
+                        <!-- 마일스톤 container -->
                         <div class="card-body container-fluid" id="milestone">
-                            <!-- 첫줄 -->
-                            <div class="row mb-4">
-                                <div class="p-2 offset-4 col-8 btn-primary">
-                                    기간
+                            <!-- 첫줄 row-->
+                            <div class="row mb-1">
+                                <div class="offset-3 col-9 btn-primary"><!-- 3:9 비율 -->
+                                    기간 :
+                                    <input type="text" name="month" autocomplete="off" id="startdatepicker" required>
+                                    
+                                    <input type="text" name="month" autocomplete="off" id="enddatepicker">
+                                </div>
+                                
+                            </div>
+                            
+                            <!-- 기간 추가 row-->
+                            <div class="row mb-1">
+                                <div class="col-3">
+                                    <div class="row justify-content-around">
+                                        <div class="col-5 btn-primary">
+                                            단계
+                                        </div>
+                                        
+                                        <div class="col-5 btn-primary">
+                                            항목
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9">
+                                    <!-- 마일스톤 생성row -->
+                                    <div class="row">
+                                        <div class="col-1 btn-primary">a</div>
+                                    </div>
                                 </div>
                             </div>
                             
-                            <!-- 월 추가 row -->
-                            <div class="row"> 
-                                <div class="col-4">
-                                    <div class="row mb-1">
-                                        <div class="p-3 col-5 btn-primary">단계</div>
-                                        <div class="p-3 offset-1 col-5 btn-primary">항목<input class="form-control" type="text" placeholder="항목명"></div>
-                                        
-                                    </div>
-                                </div>
-                                
-                                <div class="col-8">
-                                    <div class="row">
-                                        <div class="p-3 col-1 btn-primary">n월</div>
-                                        
-                                        
-                                    </div>
-                                
-                                </div>
-                                <div class="col-4">
-                                    
-                                </div>
-                                
-                                <div class="col-8">
-                                    <div class="row">
-                                        
-                                    </div>
-                                
-                                </div>
-                                
-                            </div>
-                            <!-- 단계, 항목 추가 row -->
+                            <!-- object 추가 row -->
                             <div class="row">
-                                <div class="col-4">
-                                    <div class="row justify-content-center">
+                                <div class="col-3">
+                                    <div class="row justify-content-around">
                                         <div class="col-5">
-                                            <button type="button" class="btn btn-secondary btn-sm">단계 추가</button>
+                                            
+                                            <!-- 단계 obj 추가 row -->
+                                            <div class="row justify-content-center">
+                                                <div class="col-9 btn-primary">
+                                                    <input class="form-control" type="text" placeholder="단계명" aria-label="default input example">
+                                                </div>
+                                                <button type="button" class="offset-1 col-2 btn btn-secondary">-</button>
+                                            </div>
+                                            
                                         </div>
-                                        
-                                        <div class="offset-1 col-5">
-                                            <button type="button" class="btn btn-secondary btn-sm">항목 추가</button>
+                                        <div class="col-5">
+                                            
+                                            <!-- 항목 obj 추가 row -->
+                                            <div class="row justify-content-center">
+                                                <div class="col-9 btn-primary">
+                                                    <input class="form-control" type="text" placeholder="항목명" aria-label="default input example">
+                                                </div>
+                                                <button type="button" class="offset-1 col-2 btn btn-secondary">-</button>
+                                            </div>
+                                            
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            <!-- 버튼 row -->
+                            <div class="row mt-2">
+                                <div class="col-3">
+                                    <div class="row justify-content-around">
+                                        <div class="col-5">
+                                            <div class="row justify-content-center">
+                                                <button type="button" class="btn btn-secondary col-8">추가</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-5">
+                                            <div class="row justify-content-center">
+                                                <button type="button" class="btn btn-secondary col-8">추가</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             
                         </div>
-                    </div>
+                    </form>
                 </div>
             </main>
             <footer class="py-4 bg-light mt-auto">
@@ -243,115 +278,61 @@
     <!-- 데이트피커용 j쿼리 -->
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
+    
     <script>
-
-        //document.addEventListener('DOMContentLoaded', function() {
-        let calendarEl = document.getElementById('calendar');
-        let calendar = new FullCalendar.Calendar(calendarEl, {
-            locale: 'ko',
-            headerToolbar: {
-                left: 'title',
-                center: '',
-                right: 'prev,next,today'
-            },
-            height: 'auto',
-            selectable: true,
-            select: function(info) {
-                $("#startdatepicker").datepicker();
-                $("#enddatepicker").datepicker();
-                //시작일 설정
-                $("#startdatepicker").datepicker("setDate", info.start);
-                $("#enddatepicker").datepicker("setDate", info.end);
-                
-                $('#startdatepicker').datepicker("option", "onClose", function(selectedDate) {
-                    $("#enddatepicker").datepicker("option", "minDate", selectedDate);
-                });
-
-                $('#enddatepicker').datepicker("option", "minDate", $("#startdatepicker").val());
-                
-
-                $('#addEvent').modal('show');
-            },
-            weekends: true,
-            /*
-                events: [
-                		<%
-                			for(int i = 0; i < event.size(); i++) {
-                				String dd = event.get(i);
-             				%>		
-                				{<%=dd %>},
-             				
-             				<%
-                			}
-                		%>
-
-                ],
-                */
-            eventClick: function(info) {
-                let title = info.event.startStr;
-                let start = info.event.endStr;
-                let end = info.event.endStr;
-                let obj = JSON.stringify({
-                    "title": title,
-                    "start": start,
-                    "end": end
-                });
-                let answer = confirm("일정을 삭제하시겠습니까?");
-                if (answer) {
-                    $.ajax({
-                        url: "delEvent.do",
-                        contentType: 'application/json',
-                        type: 'post',
-                        data: obj,
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "text",
-                        success: function(data) {
-                            location.href = 'index.do';
-                        },
-                        error: function(error) {
-                            location.href = 'index.do';
-                        }
-
-                    });
-                }
-            }
+        $.datepicker.setDefaults({
+            dateFormat: 'yy-mm-dd',
+            prevText: '이전 달',
+            nextText: '다음 달',
+            monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+            monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+            dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+            dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+            dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+            showMonthAfterYear: true,
+            yearSuffix: '년',
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true
+            
         });
-        calendar.render();
 
-
-        //});
-
-        function makeEvent(event) {
-            event.preventDefault();
-
-            let title = document.getElementById('title').value;
-            let start = document.getElementById('startdatepicker').value;
-            let end = document.getElementById('enddatepicker').value;
-
-
-            let obj = JSON.stringify({
-                "title": title,
-                "start": start,
-                "end": end
-            });
-            $.ajax({
-                url: "addEvent.do",
-                contentType: 'application/json',
-                type: 'post',
-                data: obj,
-                contentType: "application/json; charset=utf-8",
-                dataType: "text",
-                success: function(data) {
-                    location.href = 'index.do';
-                },
-                error: function(error) {
-                    location.href = 'index.do';
+        
+        $("#startdatepicker").datepicker();
+        $("#enddatepicker").datepicker();
+        
+        $("#startdatepicker").datepicker("option", "onClose", function( selectedDate ) {
+                let seDate = new Date(selectedDate);
+            alert(seDate);
+                        let maxDate = new Date().setFullYear(seDate);
+            alert(maxDate);
+                        $("#enddatepicker").datepicker( "option", "minDate", selectedDate );
+                    });
+        /*
+        function(info) {
+            
+            //데이트 피커 구현
+                	$("#startdatepicker").datepicker();
+                    $("#enddatepicker").datepicker();
+            
+            
+            //데이트피커 시작 날짜를 info 날짜로    	
+                	$("#startdatepicker").datepicker("setDate", info.dateStr);
+                
+                    $('#startdatepicker').datepicker("option", "maxDate", $("#enddatepicker").val());
+                    
+                    $('#startdatepicker').datepicker("option", "onClose", function ( selectedDate ) {
+                        $("#enddatepicker").datepicker( "option", "minDate", selectedDate );
+                    });
+                    
+                    $('#enddatepicker').datepicker("option", "minDate", $("#startdatepicker").val());
+                	
+                	$('#addEvent').modal('show');
                 }
-
-            });
-        }
+        
+        */
     </script>
+    
 
 </body>
 
