@@ -196,17 +196,17 @@
                             </div>
 
                             <!-- object 추가 row -->
-                            <div id="defaultStep">
-                                <div class="row mt-2" id="defaultItem">
+                            <div id="step_0">
+                                <div class="row mt-2" id="item_0_0">
                                     <div class="col-5">
                                         <div class="row justify-content-around">
                                             <div class="col-6">
                                                 <!-- 단계 obj 추가 row -->
                                                 <div class="justify-content-center btn-group">
-                                                    <button type="button" class="btn btn-secondary" onclick="addStep('defaultStep')">+</button>
+                                                    <button type="button" class="btn btn-secondary" onclick="addStep('step_0')">+</button>
 
 
-                                                    <input class="form-control" type="text" placeholder="단계명" required>
+                                                    <input class="form-control" type="text" placeholder="단계명" onchange="chgValue()" required>
 
                                                     <button type="button" class="btn btn-secondary" disabled>-</button>
                                                 </div>
@@ -216,7 +216,7 @@
 
                                                 <!-- 항목 obj 추가 row -->
                                                 <div class="justify-content-center btn-group">
-                                                    <button type="button" class="btn btn-xs btn-secondary" onclick="addItem('defaultItem')">+</button>
+                                                    <button type="button" class="btn btn-xs btn-secondary" onclick="addItem('item_0_0')">+</button>
 
                                                     <input class="form-control" type="text" placeholder="항목명" required>
 
@@ -231,18 +231,18 @@
                                     <!-- 마일스톤 생성col -->
                                     <div class="col-7">
                                         <div class="row">
-                                            <div class="col-1 btn btn-outline-primary"></div>
-                                            <div class="col-1 btn btn-outline-primary"></div>
-                                            <div class="col-1 btn btn-outline-primary"></div>
-                                            <div class="col-1 btn btn-outline-primary"></div>
-                                            <div class="col-1 btn btn-outline-primary"></div>
-                                            <div class="col-1 btn btn-outline-primary"></div>
-                                            <div class="col-1 btn btn-outline-primary"></div>
-                                            <div class="col-1 btn btn-outline-primary"></div>
-                                            <div class="col-1 btn btn-outline-primary"></div>
-                                            <div class="col-1 btn btn-outline-primary"></div>
-                                            <div class="col-1 btn btn-outline-primary"></div>
-                                            <div class="col-1 btn btn-outline-primary"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_0"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_1"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_2"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_3"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_4"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_5"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_6"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_7"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_8"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_9"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_10"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_11"></div>
                                         </div>
 
 
@@ -358,26 +358,64 @@
     </script>
 
     <script>
-        let stepCnt = 0;
-        let itemCnt = 0;
+        //마일스톤 정보
+        let allInfo = [{
+            "stepNum" : 0,
+            "step_info" : {
+                "value" : "",
+                "item_info" : {
+                    "itemNum" : [0],
+                    "itemValue" : [""],
+                    "mileTF" : [true, true, true, true, true, true, true, true, true, true, true, true]
+                },
+            }
+        }];
+        
+        //단계 생성 count 변수
+        let stepNum = 0;
+        
         
         function addStep(event) {
-            stepCnt += 1;
-            itemCnt += 1;
+            
+            // event = step_n
+            let splitedEvent = event.split('_');
+            
+        
+            //event객체의 인덱스 번호
+            let indexNum = allInfo.findIndex(i => i.stepNum == splitedEvent[1]);
+            
+            //count + 1
+            stepNum += 1;
+            
+            let stepInfo = {
+                "stepNum" : stepNum,
+                "step_info" : {
+                    "value" : "",
+                    "item_info" : {
+                        "itemNum" : [0],
+                        "itemValue" : [""],
+                        "mileTF" : [true, true, true, true, true, true, true, true, true, true, true, true]
+                    },
+                }
+            };
+            
+            //+1 하는 이유는 splice 시작위치를 event객체 바로 뒤로 지정해주기위해
+            allInfo.splice(indexNum + 1, 0, stepInfo);
+            
             $("#" + event).after($(
-                        `<div id="Step_${stepCnt}">
-                            <div class="row mt-2" id="Item_${itemCnt}">
+                        `<div id="step_${stepNum}">
+                            <div class="row mt-2" id="item_${stepNum}_0">
                                 <div class="col-5">
                                     <div class="row justify-content-around">
                                         <div class="col-6">
                                             <!-- 단계 obj 추가 row -->
                                             <div class="justify-content-center btn-group">
-                                                <button type="button" class="btn btn-secondary" onclick="addStep('Step_${stepCnt}')">+</button>
+                                                <button type="button" class="btn btn-secondary" onclick="addStep('step_${stepNum}')">+</button>
 
 
                                                 <input class="form-control" type="text" placeholder="단계명" required>
 
-                                                <button type="button" class="btn btn-secondary" onclick="rmStep('Step_${stepCnt}')">-</button>
+                                                <button type="button" class="btn btn-secondary" onclick="rmStep('step_${stepNum}')">-</button>
                                             </div>
 
                                         </div>
@@ -385,7 +423,7 @@
 
                                             <!-- 항목 obj 추가 row -->
                                             <div class="justify-content-center btn-group">
-                                                <button type="button" class="btn btn-xs btn-secondary" onclick="addItem('Item_${itemCnt}')">+</button>
+                                                <button type="button" class="btn btn-xs btn-secondary" onclick="addItem('item_${stepNum}_0')">+</button>
 
                                                 <input class="form-control" type="text" placeholder="항목명" required>
 
@@ -424,13 +462,43 @@
         }
 
         function rmStep(event) {
+            
+            // event = step_n
+            let splitedEvent = event.split('_');
+            
+            //객체가 들어갈 인덱스 번호
+            let indexNum = allInfo.findIndex(i => i.stepNum == splitedEvent[1]);
+            
+            allInfo.splice(indexNum, 1, );
+            
             $("#" + event).remove();
         }
 
         function addItem(event) {
-            itemCnt += 1;
+            
+            // event = step_n
+            let splitedEvent = event.split('_');
+            // 단계 번호
+            let stepNum = splitedEvent[1];
+            // 항목 번호
+            let itemNum = Number(splitedEvent[2]);
+            
+            
+            
+            //item 번호가 담긴 배열
+            let itemArr = allInfo[stepNum].step_info.item_info.itemNum;
+            //배열속 항목번호의 위치
+            let idx = itemArr.indexOf(itemNum);
+            
+            //생성된 아이템 번호의 최댓값 + 1
+            let maxItemNum = Math.max(...itemArr) + 1;
+
+
+            //+1 하는 이유는 splice 시작위치를 event객체 바로 뒤로 지정해주기위해
+            itemArr.splice(idx + 1, 0, maxItemNum);
+
             $("#" + event).after($(
-                `<div class="row mt-2" id="Obj_${itemCnt}">
+                `<div class="row mt-2" id="item_${stepNum}_${maxItemNum}">
                                 <div class="col-5">
                                     <div class="row justify-content-around">
                                         <div class="col-6">
@@ -440,11 +508,11 @@
 
                                             <!-- 항목 obj 추가 row -->
                                             <div class="justify-content-center btn-group">
-                                                <button type="button" class="btn btn-xs btn-secondary" onclick="addItem('Item_${itemCnt}')">+</button>
+                                                <button type="button" class="btn btn-xs btn-secondary" onclick="addItem('item_${stepNum}_${maxItemNum}')">+</button>
 
                                                 <input class="form-control" type="text" placeholder="항목명" required>
 
-                                                <button type="button" class="btn btn-secondary" onclick="rmItem('Item_${itemCnt}')">-</button>
+                                                <button type="button" class="btn btn-secondary" onclick="rmItem('item_${stepNum}_${maxItemNum}')">-</button>
                                             </div>
 
 
@@ -478,8 +546,31 @@
         }
 
         function rmItem(event) {
+            
+            // event = step_n
+            let splitedEvent = event.split('_');
+            // 단계 번호
+            let stepNum = splitedEvent[1];
+            // 항목 번호
+            let itemNum = Number(splitedEvent[2]);
+            
+            
+            //item 번호가 담긴 배열
+            let itemArr = allInfo[stepNum].step_info.item_info.itemNum;
+            //배열속 항목번호의 위치
+            let idx = itemArr.indexOf(itemNum);
+
+            //+1 하는 이유는 splice 시작위치를 event객체 바로 뒤로 지정해주기위해
+            itemArr.splice(idx, 1, );
+            
             $("#" + event).remove();
         }
+        
+        
+        function chgValue() {
+            
+        }
+        
     </script>
 
 
