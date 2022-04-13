@@ -206,7 +206,7 @@
                                                     <button type="button" class="btn btn-secondary" onclick="addStep('step_0')">+</button>
 
 
-                                                    <input class="form-control" type="text" placeholder="단계명" onchange="chgValue()" required>
+                                                    <input class="form-control" id="stepValue_0" type="text" placeholder="단계명" onchange="chgStepValue('step_0')" required>
 
                                                     <button type="button" class="btn btn-secondary" disabled>-</button>
                                                 </div>
@@ -218,7 +218,7 @@
                                                 <div class="justify-content-center btn-group">
                                                     <button type="button" class="btn btn-xs btn-secondary" onclick="addItem('item_0_0')">+</button>
 
-                                                    <input class="form-control" type="text" placeholder="항목명" required>
+                                                    <input class="form-control" id="itemValue_0_0" type="text" placeholder="항목명" onchange="chgItemValue('item_0_0')" required>
 
                                                     <button type="button" class="btn btn-secondary" disabled>-</button>
                                                 </div>
@@ -372,11 +372,11 @@
         }];
         
         //단계 생성 count 변수
-        let stepNum = 0;
+        let stepCnt = 0;
         
         
         function addStep(event) {
-            
+            console.log(event);
             // event = step_n
             let splitedEvent = event.split('_');
             
@@ -385,10 +385,10 @@
             let indexNum = allInfo.findIndex(i => i.stepNum == splitedEvent[1]);
             
             //count + 1
-            stepNum += 1;
+            stepCnt += 1;
             
             let stepInfo = {
-                "stepNum" : stepNum,
+                "stepNum" : stepCnt,
                 "step_info" : {
                     "value" : "",
                     "item_info" : {
@@ -403,19 +403,19 @@
             allInfo.splice(indexNum + 1, 0, stepInfo);
             
             $("#" + event).after($(
-                        `<div id="step_${stepNum}">
-                            <div class="row mt-2" id="item_${stepNum}_0">
+                        `<div id="step_${stepCnt}">
+                            <div class="row mt-2" id="item_${stepCnt}_0">
                                 <div class="col-5">
                                     <div class="row justify-content-around">
                                         <div class="col-6">
                                             <!-- 단계 obj 추가 row -->
                                             <div class="justify-content-center btn-group">
-                                                <button type="button" class="btn btn-secondary" onclick="addStep('step_${stepNum}')">+</button>
+                                                <button type="button" class="btn btn-secondary" onclick="addStep('step_${stepCnt}')">+</button>
 
 
-                                                <input class="form-control" type="text" placeholder="단계명" required>
+                                                <input class="form-control" id="stepValue_${stepCnt}" type="text" onchange="chgStepValue('step_${stepCnt}')" placeholder="단계명" required>
 
-                                                <button type="button" class="btn btn-secondary" onclick="rmStep('step_${stepNum}')">-</button>
+                                                <button type="button" class="btn btn-secondary" onclick="rmStep('step_${stepCnt}')">-</button>
                                             </div>
 
                                         </div>
@@ -423,9 +423,9 @@
 
                                             <!-- 항목 obj 추가 row -->
                                             <div class="justify-content-center btn-group">
-                                                <button type="button" class="btn btn-xs btn-secondary" onclick="addItem('item_${stepNum}_0')">+</button>
+                                                <button type="button" class="btn btn-xs btn-secondary" onclick="addItem('item_${stepCnt}_0')">+</button>
 
-                                                <input class="form-control" type="text" placeholder="항목명" required>
+                                                <input class="form-control" id="itemValue_${stepCnt}_0" type="text" placeholder="항목명" onchange="chgItemValue('item_${stepCnt}_0')" required>
 
                                                 <button type="button" class="btn btn-secondary" disabled>-</button>
                                             </div>
@@ -462,7 +462,7 @@
         }
 
         function rmStep(event) {
-            
+            console.log(event);
             // event = step_n
             let splitedEvent = event.split('_');
             
@@ -475,11 +475,11 @@
         }
 
         function addItem(event) {
-            
+            console.log(event);
             // event = step_n
             let splitedEvent = event.split('_');
             // 단계 번호
-            let stepNum = splitedEvent[1];
+            let stepNum = Number(splitedEvent[1]); //stepCnt 가 담김
             // 항목 번호
             let itemNum = Number(splitedEvent[2]);
             
@@ -487,6 +487,10 @@
             
             //item 번호가 담긴 배열
             let itemArr = allInfo[stepNum].step_info.item_info.itemNum;
+            console.log(itemArr);
+            //itemValue 가 담긴 배열
+            let itemValueArr = allInfo[stepNum].step_info.item_info.itemValue;
+            
             //배열속 항목번호의 위치
             let idx = itemArr.indexOf(itemNum);
             
@@ -496,6 +500,8 @@
 
             //+1 하는 이유는 splice 시작위치를 event객체 바로 뒤로 지정해주기위해
             itemArr.splice(idx + 1, 0, maxItemNum);
+            itemValueArr.splice(idx + 1, 0, "");
+            
 
             $("#" + event).after($(
                 `<div class="row mt-2" id="item_${stepNum}_${maxItemNum}">
@@ -510,7 +516,7 @@
                                             <div class="justify-content-center btn-group">
                                                 <button type="button" class="btn btn-xs btn-secondary" onclick="addItem('item_${stepNum}_${maxItemNum}')">+</button>
 
-                                                <input class="form-control" type="text" placeholder="항목명" required>
+                                                <input class="form-control" id="itemValue_${stepNum}_${maxItemNum}" type="text" onchange="chgItemValue('item_${stepNum}_${maxItemNum}')" placeholder="항목명" required>
 
                                                 <button type="button" class="btn btn-secondary" onclick="rmItem('item_${stepNum}_${maxItemNum}')">-</button>
                                             </div>
@@ -546,7 +552,7 @@
         }
 
         function rmItem(event) {
-            
+            console.log(event);
             // event = step_n
             let splitedEvent = event.split('_');
             // 단계 번호
@@ -557,18 +563,58 @@
             
             //item 번호가 담긴 배열
             let itemArr = allInfo[stepNum].step_info.item_info.itemNum;
+            
+            //itemValue 가 담긴 배열
+            let itemValueArr = allInfo[stepNum].step_info.item_info.itemValue;
+            
             //배열속 항목번호의 위치
             let idx = itemArr.indexOf(itemNum);
 
             //+1 하는 이유는 splice 시작위치를 event객체 바로 뒤로 지정해주기위해
             itemArr.splice(idx, 1, );
+            itemValueArr.splice(idx, 1, );
             
             $("#" + event).remove();
         }
         
         
-        function chgValue() {
+        function chgStepValue(event) {
+            // event = step_n
+            let splitedEvent = event.split('_');
             
+            //event객체의 인덱스 번호
+            let indexNum = allInfo.findIndex(i => i.stepNum == splitedEvent[1]);
+            
+            //단계명
+            let stepValue = document.getElementById("stepValue_" + splitedEvent[1]).value;
+            console.log(stepValue);
+            
+            allInfo[indexNum].step_info.value = stepValue;
+            
+        }
+        function chgItemValue(event) {
+        
+             // event = step_n
+            let splitedEvent = event.split('_');
+            // 단계 번호
+            let stepNum = splitedEvent[1];
+            // 항목 번호
+            let itemNum = Number(splitedEvent[2]);
+            
+            
+            
+            //item 번호가 담긴 배열
+            let itemArr = allInfo[stepNum].step_info.item_info.itemNum;
+            //itemValue 가 담긴 배열
+            let itemValueArr = allInfo[stepNum].step_info.item_info.itemValue;
+            
+            //배열속 항목번호의 위치
+            let idx = itemArr.indexOf(itemNum);
+            
+            //항목명
+            let itemValue = document.getElementById("itemValue_" + stepNum + "_" + itemNum).value;
+            
+            itemValueArr[idx] = itemValue;
         }
         
     </script>
