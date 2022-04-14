@@ -156,7 +156,7 @@
                             내 마일스톤
 
                             <button type="button" class="btn btn-outline-danger">취소</button>
-                            <button type="submit" class="btn btn-outline-success">저장</button>
+                            <button type="submit" class="btn btn-outline-success" onsubmit="send()">저장</button>
                         </div>
 
                         <!-- 마일스톤 container -->
@@ -231,18 +231,18 @@
                                     <!-- 마일스톤 생성col -->
                                     <div class="col-7">
                                         <div class="row">
-                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_0"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_1"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_2"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_3"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_4"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_5"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_6"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_7"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_8"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_9"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_10"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_11"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_0" onclick="chgMile('mile_0_0_0')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_1" onclick="chgMile('mile_0_0_1')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_2" onclick="chgMile('mile_0_0_2')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_3" onclick="chgMile('mile_0_0_3')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_4" onclick="chgMile('mile_0_0_4')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_5" onclick="chgMile('mile_0_0_5')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_6" onclick="chgMile('mile_0_0_6')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_7" onclick="chgMile('mile_0_0_7')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_8" onclick="chgMile('mile_0_0_8')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_9" onclick="chgMile('mile_0_0_9')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_10" onclick="chgMile('mile_0_0_10')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_0_0_11" onclick="chgMile('mile_0_0_11')"></div>
                                         </div>
 
 
@@ -321,11 +321,15 @@
         //시작일 선택시 종료일 제한걸기-선택일자로 부터 1년뒤 전달의 마지막날로
         $("#startdatepicker").datepicker("option", "onClose", function(selectedDate) {
             if(document.getElementById("startdatepicker").value != '') {
+                
+                allInfo.startDate = document.getElementById("startdatepicker").value;
+                
                 //yyyy-mm-dd를 split으로 나누고 년,월에 하나씩 넣기, 일은 전달의 마지막 날을 넣기 때문에 0
                 let yyyymmdd = selectedDate.split('-');
                 let maxDate = new Date(Number(yyyymmdd[0]) + 1, Number(yyyymmdd[1]) - 1, 0);
                 $("#enddatepicker").datepicker("option", "minDate", selectedDate);
                 $("#enddatepicker").datepicker("option", "maxDate", maxDate);
+                
             }
             
         });
@@ -333,6 +337,9 @@
         //종료일 선택시 마일스톤 생성
         $("#enddatepicker").datepicker("option", "onClose", function(selectedDate) {
             if(document.getElementById("enddatepicker").value != '' && document.getElementById("startdatepicker").value != '') {
+                
+                allInfo.endDate = document.getElementById("enddatepicker").value;
+                
                 //#m_period 하위의 모든 태그 제거
                 $("#m_period").empty();
                 //기간이 총 몇달인지 계산
@@ -359,20 +366,27 @@
 
     <script>
         //마일스톤 정보
-        let allInfo = [{
-            "stepNum" : 0,
-            "step_info" : {
+        let allInfo = {
+            "startDate" : "",
+            "endDate" : "",
+            "mileInfo" : [{
+                "stepNum" : 0,
+                "step_info" : {
                 "value" : "",
                 "item_info" : {
                     "itemNum" : [0],
                     "itemValue" : [""],
-                    "mileTF" : [true, true, true, true, true, true, true, true, true, true, true, true]
-                },
-            }
-        }];
+                    "mileTF" : [[false, false, false, false, false, false, false, false, false, false, false, false]]
+                    },
+                }
+            }]
+      };
         
         //단계 생성 count 변수
         let stepCnt = 0;
+        
+        //항목 생성 count 변수
+        //let maxItemNum = 0;
         
         
         function addStep(event) {
@@ -382,7 +396,7 @@
             
         
             //event객체의 인덱스 번호
-            let indexNum = allInfo.findIndex(i => i.stepNum == splitedEvent[1]);
+            let indexNum = allInfo.mileInfo.findIndex(i => i.stepNum == splitedEvent[1]);
             
             //count + 1
             stepCnt += 1;
@@ -394,13 +408,13 @@
                     "item_info" : {
                         "itemNum" : [0],
                         "itemValue" : [""],
-                        "mileTF" : [true, true, true, true, true, true, true, true, true, true, true, true]
+                        "mileTF" : [[false, false, false, false, false, false, false, false, false, false, false, false]]
                     },
                 }
             };
             
             //+1 하는 이유는 splice 시작위치를 event객체 바로 뒤로 지정해주기위해
-            allInfo.splice(indexNum + 1, 0, stepInfo);
+            allInfo.mileInfo.splice(indexNum + 1, 0, stepInfo);
             
             $("#" + event).after($(
                         `<div id="step_${stepCnt}">
@@ -437,23 +451,23 @@
 
                                 <!-- 마일스톤 생성col -->
                                 <div class="col-7">
-                                    <div class="row">
-                                        <div class="col-1 btn btn-outline-primary"></div>
-                                        <div class="col-1 btn btn-outline-primary"></div>
-                                        <div class="col-1 btn btn-outline-primary"></div>
-                                        <div class="col-1 btn btn-outline-primary"></div>
-                                        <div class="col-1 btn btn-outline-primary"></div>
-                                        <div class="col-1 btn btn-outline-primary"></div>
-                                        <div class="col-1 btn btn-outline-primary"></div>
-                                        <div class="col-1 btn btn-outline-primary"></div>
-                                        <div class="col-1 btn btn-outline-primary"></div>
-                                        <div class="col-1 btn btn-outline-primary"></div>
-                                        <div class="col-1 btn btn-outline-primary"></div>
-                                        <div class="col-1 btn btn-outline-primary"></div>
+                                        <div class="row">
+                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_0_0" onclick="chgMile('mile_${stepCnt}_0_0')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_0_1" onclick="chgMile('mile_${stepCnt}_0_1')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_0_2" onclick="chgMile('mile_${stepCnt}_0_2')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_0_3" onclick="chgMile('mile_${stepCnt}_0_3')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_0_4" onclick="chgMile('mile_${stepCnt}_0_4')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_0_5" onclick="chgMile('mile_${stepCnt}_0_5')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_0_6" onclick="chgMile('mile_${stepCnt}_0_6')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_0_7" onclick="chgMile('mile_${stepCnt}_0_7')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_0_8" onclick="chgMile('mile_${stepCnt}_0_8')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_0_9" onclick="chgMile('mile_${stepCnt}_0_9')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_0_10" onclick="chgMile('mile_${stepCnt}_0_10')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_0_11" onclick="chgMile('mile_${stepCnt}_0_11')"></div>
+                                        </div>
+
+
                                     </div>
-
-
-                                </div>
 
                             </div>
                         </div>`
@@ -467,10 +481,11 @@
             let splitedEvent = event.split('_');
             
             //객체가 들어갈 인덱스 번호
-            let indexNum = allInfo.findIndex(i => i.stepNum == splitedEvent[1]);
+            let indexNum = allInfo.mileInfo.findIndex(i => i.stepNum == splitedEvent[1]);
             
-            allInfo.splice(indexNum, 1, );
-            
+            //데이터 삭제
+            allInfo.mileInfo.splice(indexNum, 1, );
+            //태그 삭제
             $("#" + event).remove();
         }
 
@@ -480,28 +495,33 @@
             let splitedEvent = event.split('_');
             // 단계 번호
             let stepNum = Number(splitedEvent[1]); //stepCnt 가 담김
+            
+            //객체가 들어간 인덱스 번호
+            let indexNum = allInfo.mileInfo.findIndex(i => i.stepNum == stepNum);
+            
             // 항목 번호
-            let itemNum = Number(splitedEvent[2]);
+            let itemNum = Number(splitedEvent[2]); //itemNum 담김
             
             
             
             //item 번호가 담긴 배열
-            let itemArr = allInfo[stepNum].step_info.item_info.itemNum;
+            let itemArr = allInfo.mileInfo[indexNum].step_info.item_info.itemNum;
             console.log(itemArr);
             //itemValue 가 담긴 배열
-            let itemValueArr = allInfo[stepNum].step_info.item_info.itemValue;
+            let itemValueArr = allInfo.mileInfo[indexNum].step_info.item_info.itemValue;
+            // mileTF배열이 담긴 배열
+            let mileArr = allInfo.mileInfo[indexNum].step_info.item_info.mileTF;
             
             //배열속 항목번호의 위치
             let idx = itemArr.indexOf(itemNum);
             
-            //생성된 아이템 번호의 최댓값 + 1
+            //생성될 아이템 번호 = max(삭제된 아이템 번호, item번호 배열중 최댓값 + 1)
             let maxItemNum = Math.max(...itemArr) + 1;
-
 
             //+1 하는 이유는 splice 시작위치를 event객체 바로 뒤로 지정해주기위해
             itemArr.splice(idx + 1, 0, maxItemNum);
             itemValueArr.splice(idx + 1, 0, "");
-            
+            mileArr.splice(idx + 1, 0, [false, false, false, false, false, false, false, false, false, false, false, false]);
 
             $("#" + event).after($(
                 `<div class="row mt-2" id="item_${stepNum}_${maxItemNum}">
@@ -528,23 +548,23 @@
 
                                 <!-- 마일스톤 생성col -->
                                 <div class="col-7">
-                                    <div class="row">
-                                        <div class="col-1 btn btn-outline-primary"></div>
-                                        <div class="col-1 btn btn-outline-primary"></div>
-                                        <div class="col-1 btn btn-outline-primary"></div>
-                                        <div class="col-1 btn btn-outline-primary"></div>
-                                        <div class="col-1 btn btn-outline-primary"></div>
-                                        <div class="col-1 btn btn-outline-primary"></div>
-                                        <div class="col-1 btn btn-outline-primary"></div>
-                                        <div class="col-1 btn btn-outline-primary"></div>
-                                        <div class="col-1 btn btn-outline-primary"></div>
-                                        <div class="col-1 btn btn-outline-primary"></div>
-                                        <div class="col-1 btn btn-outline-primary"></div>
-                                        <div class="col-1 btn btn-outline-primary"></div>
+                                        <div class="row">
+                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_${maxItemNum}_0" onclick="chgMile('mile_${stepCnt}_${maxItemNum}_0')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_${maxItemNum}_1" onclick="chgMile('mile_${stepCnt}_${maxItemNum}_1')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_${maxItemNum}_2" onclick="chgMile('mile_${stepCnt}_${maxItemNum}_2')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_${maxItemNum}_3" onclick="chgMile('mile_${stepCnt}_${maxItemNum}_3')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_${maxItemNum}_4" onclick="chgMile('mile_${stepCnt}_${maxItemNum}_4')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_${maxItemNum}_5" onclick="chgMile('mile_${stepCnt}_${maxItemNum}_5')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_${maxItemNum}_6" onclick="chgMile('mile_${stepCnt}_${maxItemNum}_6')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_${maxItemNum}_7" onclick="chgMile('mile_${stepCnt}_${maxItemNum}_7')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_${maxItemNum}_8" onclick="chgMile('mile_${stepCnt}_${maxItemNum}_8')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_${maxItemNum}_9" onclick="chgMile('mile_${stepCnt}_${maxItemNum}_9')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_${maxItemNum}_10" onclick="chgMile('mile_${stepCnt}_${maxItemNum}_10')"></div>
+                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_${maxItemNum}_11" onclick="chgMile('mile_${stepCnt}_${maxItemNum}_11')"></div>
+                                        </div>
+
+
                                     </div>
-
-
-                                </div>
 
                             </div>`
 
@@ -560,12 +580,17 @@
             // 항목 번호
             let itemNum = Number(splitedEvent[2]);
             
+            //객체가 들어간 인덱스 번호
+            let indexNum = allInfo.mileInfo.findIndex(i => i.stepNum == stepNum);
             
             //item 번호가 담긴 배열
-            let itemArr = allInfo[stepNum].step_info.item_info.itemNum;
+            let itemArr = allInfo.mileInfo[indexNum].step_info.item_info.itemNum;
             
             //itemValue 가 담긴 배열
-            let itemValueArr = allInfo[stepNum].step_info.item_info.itemValue;
+            let itemValueArr = allInfo.mileInfo[indexNum].step_info.item_info.itemValue;
+            
+            // mileTF배열이 담긴 배열
+            let mileArr = allInfo.mileInfo[indexNum].step_info.item_info.mileTF;
             
             //배열속 항목번호의 위치
             let idx = itemArr.indexOf(itemNum);
@@ -573,6 +598,7 @@
             //+1 하는 이유는 splice 시작위치를 event객체 바로 뒤로 지정해주기위해
             itemArr.splice(idx, 1, );
             itemValueArr.splice(idx, 1, );
+            mileArr.splice(idx, 1, );
             
             $("#" + event).remove();
         }
@@ -583,13 +609,13 @@
             let splitedEvent = event.split('_');
             
             //event객체의 인덱스 번호
-            let indexNum = allInfo.findIndex(i => i.stepNum == splitedEvent[1]);
+            let indexNum = allInfo.mileInfo.findIndex(i => i.stepNum == splitedEvent[1]);
             
             //단계명
             let stepValue = document.getElementById("stepValue_" + splitedEvent[1]).value;
             console.log(stepValue);
             
-            allInfo[indexNum].step_info.value = stepValue;
+            allInfo.mileInfo[indexNum].step_info.value = stepValue;
             
         }
         function chgItemValue(event) {
@@ -601,12 +627,13 @@
             // 항목 번호
             let itemNum = Number(splitedEvent[2]);
             
-            
+            //객체가 들어간 인덱스 번호
+            let indexNum = allInfo.mileInfo.findIndex(i => i.stepNum == stepNum);
             
             //item 번호가 담긴 배열
-            let itemArr = allInfo[stepNum].step_info.item_info.itemNum;
+            let itemArr = allInfo.mileInfo[indexNum].step_info.item_info.itemNum;
             //itemValue 가 담긴 배열
-            let itemValueArr = allInfo[stepNum].step_info.item_info.itemValue;
+            let itemValueArr = allInfo.mileInfo[indexNum].step_info.item_info.itemValue;
             
             //배열속 항목번호의 위치
             let idx = itemArr.indexOf(itemNum);
@@ -615,6 +642,40 @@
             let itemValue = document.getElementById("itemValue_" + stepNum + "_" + itemNum).value;
             
             itemValueArr[idx] = itemValue;
+        }
+        
+        function chgMile(event) {
+            let splitedEvent = event.split('_');
+            // 단계 번호
+            let stepNum = splitedEvent[1];
+            // 항목 번호
+            let itemNum = Number(splitedEvent[2]);
+            // 마일 번호
+            let mileNum = splitedEvent[3];
+            
+            //객체가 들어간 인덱스 번호
+            let indexNum = allInfo.mileInfo.findIndex(i => i.stepNum == stepNum);
+            
+            // mileTF배열이 담긴 배열
+            let mileArr = allInfo.mileInfo[indexNum].step_info.item_info.mileTF;
+            
+            //item 번호가 담긴 배열
+            let itemArr = allInfo.mileInfo[indexNum].step_info.item_info.itemNum;
+            
+            //배열속 항목번호의 위치
+            let idx = itemArr.indexOf(itemNum);
+            
+            //항목명
+            let mileTag = document.getElementById("mile_" + stepNum + "_" + itemNum + "_" + mileNum);
+            
+            
+            mileTag.className = (mileArr[idx][mileNum]) ? "col-1 btn btn-outline-primary" : "col-1 btn btn-primary";
+            
+            mileArr[idx][mileNum] = (mileArr[idx][mileNum]) ? false : true;
+        }
+        
+        function send() {
+            alert(allInfo);
         }
         
     </script>
