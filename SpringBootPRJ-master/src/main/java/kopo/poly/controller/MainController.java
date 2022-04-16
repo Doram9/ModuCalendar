@@ -3,6 +3,8 @@ package kopo.poly.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -10,19 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class MainController {
 
     //타이틀 페이지
-    @GetMapping(value = "mocal/title")
+    @GetMapping(value = "title")
     public String titlePage() throws Exception {
             log.info("controller.title start");
-        return "";
+        return "title";
     }
 
-    //로그인페이지
-
-    //회원가입페이지
-
-    //아이디찾기 페이지
-
-    //비밀번호찾기 페이지
 
 
 
