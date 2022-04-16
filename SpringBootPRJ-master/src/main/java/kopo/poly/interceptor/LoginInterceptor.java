@@ -33,7 +33,7 @@ public class LoginInterceptor implements HandlerInterceptor {
                 } else {
 
                         // 로그인이 되지 않으면, 로그인 화면으로 이동
-                        response.sendRedirect("/index");
+                        response.sendRedirect("/login");
                         return false;
 
                 }
