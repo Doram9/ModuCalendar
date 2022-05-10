@@ -11,6 +11,6 @@ import java.util.List;
 @Repository //Repository의 경우에는 JpaRepository를 extends 받으면 해당 Repository로 JPA의 대부분의 자동 쿼리 기능을 수행할 수 있다
 public interface UserRepository extends JpaRepository<UserEntity, String> {
 
-    @Query(value = "insert")
-    List<UserEntity> createUser(@Param("id") String userId);
+    @Query(value = "select * from User where id = :id")
+    List<UserEntity> selectUser(@Param("id")String id);
 }
