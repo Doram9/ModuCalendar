@@ -1,11 +1,14 @@
 package kopo.poly.controller;
 
 
+import kopo.poly.dto.UserInfoDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @RestController
@@ -14,12 +17,23 @@ public class UserRestController {
 
     //로그인 정보
     @RequestMapping(value = "login")
-    public String loginSql(RequestParam request) throws Exception {
-            log.info("controller.title start");
+    public String login(HttpServletRequest request) throws Exception {
+        log.info("controller.title start");
+        //아이디, 비밀번호
+        String reqId = request.getParameter("id");
+        String reqPw = request.getParameter("pw");
+
+
+        UserInfoDTO pDTO = new UserInfoDTO();
+
         return "";
     }
 
     //회원가입 정보
+    @RequestMapping(value = "register")
+    public String register() throws Exception {
+
+    }
 
 
     //아이디찾기 정보

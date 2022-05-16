@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="59786064-7e3e-4fbd-8ffd-fdbb19ab8311" name="Changes" comment="" />
+    <list default="true" id="59786064-7e3e-4fbd-8ffd-fdbb19ab8311" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../SpringBootPRJ-master/src/main/java/kopo/poly/dto/UserInfoDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Mocal_front/startbootstrap-sb-admin-gh-pages/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Mocal_front/startbootstrap-sb-admin-gh-pages/register.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SpringBootPRJ-master/src/main/java/kopo/poly/controller/UserRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SpringBootPRJ-master/src/main/java/kopo/poly/controller/UserRestController.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -33,7 +38,11 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../SpringBootPRJ-master" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
   </component>
   <component name="RunManager">
     <configuration name="SpringBootPrjApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
@@ -53,6 +62,7 @@
       <option name="presentableId" value="Default" />
       <updated>1649123404378</updated>
       <workItem from="1649123405503" duration="39000" />
+      <workItem from="1652660591838" duration="4958000" />
     </task>
     <servers />
   </component>
