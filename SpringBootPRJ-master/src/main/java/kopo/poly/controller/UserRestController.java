@@ -2,18 +2,25 @@ package kopo.poly.controller;
 
 
 import kopo.poly.dto.UserInfoDTO;
+import kopo.poly.service.INoticeService;
+import kopo.poly.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @RestController
 public class UserRestController {
 
+    @Resource(name = "UserService")
+    private IUserService userSevice;
 
     //로그인 정보
     @RequestMapping(value = "login")
@@ -22,9 +29,13 @@ public class UserRestController {
         //아이디, 비밀번호
         String reqId = request.getParameter("id");
         String reqPw = request.getParameter("pw");
+        int res = userSevice.authLogin(reqId, reqPw);
 
-
-        UserInfoDTO pDTO = new UserInfoDTO();
+        if(res == 1) {
+            UserInfoDTO pDTO = new UserInfoDTO();
+        }
+        else {
+        }
 
         return "";
     }
@@ -33,6 +44,8 @@ public class UserRestController {
     @RequestMapping(value = "register")
     public String register() throws Exception {
 
+
+        return "";
     }
 
 
