@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Slf4j
 @RestController
@@ -24,7 +25,7 @@ public class UserRestController {
 
     //로그인 정보
     @RequestMapping(value = "login")
-    public String login(HttpServletRequest request) throws Exception {
+    public String login(HttpServletRequest request, HttpSession session) throws Exception {
         log.info("controller.title start");
         //아이디, 비밀번호
         String reqId = request.getParameter("id");
@@ -32,12 +33,11 @@ public class UserRestController {
         int res = userSevice.authLogin(reqId, reqPw);
 
         if(res == 1) {
-            UserInfoDTO pDTO = new UserInfoDTO();
-        }
-        else {
+            session.setAttribute("id", reqId);
         }
 
-        return "";
+
+        return "" + res;
     }
 
     //회원가입 정보

@@ -108,11 +108,12 @@
             contentType: "application/json; charset=utf-8",
             dataType: "text",
             success: function(data) {
-                location.href = 'index.do';
+                alert(data);
+                //location.href = 'index.do';
             },
-            error: function(error) {
-                alert("아이디 또는 비밀번호가 일치하지 않습니다.");
-                location.reload();
+            error: function(request,status,error) {
+                //alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+                //location.reload();
             }
 
         });
