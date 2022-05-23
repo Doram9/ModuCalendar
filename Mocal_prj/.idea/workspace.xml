@@ -50,7 +50,14 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Spring Boot.SpringBootPrjApplication">
+    <configuration name="SpringBootPrjApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="Mocal_prj" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="kopo.poly.SpringBootPrjApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="SpringBootPrjApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="poly" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="kopo.poly.SpringBootPrjApplication" />

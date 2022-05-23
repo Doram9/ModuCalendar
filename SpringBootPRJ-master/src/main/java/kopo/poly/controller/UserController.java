@@ -1,7 +1,6 @@
 package kopo.poly.controller;
 
 
-import kopo.poly.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +12,6 @@ import javax.print.attribute.Attribute;
 @Controller
 public class UserController {
 
-    public UserRepository userRepository;
 
 
     //로그인페이지
