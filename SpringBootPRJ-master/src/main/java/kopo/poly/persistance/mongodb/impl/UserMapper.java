@@ -18,7 +18,7 @@ import java.util.List;
 public class UserMapper extends AbstractMongoDBComon implements IUserMapper {
 
     @Override
-    public int existUser(String userid, String userpw) throws Exception {
+    public UserInfoDTO existUser(String userid, String userpw) throws Exception {
 
         int res = 0;
 
@@ -35,17 +35,25 @@ public class UserMapper extends AbstractMongoDBComon implements IUserMapper {
 
         FindIterable<Document> rs = col.find(query).projection(projection);
 
+        UserInfoDTO rDTO = new UserInfoDTO();
         for(Document doc : rs) {
             if(doc == null) {
-                res = 0;
+                rDTO = null;
             }
             else {
-                res = 1;
+                rDTO.setUserId(CmmUtil.nvl(doc.getString("userId")));
+                rDTO.setUserName(CmmUtil.nvl(doc.getString("userName")));
+                rDTO.setRegDt(CmmUtil.nvl(doc.getString("regDt")));
+                rDTO.setUserEmail(CmmUtil.nvl(doc.getString("userEmail")));
+                rDTO.setAppList(doc.getList("appList", String.class));
+                rDTO.setPrjList(doc.getList("prjList", String.class));
+
+
             }
         }
 
 
-        return res;
+        return rDTO;
     }
 
     //회원정보 조회
@@ -112,6 +120,7 @@ public class UserMapper extends AbstractMongoDBComon implements IUserMapper {
         super.createCollection(colNm);
 
         MongoCollection<Document> col = mongodb.getCollection(colNm);
+        int res = 0;
 
         return res;
     }

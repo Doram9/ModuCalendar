@@ -17,7 +17,7 @@
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
+    <a class="navbar-brand ps-3" href="/">Start Bootstrap</a>
     <!-- Sidebar Toggle-->
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
 </nav>
@@ -26,7 +26,7 @@
         <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
             <div class="sb-sidenav-menu">
                 <div class="nav">
-                    <a class="nav-link" href="index.html">
+                    <a class="nav-link" href="title">
                         로그인 후 이용해주세요
                     </a>
                 </div>
@@ -65,7 +65,7 @@
                                 </form>
                             </div>
                             <div class="card-footer text-center py-3">
-                                <div class="small"><a href="register.html">아직 계정이 없으신가요? 회원가입 하러가기</a></div>
+                                <div class="small"><a href="register">아직 계정이 없으신가요? 회원가입 하러가기</a></div>
                             </div>
                         </div>
                     </div>
@@ -101,7 +101,7 @@
         });
 
         $.ajax({
-            url: "login.do",
+            url: "dologin.do",
             contentType: 'application/json',
             type: 'post',
             data: logingInfo,
@@ -109,6 +109,7 @@
             dataType: "text",
             success: function(data) {
                 alert(data);
+                consol.log(data);
                 //location.href = 'index.do';
             },
             error: function(request,status,error) {

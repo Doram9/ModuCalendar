@@ -5,7 +5,7 @@ import kopo.poly.dto.UserInfoDTO;
 public interface IUserMapper {
 
     //로그인 체크
-    int existUser(String userid, String userpw) throws Exception;
+    UserInfoDTO existUser(String userid, String userpw) throws Exception;
     //회원정보 조회
     UserInfoDTO getUserInfo(String userId) throws Exception;
     //비밀번호 변경

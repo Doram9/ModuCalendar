@@ -15,14 +15,14 @@ public class UserService implements IUserService {
     private IUserMapper userMapper;
 
     @Override
-    public int authLogin(String id, String pw) throws Exception{
+    public UserInfoDTO authLogin(String id, String pw) throws Exception{
 
         String hashedPw = EncryptUtil.encHashSHA256(pw);
 
-        int exist = userMapper.existUser(id, hashedPw);
+        UserInfoDTO rDTO = userMapper.existUser(id, hashedPw);
 
 
-        return exist;
+        return rDTO;
     }
 
 

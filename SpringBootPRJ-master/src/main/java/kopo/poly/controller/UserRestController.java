@@ -4,6 +4,7 @@ package kopo.poly.controller;
 import kopo.poly.dto.UserInfoDTO;
 import kopo.poly.service.INoticeService;
 import kopo.poly.service.IUserService;
+import kopo.poly.util.CmmUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,20 +25,28 @@ public class UserRestController {
     private IUserService userSevice;
 
     //로그인 정보
-    @RequestMapping(value = "login")
+    @RequestMapping(value = "dologin")
     public String login(HttpServletRequest request, HttpSession session) throws Exception {
         log.info("controller.title start");
-        //아이디, 비밀번호
-        String reqId = request.getParameter("id");
-        String reqPw = request.getParameter("pw");
-        int res = userSevice.authLogin(reqId, reqPw);
 
-        if(res == 1) {
-            session.setAttribute("id", reqId);
+
+        String reqId = CmmUtil.nvl(request.getParameter("id"));
+        String reqPw = CmmUtil.nvl(request.getParameter("pw"));
+        UserInfoDTO pDTO = userSevice.authLogin(reqId, reqPw);
+
+        if(pDTO == null) {
+            return "fail";
+        } else {
+            session.setAttribute("userId", pDTO.getUserId());
+            session.setAttribute("userName", pDTO.getUserName());
+            session.setAttribute("regDt", pDTO.getRegDt());
+            session.setAttribute("userEmail", pDTO.getUserEmail());
+            session.setAttribute("appList", pDTO.getAppList());
+            session.setAttribute("prjList", pDTO.getPrjList());
+
+            return "success";
         }
 
-
-        return "" + res;
     }
 
     //회원가입 정보
@@ -65,14 +74,6 @@ public class UserRestController {
         return "findPw";
     }
 
-
-
-    //유저 정보 페이지
-    @RequestMapping(value = "index")
-    public String mainPage() throws Exception {
-        log.info("controller.title start");
-        return "index";
-    }
 
 
 }

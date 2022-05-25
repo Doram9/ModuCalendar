@@ -5,7 +5,7 @@ import kopo.poly.dto.UserInfoDTO;
 public interface IUserService {
 
     //로그인 정보 확인(1 : 조회성공, 0 : 조회실패
-    int authLogin(String id, String pw) throws Exception;
+    UserInfoDTO authLogin(String id, String pw) throws Exception;
 
     //회원정보 조회
     UserInfoDTO getUserInfo(String userId) throws Exception;

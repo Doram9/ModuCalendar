@@ -59,7 +59,7 @@
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
 	<!-- Navbar Brand-->
-	<a class="navbar-brand ps-3" href="index.html">Modu Calendar</a>
+	<a class="navbar-brand ps-3" href="/">Modu Calendar</a>
 	<!-- Sidebar Toggle-->
 	<button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
 	<!-- 여백-->
@@ -73,7 +73,6 @@
 				<li>
 					<hr class="dropdown-divider" />
 				</li>
-				<li><a class="dropdown-item" href="#!">로그인</a></li>
 			</ul>
 		</li>
 	</ul>
@@ -235,14 +234,14 @@
 
 			<div class="modal-body">
 				<div class="mb-3">
-					<label for="exampleFormControlInput1" class="form-label">일정 제목</label>
+					<label for="month" class="form-label">일정 제목</label>
 					<input type="text" name="title" class="form-control" autocomplete="off" id="title" required>
 
 				</div>
-				<label for="exampleFormControlInput1" class="form-label">시작날짜</label>
+				<label for="month" class="form-label">시작날짜</label>
 				<input type="text" name="month" autocomplete="off" id="startdatepicker" required>
 				<br />
-				<label for="exampleFormControlInput2" class="form-label">종료날짜</label>
+				<label for="month" class="form-label">종료날짜</label>
 				<input type="text" name="month" autocomplete="off" id="enddatepicker">
 				<br />
 			</div>
@@ -302,20 +301,6 @@
 			$('#addEvent').modal('show');
 		},
 		weekends: true,
-		/*
-            events: [
-			<%
-                			for(int i = 0; i < event.size(); i++) {
-                				String dd = event.get(i);
-             				%>
-                				{<%=dd %>},
-
-             				<%
-                			}
-                		%>
-
-                ],
-                */
 		eventClick: function(info) {
 			let title = info.event.startStr;
 			let start = info.event.endStr;
