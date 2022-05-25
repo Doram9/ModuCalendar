@@ -15,7 +15,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
 
         // 로그인 체크를 해야하는 URL에 대해 정의
-        String[] loginCheckURI = {"/notice/NoticeReg", "/notice/NoticeEditInfo", "/"};
+        String[] loginCheckURI = {"/", "/index"};
         registry.addInterceptor(new LoginInterceptor()).addPathPatterns(Arrays.asList(loginCheckURI));
 
     }

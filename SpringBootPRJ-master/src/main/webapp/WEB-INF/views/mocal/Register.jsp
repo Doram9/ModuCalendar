@@ -11,6 +11,7 @@
     <title>Tables - SB Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
     <link href="css/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 <body class="sb-nav-fixed">
@@ -46,43 +47,43 @@
                         <div class="card shadow-lg border-0 rounded-lg mt-5">
                             <div class="card-header"><h3 class="text-center font-weight-light my-4">회원가입</h3></div>
                             <div class="card-body">
-                                <form>
+                                <form onsubmit="regUser(event)" name="registerForm" action="doRegister" method="post">
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="inputName" type="email" placeholder="name@example.com" />
+                                        <input class="form-control" id="inputName" name="inputName" type="text" required/>
                                         <label for="inputEmail">이름</label>
                                     </div>
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com" />
+                                        <input class="form-control" id="inputEmail" name="inputEmail" type="email" required/>
                                         <label for="inputEmail">이메일</label>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3">
-                                                <input class="form-control" id="inputId" type="email" placeholder="name@example.com" />
+                                                <input class="form-control" id="inputId" name="inputId" type="text" required/>
                                                 <label for="inputEmail">아이디</label>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
-                                            <div class="d-grid"><button class="btn btn-primary btn-block" onclick="checkId()">아이디 중복 확인하기 </button></div>
+                                            <div class="d-grid"><button type="button" class="btn btn-primary btn-block" onclick="checkId()">아이디 중복 확인하기 </button></div>
                                         </div>
                                     </div>
 
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputPassword" type="password" placeholder="Create a password" />
+                                                <input class="form-control" id="inputPassword" name="inputPassword" type="password" required/>
                                                 <label for="inputPassword">비밀번호</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputPasswordConfirm" type="password" placeholder="Confirm password" />
+                                                <input class="form-control" id="inputPasswordConfirm" type="password" required/>
                                                 <label for="inputPasswordConfirm">비밀번호 확인</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="mt-4 mb-0">
-                                        <div class="d-grid"><button type="submit" class="btn btn-primary btn-block" onsubmit="regUser()">회원가입하기</button></div>
+                                        <div class="d-grid"><button type="submit" class="btn btn-primary btn-block">회원가입하기</button></div>
                                     </div>
                                 </form>
                             </div>
@@ -113,14 +114,75 @@
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
 <script src="js/datatables-simple-demo.js"></script>
 
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+
 <script>
 
+    //0 = 체크 안한상태, 1 = 중복검사 통과, 2 = 중복검사 실패
+    let idCheck = 0;
+
+
+    //id 중복검사
     function checkId() {
         let inputId = document.getElementById("inputId").value;
 
+        $.ajax({
+            url: "checkId",
+            type: 'get',
+            data: {
+                checkId : inputId
+            },
+            dataType: "text",
+            contentType: "application/json; charset=utf-8",
+
+            success: function(result) {
+                if(result == 1) {
+                    idCheck = 1;
+                    alert("해당 아이디를 사용하실 수 있습니다.");
+                } else {
+                    idCheck = 2;
+                    alert("해당 아이디가 이미 존재합니다. 다른 아이디를 입력해주세요.");
+                }
+            },
+            error: function(error) {
+            }
+        });
     }
 
-    function regUser() {
+    //id 값 변화시 다시 중복확인하게끔 false로 변경
+    $('#inputId').keyup( function(){
+        idCheck = 0;
+
+    });
+
+    $('#inputId').keyup( function(){
+        idCheck = 0;
+
+    });
+
+    //회원가입 함수
+    function regUser(event) {
+
+        let pw_1 = document.getElementById("inputPassword").value;
+        let pw_2 = document.getElementById("inputPasswordConfirm").value;
+
+        if(pw_1.length < 9) {
+            event.preventDefault();
+            alert("비밀번호가 너무 짧습니다. 9글자 이상 작성해주세요.");
+        }
+        if(pw_1 != pw_2) {
+            event.preventDefault();
+            alert("비밀번호가 일치하지 않습니다.");
+        }
+
+        if(idCheck == 0) {
+            event.preventDefault();
+            alert("아이디 중복확인을 진행해주세요.");
+        } else if (idCheck == 2){
+            event.preventDefault();
+            alert("해당 아이디가 이미 존재합니다. 다른 아이디를 입력해주세요.");
+        }
 
     }
 

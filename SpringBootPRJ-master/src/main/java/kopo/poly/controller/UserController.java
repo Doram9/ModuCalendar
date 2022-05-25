@@ -1,22 +1,46 @@
 package kopo.poly.controller;
 
 
+import kopo.poly.dto.UserInfoDTO;
+import kopo.poly.service.IUserService;
+import kopo.poly.util.CmmUtil;
+import kopo.poly.util.DateUtil;
+import kopo.poly.util.EncryptUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.annotation.Resource;
 import javax.print.attribute.Attribute;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 
 @Slf4j
 @Controller
 public class UserController {
 
+    @Resource(name = "UserService")
+    private IUserService userSevice;
+
     //로그인페이지
     @GetMapping(value = "login")
     public String loginPage() throws Exception {
         log.info("controller.title start");
+
         return "/mocal/Login";
+    }
+
+    //로그아웃
+    @GetMapping(value = "logout")
+    public String logout(HttpSession session) throws Exception {
+        log.info("controller.logout start");
+
+        session.invalidate();
+
+        return "redirect:/";
     }
 
     //회원가입페이지
@@ -24,6 +48,33 @@ public class UserController {
     public String regPage() throws Exception {
         log.info("controller.register start");
         return "/mocal/Register";
+    }
+
+    //회원가입 정보
+    @PostMapping(value = "doRegister")
+    public String register(HttpServletRequest request) throws Exception {
+        log.info("controller.register start");
+
+        String regName = CmmUtil.nvl(request.getParameter("inputName")); //이름
+        String regEmail = CmmUtil.nvl(request.getParameter("inputEmail")); //이메일
+        String regId = CmmUtil.nvl(request.getParameter("inputId")); //아이디
+        String regPw = CmmUtil.nvl(request.getParameter("inputPassword")); //비밀번호
+        regPw = EncryptUtil.encHashSHA256(regPw); //암호화된 비밀번호
+
+        UserInfoDTO pDTO = new UserInfoDTO();
+
+        pDTO.setUserId(regId);
+        pDTO.setUserName(regName);
+        pDTO.setUserEmail(regEmail);
+        pDTO.setUserPw(regPw);
+        pDTO.setRegDt(DateUtil.getDateTimeHMS());
+        pDTO.setUpdateDt(DateUtil.getDateTimeHMS());
+        pDTO.setAppList(new ArrayList<>());
+        pDTO.setPrjList(new ArrayList<>());
+
+        int res = userSevice.regUser(pDTO);
+        log.info("controller.register result : " + res);
+        return "redirect:/login";
     }
 //
 //    //회원가입 정보

@@ -1,5 +1,6 @@
 package kopo.poly.persistance.mongodb.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import kopo.poly.dto.UserInfoDTO;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Component("UserMapper")
@@ -20,15 +22,18 @@ public class UserMapper extends AbstractMongoDBComon implements IUserMapper {
     @Override
     public UserInfoDTO existUser(String userid, String userpw) throws Exception {
 
-        int res = 0;
+        log.info("userMapper.existUser start");
+
+        log.info("userid : " + userid);
+        log.info("userpw : " + userpw);
 
         String colNm = "User";
 
         MongoCollection<Document> col = mongodb.getCollection(colNm);
 
         Document query = new Document();
-        query.append("userid", userid);
-        query.append("userpw", userpw);
+        query.append("userId", userid);
+        query.append("userPw", userpw);
 
         Document projection = new Document();
         projection.append("_id", 0);
@@ -36,24 +41,49 @@ public class UserMapper extends AbstractMongoDBComon implements IUserMapper {
         FindIterable<Document> rs = col.find(query).projection(projection);
 
         UserInfoDTO rDTO = new UserInfoDTO();
+        //해당하는 데이터 없으면 for문 안돔
         for(Document doc : rs) {
             if(doc == null) {
-                rDTO = null;
+                doc = new Document();
             }
-            else {
-                rDTO.setUserId(CmmUtil.nvl(doc.getString("userId")));
-                rDTO.setUserName(CmmUtil.nvl(doc.getString("userName")));
-                rDTO.setRegDt(CmmUtil.nvl(doc.getString("regDt")));
-                rDTO.setUserEmail(CmmUtil.nvl(doc.getString("userEmail")));
-                rDTO.setAppList(doc.getList("appList", String.class));
-                rDTO.setPrjList(doc.getList("prjList", String.class));
 
+            rDTO.setUserId(CmmUtil.nvl(doc.getString("userId")));
+            rDTO.setUserName(CmmUtil.nvl(doc.getString("userName")));
+            rDTO.setRegDt(CmmUtil.nvl(doc.getString("regDt")));
+            rDTO.setUserEmail(CmmUtil.nvl(doc.getString("userEmail")));
+            rDTO.setAppList(doc.getList("appList", String.class));
+            rDTO.setPrjList(doc.getList("prjList", String.class));
 
-            }
         }
 
 
         return rDTO;
+    }
+
+    //회원가입_id중복조회(1 : 중복없음, 0 : 중복있음)
+    @Override
+    public int existUser(String userid) throws Exception {
+
+        log.info("mapper.existUser start");
+
+        String colNm = "User";
+
+        super.createCollection(colNm);
+
+        int res = 1;
+
+        MongoCollection<Document> col = mongodb.getCollection(colNm);
+
+        Document query = new Document();
+        query.append("userId", userid);
+
+        FindIterable<Document> rs = col.find(query);
+
+        for(Document doc : rs) {
+            res = 0;
+        }
+
+        return res;
     }
 
     //회원정보 조회
@@ -67,7 +97,7 @@ public class UserMapper extends AbstractMongoDBComon implements IUserMapper {
         MongoCollection<Document> col = mongodb.getCollection(colNm);
 
         Document query = new Document();
-        query.append("userid", userId);
+        query.append("userId", userId);
 
         Document projection = new Document();
         projection.append("_id", 0);
@@ -81,24 +111,6 @@ public class UserMapper extends AbstractMongoDBComon implements IUserMapper {
                 doc = new Document();
             }
 
-            /***
-             * //유저 아이디
-             *     private String userId;
-             *     //유저 비밀번호
-             *     private String userPw;
-             *     //유저 이메일
-             *     private String userEmail;
-             *     //유저 이름
-             *     private String userName;
-             *     //계정생성일
-             *     private String regDt;
-             *     //계정업데이트일
-             *     private String updateDt;
-             *     //약속방 목록
-             *     private List<String> appList;
-             *     //팀프로젝트방 목록
-             *     private List<String> prjList;
-             */
             rDTO.setUserId(CmmUtil.nvl(doc.getString("userId")));
             rDTO.setUserName(CmmUtil.nvl(doc.getString("userName")));
             rDTO.setRegDt(CmmUtil.nvl(doc.getString("regDt")));
@@ -112,7 +124,7 @@ public class UserMapper extends AbstractMongoDBComon implements IUserMapper {
 
     }
 
-
+    @Override
     public int regUser(UserInfoDTO pDTO) throws Exception{
 
         String colNm = "User";
@@ -120,9 +132,16 @@ public class UserMapper extends AbstractMongoDBComon implements IUserMapper {
         super.createCollection(colNm);
 
         MongoCollection<Document> col = mongodb.getCollection(colNm);
+
+
         int res = 0;
+
+        col.insertOne(new Document(new ObjectMapper().convertValue(pDTO, Map.class)));
+
+        res = 1;
 
         return res;
     }
+
 
 }

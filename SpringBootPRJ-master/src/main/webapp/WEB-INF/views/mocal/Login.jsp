@@ -12,6 +12,7 @@
     <title>Tables - SB Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
     <link href="css/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 <body class="sb-nav-fixed">
@@ -90,27 +91,32 @@
 <script src="js/scripts.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
 <script src="js/datatables-simple-demo.js"></script>
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script>
     function doLogin() {
-        reqId = document.getElementById('inputId').value;
-        reqPw = document.getElementById('inputPassword').value;
+        let reqId = document.getElementById('inputId').value;
+        let reqPw = document.getElementById('inputPassword').value;
 
-        let logingInfo = JSON.stringify({
-            "reqId": reqId,
-            "reqPw": reqPw,
-        });
+        console.log(reqId);
+        console.log(reqPw);
 
         $.ajax({
-            url: "dologin.do",
-            contentType: 'application/json',
-            type: 'post',
-            data: logingInfo,
-            contentType: "application/json; charset=utf-8",
+            url: "dologin",
+            type: 'get',
+            data: {
+                reqId: reqId,
+                reqPw: reqPw
+            },
             dataType: "text",
-            success: function(data) {
-                alert(data);
-                consol.log(data);
-                //location.href = 'index.do';
+            contentType: "application/json; charset=utf-8",
+
+            success: function(result) {
+                if(result == "success") {
+                    location.href = "/index";
+                } else if(result == "fail") {
+                    alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+                }
             },
             error: function(request,status,error) {
                 //alert("아이디 또는 비밀번호가 일치하지 않습니다.");

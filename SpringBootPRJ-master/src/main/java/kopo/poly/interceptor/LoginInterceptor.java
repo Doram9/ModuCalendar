@@ -21,7 +21,7 @@ public class LoginInterceptor implements HandlerInterceptor {
                 // 세션 값 가져오기
                 HttpSession session = request.getSession();
 
-                String user_id = CmmUtil.nvl((String) session.getAttribute("SESSION_USER_ID"));
+                String user_id = CmmUtil.nvl((String) session.getAttribute("userId"));
 
                 log.info("user_id : "+ user_id);
 
@@ -33,7 +33,7 @@ public class LoginInterceptor implements HandlerInterceptor {
                 } else {
 
                         // 로그인이 되지 않으면, 로그인 화면으로 이동
-                        response.sendRedirect("/login");
+                        response.sendRedirect("/title");
                         return false;
 
                 }

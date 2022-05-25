@@ -5,17 +5,17 @@ import kopo.poly.dto.UserInfoDTO;
 import kopo.poly.service.INoticeService;
 import kopo.poly.service.IUserService;
 import kopo.poly.util.CmmUtil;
+import kopo.poly.util.DateUtil;
+import kopo.poly.util.EncryptUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -25,18 +25,19 @@ public class UserRestController {
     private IUserService userSevice;
 
     //로그인 정보
-    @RequestMapping(value = "dologin")
+    @GetMapping(value = "dologin")
     public String login(HttpServletRequest request, HttpSession session) throws Exception {
-        log.info("controller.title start");
+        log.info("controller.dologin start");
 
+        String id = request.getParameter("reqId");
+        String pw = request.getParameter("reqPw");
 
-        String reqId = CmmUtil.nvl(request.getParameter("id"));
-        String reqPw = CmmUtil.nvl(request.getParameter("pw"));
-        UserInfoDTO pDTO = userSevice.authLogin(reqId, reqPw);
+        UserInfoDTO pDTO = userSevice.authLogin(id, pw);
 
-        if(pDTO == null) {
+        if(pDTO.getUserId() == null) {
             return "fail";
         } else {
+            log.info("로그인성공");
             session.setAttribute("userId", pDTO.getUserId());
             session.setAttribute("userName", pDTO.getUserName());
             session.setAttribute("regDt", pDTO.getRegDt());
@@ -49,13 +50,18 @@ public class UserRestController {
 
     }
 
-    //회원가입 정보
-    @RequestMapping(value = "register")
-    public String register() throws Exception {
+    //회원가입_ID중복체크
+    @RequestMapping(value = "checkId")
+    public String checkId(@RequestParam("checkId") String checkId) throws Exception {
 
+        log.info("checkId : " + checkId);
 
-        return "";
+        int res = userSevice.checkingId(checkId);
+
+        return "" + res;
     }
+
+
 
 
     //아이디찾기 정보

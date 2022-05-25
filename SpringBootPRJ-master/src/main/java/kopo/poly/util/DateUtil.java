@@ -27,4 +27,9 @@ public class DateUtil {
         return getDateTime("yyyy.MM.dd");
 
     }
+
+    public static String getDateTimeHMS() {
+        return getDateTime("yyyy.MM.dd.HH.mm.ss");
+
+    }
 }
