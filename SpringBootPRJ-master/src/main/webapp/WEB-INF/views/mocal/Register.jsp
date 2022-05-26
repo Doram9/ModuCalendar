@@ -50,17 +50,24 @@
                                 <form onsubmit="regUser(event)" name="registerForm" action="doRegister" method="post">
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="inputName" name="inputName" type="text" required/>
-                                        <label for="inputEmail">이름</label>
-                                    </div>
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="inputEmail" name="inputEmail" type="email" required/>
-                                        <label for="inputEmail">이메일</label>
+                                        <label for="inputName">이름</label>
                                     </div>
                                     <div class="row mb-3">
-                                        <div class="col-md-6">
+                                        <div class="col-md-8">
+                                            <div class="form-floating mb-3">
+                                                <input class="form-control" id="inputEmail" name="inputEmail" type="email" required/>
+                                                <label for="inputEmail">이메일</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="d-grid"><button type="button" class="btn btn-primary btn-block" onclick="checkEmail()">이메일 중복 확인하기 </button></div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-8">
                                             <div class="form-floating mb-3">
                                                 <input class="form-control" id="inputId" name="inputId" type="text" required/>
-                                                <label for="inputEmail">아이디</label>
+                                                <label for="inputId">아이디</label>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -121,6 +128,7 @@
 
     //0 = 체크 안한상태, 1 = 중복검사 통과, 2 = 중복검사 실패
     let idCheck = 0;
+    let emailCheck = 0;
 
 
     //id 중복검사
@@ -141,7 +149,7 @@
                     idCheck = 1;
                     alert("해당 아이디를 사용하실 수 있습니다.");
                 } else {
-                    idCheck = 2;
+                    idCheck = 0;
                     alert("해당 아이디가 이미 존재합니다. 다른 아이디를 입력해주세요.");
                 }
             },
@@ -156,10 +164,39 @@
 
     });
 
-    $('#inputId').keyup( function(){
-        idCheck = 0;
+    //email 값 변화시 다시 중복확인하게끔 false로 변경
+    $('#inputEmail').keyup( function(){
+        emailCheck = 0;
 
     });
+
+    function checkEmail() {
+
+        let inputEmail = document.getElementById("inputEmail").value;
+
+        $.ajax({
+            url: "checkEmail",
+            type: 'get',
+            data: {
+                checkEmail : inputEmail
+            },
+            dataType: "text",
+            contentType: "application/json; charset=utf-8",
+
+            success: function(result) {
+                //해당 이메일로 가입한 이메일 존재시
+                if (result == 1) {
+                    emailCheck = 1;
+                    alert("해당 이메일을 사용하실 수 있습니다.");
+                } else {
+                    emailCheck = 0;
+                    alert("해당 이메일이 이미 존재합니다. 다른 이메일을 입력해주세요.");
+                }
+            },
+            error: function(error) {
+            }
+        });
+    }
 
     //회원가입 함수
     function regUser(event) {
@@ -176,13 +213,15 @@
             alert("비밀번호가 일치하지 않습니다.");
         }
 
+        if(emailCheck == 0) {
+            event.preventDefault();
+            alert("이메일 중복확인을 진행해주세요.");
+        }
         if(idCheck == 0) {
             event.preventDefault();
             alert("아이디 중복확인을 진행해주세요.");
-        } else if (idCheck == 2){
-            event.preventDefault();
-            alert("해당 아이디가 이미 존재합니다. 다른 아이디를 입력해주세요.");
         }
+
 
     }
 

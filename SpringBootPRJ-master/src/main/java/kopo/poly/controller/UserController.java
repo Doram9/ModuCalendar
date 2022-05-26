@@ -6,17 +6,18 @@ import kopo.poly.service.IUserService;
 import kopo.poly.util.CmmUtil;
 import kopo.poly.util.DateUtil;
 import kopo.poly.util.EncryptUtil;
+import kopo.poly.util.MailUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
-import javax.print.attribute.Attribute;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -24,6 +25,7 @@ public class UserController {
 
     @Resource(name = "UserService")
     private IUserService userSevice;
+
 
     //로그인페이지
     @GetMapping(value = "login")
@@ -88,21 +90,38 @@ public class UserController {
 //
 //    //아이디찾기 정보
 //
-//    //비밀번호찾기 페이지
-//    @GetMapping(value = "findPw")
-//    public String findPwPage() throws Exception {
-//        log.info("controller.title start");
-//        return "findPw";
-//    }
-//
-//    //비밀번호찾기 정보
-//
+    //비밀번호찾기 페이지
+    @GetMapping(value = "findPw")
+    public String findPw() throws Exception {
+        log.info("controller.findPw start");
+        return "/mocal/Password";
+    }
+
+    //비밀번호 재설정 페이지
+    @GetMapping(value = "resetPw")
+    public String resetPw(HttpServletRequest request) throws Exception {
+        log.info("controller.resetPw start");
+
+        if(CmmUtil.nvl(request.getParameter("code")) == "") {
+            return "/";
+        }
+
+        return "/mocal/resetPassword";
+    }
+
     //유저 기본 페이지
     @GetMapping(value = "index")
     public String mainPage() throws Exception {
-        log.info("controller.title start");
+        log.info("controller.mainPage start");
         return "index";
     }
 
     //유저 정보 페이지
+
+    //유저, 팀 마일스톤 수정페이지
+    @GetMapping(value = "mile")
+    public String mile() throws Exception {
+        log.info("controller.mile start");
+        return "/mocal/Mile";
+    }
 }

@@ -48,20 +48,15 @@
                             <div class="card-body">
                                 <form>
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="inputId" type="email" placeholder="name@example.com" required/>
-                                        <label for="inputId">아이디</label>
-                                    </div>
-                                    <div class="form-floating mb-3">
                                         <input class="form-control" id="inputPassword" type="password" placeholder="Password" required/>
                                         <label for="inputPassword">비밀번호</label>
                                     </div>
-                                    <div class="form-check mb-3">
-                                        <input class="form-check-input" id="inputRememberPassword" type="checkbox" value="" />
-                                        <label class="form-check-label" for="inputRememberPassword">아이디 저장하기</label>
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="inputPasswordConfirm" type="password" placeholder="Password" required/>
+                                        <label for="inputPasswordConfirm">비밀번호확인</label>
                                     </div>
                                     <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                        <a class="small" href="findPw">비밀번호가 기억나지 않나요?</a>
-                                        <a class="btn btn-primary" onclick="doLogin()">로그인</a>
+                                        <button type="button" class="btn btn-primary" onclick="doResetPw()">비밀번호 재설정</button>
                                     </div>
                                 </form>
                             </div>
@@ -94,29 +89,30 @@
 
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script>
-    function doLogin() {
-        let reqId = document.getElementById('inputId').value;
-        let reqPw = document.getElementById('inputPassword').value;
-
-        console.log(reqId);
-        console.log(reqPw);
+    function doResetPw() {
+        let pw1 = document.getElementById('inputPassword').value;
+        let pw2 = document.getElementById('inputPasswordConfirm').value;
+        if(pw1 != pw2) {
+            alert("비밀번호와 비밀번호확인이 일치하지않습니다.");
+            return 0;
+        } else if(pw1 == "" || pw1 == null) {
+            alert("비밀번호가 입력되지 않았습니다.");
+            return 0;
+        }
 
         $.ajax({
-            url: "dologin",
-            type: 'get',
+            url: "doResetPw",
+            type: 'post',
             data: {
-                reqId: reqId,
-                reqPw: reqPw
+                userId: userid,
+                resetPw: pw1
             },
             dataType: "text",
             contentType: "application/json; charset=utf-8",
 
             success: function(result) {
-                if(result == "success") {
-                    location.href = "/index";
-                } else if(result == "fail") {
-                    alert("아이디 또는 비밀번호가 일치하지 않습니다.");
-                }
+                alert("비밀번호 변경이 완료되었습니다. 다시 로그인해주세요");
+                location.href = "/login";
             },
             error: function(request,status,error) {
                 //alert("아이디 또는 비밀번호가 일치하지 않습니다.");
@@ -124,7 +120,7 @@
             }
 
         });
-        
+
     }
 
 </script>

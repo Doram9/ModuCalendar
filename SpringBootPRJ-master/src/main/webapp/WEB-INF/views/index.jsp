@@ -195,15 +195,15 @@
 
 			<div class="modal-body">
 				<div class="mb-3">
-					<label for="month" class="form-label">일정 제목</label>
+					<label for="title" class="form-label">일정 제목</label>
 					<input type="text" name="title" class="form-control" autocomplete="off" id="title" required>
 
 				</div>
-				<label for="month" class="form-label">시작날짜</label>
-				<input type="text" name="month" autocomplete="off" id="startdatepicker" required>
+				<label for="startMonth" class="form-label">시작날짜</label>
+				<input type="text" name="startMonth" autocomplete="off" id="startdatepicker" required>
 				<br />
-				<label for="month" class="form-label">종료날짜</label>
-				<input type="text" name="month" autocomplete="off" id="enddatepicker">
+				<label for="endMonth" class="form-label">종료날짜</label>
+				<input type="text" name="endMonth" autocomplete="off" id="enddatepicker">
 				<br />
 			</div>
 

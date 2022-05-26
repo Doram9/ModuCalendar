@@ -2,14 +2,11 @@ package kopo.poly.controller;
 
 
 import kopo.poly.dto.UserInfoDTO;
-import kopo.poly.service.INoticeService;
 import kopo.poly.service.IUserService;
 import kopo.poly.util.CmmUtil;
-import kopo.poly.util.DateUtil;
-import kopo.poly.util.EncryptUtil;
+import kopo.poly.util.MailUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.apache.jasper.tagplugins.jstl.core.Url;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -61,25 +58,46 @@ public class UserRestController {
         return "" + res;
     }
 
+    //회원가입_이메일중복체크
+    @RequestMapping(value = "checkEmail")
+    public String checkEmail(@RequestParam("checkEmail") String checkEmail) throws Exception {
 
+        log.info("checkEmail : " + checkEmail);
 
+        int res = userSevice.checkingEmail(checkEmail);
 
-    //아이디찾기 정보
-    @RequestMapping(value = "findId")
-    public String findIdPage() throws Exception {
-        log.info("controller.title start");
-        return "findId";
+        return "" + res;
     }
 
-
-
+    /**
+     * 이메일 발송
+     */
     //비밀번호찾기 정보
-    @RequestMapping(value = "findPw")
-    public String findPwPage() throws Exception {
-        log.info("controller.title start");
-        return "findPw";
+    @PostMapping(value = "doFindPw")
+    public String findPwByEmail(HttpServletRequest request) throws Exception {
+
+        log.info("controller.findPwByEmail start");
+
+        String email = CmmUtil.nvl(request.getParameter("email"));
+
+        //int res = userSevice.findPw(email);
+
+        return "비밀번호 재설정 링크를 발송했습니다. 메일을 확인해주세요.";
     }
 
+    //비밀번호 재설정
+    @PostMapping(value = "doResetPw")
+    public String doResetPw(HttpServletRequest request) throws Exception {
+
+        log.info("controller.doResetPw start");
+
+        String userId = CmmUtil.nvl(request.getParameter("userId"));
+        String resetPw = CmmUtil.nvl(request.getParameter("resetPw"));
+
+
+
+        return "";
+    }
 
 
 }

@@ -10,6 +10,9 @@ public interface IUserMapper {
     //회원가입_id중복조회(1 : 중복없음, 0 : 중복있음)
     int existUser(String userid) throws Exception;
 
+    //회원가입_email중복조회(1 : 중복없음, 0 : 중복있음)
+    int existEmail(String userEmail) throws Exception;
+
 
     //회원정보 조회
     UserInfoDTO getUserInfo(String userId) throws Exception;

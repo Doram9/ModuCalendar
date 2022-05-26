@@ -17,11 +17,7 @@ public class TeamPrjController {
     }
     //초대코드입력 페이지
 
-    //마일스톤수정 페이지
-    @GetMapping(value = "mile")
-    public String milePage() throws Exception {
-        log.info("controller.title start");
-        return "mile";
-    }
+
+
     //단체채팅 페이지
 }

@@ -33,8 +33,7 @@
 		</li>
 	</ul>
 </nav>
-<div id="layoutSidenav">
-	<div id="layoutSidenav_content">
+
 		<main>
 
 			<div class="container">
@@ -53,7 +52,7 @@
 							</div>
 						</div>
 						<div class="carousel-item">
-							<img src="..." class="d-block w-100" alt="...">
+							<img src="img/test_2.png" class="d-block w-100" alt="...">
 							<div class="carousel-caption d-none d-md-block">
 								<h5>Second slide label</h5>
 								<p>Some representative placeholder content for the second slide.</p>
@@ -77,9 +76,9 @@
 					</button>
 				</div>
 
-				<div class="row">
-					<a class="btn col-4" href="login">로그인</a>
-					<a class="btn col-4" href="register">회원가입</a>
+				<div class="row justify-content-around">
+					<a class="btn btn-primary col-4" href="login">로그인</a>
+					<a class="btn btn-warning col-4" href="register">회원가입</a>
 				</div>
 			</div>
 
@@ -99,8 +98,6 @@
 				</div>
 			</div>
 		</footer>
-	</div>
-</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="js/scripts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>

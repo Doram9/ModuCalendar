@@ -86,6 +86,33 @@ public class UserMapper extends AbstractMongoDBComon implements IUserMapper {
         return res;
     }
 
+    //회원가입_email중복조회(1 : 중복없음, 0 : 중복있음)
+    public int existEmail(String userEmail) throws Exception{
+
+        log.info("mapper.existEmail start");
+
+        String colNm = "User";
+
+        super.createCollection(colNm);
+
+        int res = 1;
+
+        MongoCollection<Document> col = mongodb.getCollection(colNm);
+
+        Document query = new Document();
+        query.append("userEmail", userEmail);
+
+        FindIterable<Document> rs = col.find(query);
+
+        for(Document doc : rs) {
+            res = 0;
+        }
+
+        log.info("mapper_res : " + res);
+        return res;
+
+    }
+
     //회원정보 조회
     @Override
     public UserInfoDTO getUserInfo(String userId) throws Exception{

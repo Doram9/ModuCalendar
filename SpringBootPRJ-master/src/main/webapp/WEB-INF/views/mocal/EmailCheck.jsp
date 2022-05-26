@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,13 +11,13 @@
     <title>Tables - SB Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
     <link href="css/styles.css" rel="stylesheet" />
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="/">Start Bootstrap</a>
+    <a class="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
     <!-- Sidebar Toggle-->
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
 </nav>
@@ -27,7 +26,7 @@
         <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
             <div class="sb-sidenav-menu">
                 <div class="nav">
-                    <a class="nav-link" href="title">
+                    <a class="nav-link" href="index.html">
                         로그인 후 이용해주세요
                     </a>
                 </div>
@@ -44,29 +43,20 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-5">
                         <div class="card shadow-lg border-0 rounded-lg mt-5">
-                            <div class="card-header"><h3 class="text-center font-weight-light my-4">로그인</h3></div>
+                            <div class="card-header"><h3 class="text-center font-weight-light my-4">이메일 인증하기</h3></div>
                             <div class="card-body">
+                                <div class="small mb-3 text-muted">가입시 작성한 이메일로 인증코드를 발송하였습니다. 10분 이내에 코드를 입력해주세요.</div>
                                 <form>
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="inputId" type="email" placeholder="name@example.com" required/>
-                                        <label for="inputId">아이디</label>
-                                    </div>
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="inputPassword" type="password" placeholder="Password" required/>
-                                        <label for="inputPassword">비밀번호</label>
-                                    </div>
-                                    <div class="form-check mb-3">
-                                        <input class="form-check-input" id="inputRememberPassword" type="checkbox" value="" />
-                                        <label class="form-check-label" for="inputRememberPassword">아이디 저장하기</label>
+                                        <input class="form-control" id="inputCode" type="text" />
+                                        <label for="inputCode">Code</label>
                                     </div>
                                     <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                        <a class="small" href="findPw">비밀번호가 기억나지 않나요?</a>
-                                        <a class="btn btn-primary" onclick="doLogin()">로그인</a>
+                                        <button class="btn btn-primary" onclick="checkCode()">이메일 인증하기</button>
                                     </div>
                                 </form>
                             </div>
                             <div class="card-footer text-center py-3">
-                                <div class="small"><a href="register">아직 계정이 없으신가요? 회원가입 하러가기</a></div>
                             </div>
                         </div>
                     </div>
@@ -92,41 +82,8 @@
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
 <script src="js/datatables-simple-demo.js"></script>
 
+<!-- 데이트피커용 j쿼리 -->
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script>
-    function doLogin() {
-        let reqId = document.getElementById('inputId').value;
-        let reqPw = document.getElementById('inputPassword').value;
-
-        console.log(reqId);
-        console.log(reqPw);
-
-        $.ajax({
-            url: "dologin",
-            type: 'get',
-            data: {
-                reqId: reqId,
-                reqPw: reqPw
-            },
-            dataType: "text",
-            contentType: "application/json; charset=utf-8",
-
-            success: function(result) {
-                if(result == "success") {
-                    location.href = "/index";
-                } else if(result == "fail") {
-                    alert("아이디 또는 비밀번호가 일치하지 않습니다.");
-                }
-            },
-            error: function(request,status,error) {
-                //alert("아이디 또는 비밀번호가 일치하지 않습니다.");
-                //location.reload();
-            }
-
-        });
-        
-    }
-
-</script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </body>
 </html>
