@@ -19,6 +19,7 @@ public class UserService implements IUserService {
     @Resource(name="UserMapper")
     private IUserMapper userMapper;
 
+    //로그인
     @Override
     public UserInfoDTO authLogin(String id, String pw) throws Exception{
 

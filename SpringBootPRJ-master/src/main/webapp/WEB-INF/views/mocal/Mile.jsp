@@ -677,7 +677,25 @@
     }
 
     function send() {
-        alert(allInfo);
+
+        let obj = JSON.stringify({"mileInfo" : allInfo});
+
+        $.ajax({
+            url: "updateMile",
+            type: 'post',
+            data: obj,
+            dataType: "text",
+            contentType: "application/json; charset=utf-8",
+
+            success: function(result) {
+
+            },
+            error: function(request,status,error) {
+                //alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+                //location.reload();
+            }
+
+        });
     }
 
 </script>

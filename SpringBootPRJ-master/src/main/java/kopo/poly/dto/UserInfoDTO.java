@@ -28,5 +28,6 @@ public class UserInfoDTO {
     private List<String> appList;
     //팀프로젝트방 목록
     private List<String> prjList;
-
+    //일정 목록
+    private List<EventDTO> eventList;
 }

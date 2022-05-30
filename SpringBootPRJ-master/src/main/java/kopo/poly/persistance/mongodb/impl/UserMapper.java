@@ -19,6 +19,7 @@ import java.util.Map;
 @Component("UserMapper")
 public class UserMapper extends AbstractMongoDBComon implements IUserMapper {
 
+    //로그인
     @Override
     public UserInfoDTO existUser(String userid, String userpw) throws Exception {
 
@@ -151,6 +152,7 @@ public class UserMapper extends AbstractMongoDBComon implements IUserMapper {
 
     }
 
+    //회원가입
     @Override
     public int regUser(UserInfoDTO pDTO) throws Exception{
 

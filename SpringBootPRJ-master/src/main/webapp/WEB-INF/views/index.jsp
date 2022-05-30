@@ -91,6 +91,9 @@
 						<div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
 						약속
 					</a>
+					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAppo">
+						약속 추가하기
+					</button>
 					<div class="sb-sidenav-menu-heading">팀 목록</div>
 					<a class="nav-link" href="charts.html">
 						<div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
@@ -120,7 +123,7 @@
 								내 일정
 							</div>
 							<div class="card-body">
-								<div id="calendar" class="mt-2"></div>
+								<div id="calendar" class="mt-2"></div> <!-- 캘린더 -->
 							</div>
 						</div>
 					</div>
@@ -131,6 +134,7 @@
 								내 프로젝트
 							</div>
 
+							<!--마일스톤 -->
 							<div class="card-body row justify-content-center">
 
 								<div class="card" style="width: 18rem;">
@@ -143,30 +147,6 @@
 						</div>
 					</div>
 				</div>
-				<!--
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <i class="fas fa-table me-1"></i>
-                        DataTable Example
-                    </div>
-                    <div class="card-body">
-                        <table id="datatablesSimple">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Position</th>
-                                    <th>Office</th>
-                                    <th>Age</th>
-                                    <th>Start date</th>
-                                    <th>Salary</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
--->
 			</div>
 		</main>
 		<footer class="py-4 bg-light mt-auto">
@@ -184,12 +164,45 @@
 	</div>
 </div>
 
+<!-- Appo Modal -->
+<div class="modal fade" id="addAppo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<form class="modal-content" action="mkPlan.do" method="post">
+			<div class="modal-header">
+				<h5 class="modal-title" id="staticBackdropLabel">새 약속</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+
+			<div class="modal-body">
+				<div class="mb-3">
+					<label for="exampleFormControlInput1" class="form-label">제목</label>
+					<input type="text" name="title" class="form-control" autocomplete="off" id="exampleFormControlInput1" placeholder="~~에 만나요" required>
+
+				</div>
+				<p>만나는 년, 월 <input type="text" name="month" autocomplete="off" id="monthpicker" required></p>
+				<p>투표 기한</p>
+				<select name="deadline" class="form-select form-select-sm" aria-label=".form-select-sm example">
+					<option value="1">앞으로 1일</option>
+					<option value="3">앞으로 3일</option>
+					<option value="5">앞으로 5일</option>
+				</select>
+			</div>
+
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+				<button type="submit" class="btn btn-primary">생성</button>
+			</div>
+		</form>
+	</div>
+</div>
+
 <!-- Event Modal -->
-<div class="modal fade" id="addEvent" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="addEvent" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel3" aria-hidden="true">
 	<div class="modal-dialog">
 		<form class="modal-content" onsubmit="makeEvent(event)">
 			<div class="modal-header">
-				<h5 class="modal-title" id="staticBackdropLabel">새 일정</h5>
+				<h5 class="modal-title" id="staticBackdropLabel3">새 일정</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 
@@ -199,10 +212,10 @@
 					<input type="text" name="title" class="form-control" autocomplete="off" id="title" required>
 
 				</div>
-				<label for="startMonth" class="form-label">시작날짜</label>
+				<label for="startdatepicker" class="form-label">시작날짜</label>
 				<input type="text" name="startMonth" autocomplete="off" id="startdatepicker" required>
 				<br />
-				<label for="endMonth" class="form-label">종료날짜</label>
+				<label for="enddatepicker" class="form-label">종료날짜</label>
 				<input type="text" name="endMonth" autocomplete="off" id="enddatepicker">
 				<br />
 			</div>
@@ -210,6 +223,30 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
 				<button type="submit" class="btn btn-primary">생성</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+<!-- inputCode Modal -->
+<div class="modal fade" id="#inviteCode" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+	<div class="modal-dialog">
+		<form class="modal-content" onsubmit="inputCode()">
+			<div class="modal-header">
+				<h5 class="modal-title" id="staticBackdropLabel2">새 일정</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+
+			<div class="modal-body">
+				<div class="mb-3">
+					<label for="exampleFormControlInput1" class="form-label">초대 코드</label>
+					<input type="text" name="code" class="form-control" autocomplete="off" id="inviteCode" required>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+				<button type="submit" class="btn btn-primary">참가</button>
 			</div>
 		</form>
 	</div>
@@ -263,28 +300,23 @@
 		},
 		weekends: true,
 		eventClick: function(info) {
-			let title = info.event.startStr;
-			let start = info.event.endStr;
-			let end = info.event.endStr;
-			let obj = JSON.stringify({
-				"title": title,
-				"start": start,
-				"end": end
-			});
+			let eventId = info.event.id;
 			let answer = confirm("일정을 삭제하시겠습니까?");
 			if (answer) {
 				$.ajax({
-					url: "delEvent.do",
+					url: "deleteEvent",
 					contentType: 'application/json',
 					type: 'post',
-					data: obj,
+					data: {
+						eventId : eventId
+					},
 					contentType: "application/json; charset=utf-8",
 					dataType: "text",
 					success: function(data) {
-						location.href = 'index.do';
+						location.href = '/';
 					},
 					error: function(error) {
-						location.href = 'index.do';
+						location.href = '/';
 					}
 
 				});
@@ -303,27 +335,42 @@
 		let start = document.getElementById('startdatepicker').value;
 		let end = document.getElementById('enddatepicker').value;
 
-
-		let obj = JSON.stringify({
-			"title": title,
-			"start": start,
-			"end": end
-		});
 		$.ajax({
-			url: "addEvent.do",
+			url: "addEvent",
 			type: 'post',
-			data: obj,
+			data: {
+				title: title,
+				start: start,
+				end: end
+			},
 			contentType: "application/json; charset=utf-8",
 			dataType: "text",
 			success: function(data) {
-				location.href = 'index.do';
+				location.href = '/';
 			},
 			error: function(error) {
-				location.href = 'index.do';
+				location.href = '/';
 			}
 
 		});
 	}
+</script>
+
+<script>
+	let now = new Date();
+	let options = {
+		pattern: 'yyyy-mm',
+		selectedYear : now.getFullYear(),
+		startYear: now.getFullYear(),
+		finalYear: now.getFullYear() + 5,
+		monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+		openOnFocus: true,
+		disableMonths: []
+	};
+
+	$("#monthpicker").monthpicker(options);
+
+
 </script>
 
 </body>

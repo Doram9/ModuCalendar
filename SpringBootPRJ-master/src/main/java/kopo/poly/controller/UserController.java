@@ -73,9 +73,9 @@ public class UserController {
         pDTO.setUpdateDt(DateUtil.getDateTimeHMS());
         pDTO.setAppList(new ArrayList<>());
         pDTO.setPrjList(new ArrayList<>());
+        pDTO.setEventList(new ArrayList<>());
 
         int res = userSevice.regUser(pDTO);
-        log.info("controller.register result : " + res);
         return "redirect:/login";
     }
 //
