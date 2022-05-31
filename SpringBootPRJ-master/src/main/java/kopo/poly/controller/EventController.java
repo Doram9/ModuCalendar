@@ -8,6 +8,7 @@ import kopo.poly.util.CmmUtil;
 import kopo.poly.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.annotation.Resource;
@@ -22,7 +23,7 @@ public class EventController {
     private IEventService eventSevice;
 
     //일정 추가
-    @PostMapping(value = "addEvent")
+    @GetMapping(value = "addEvent")
     public String addEvent(HttpServletRequest request, HttpSession session) throws Exception {
 
         log.info("controller.addEvent start");
@@ -30,6 +31,9 @@ public class EventController {
         String title = CmmUtil.nvl(request.getParameter("title"));
         String start = CmmUtil.nvl(request.getParameter("start"));
         String end = CmmUtil.nvl(request.getParameter("end"));
+
+        log.info(title);
+        log.info(start);
 
         String time = DateUtil.getDateTime("yyyyMMddHHmmss");
         String userId = CmmUtil.nvl((String) session.getAttribute("userId"));
@@ -46,7 +50,7 @@ public class EventController {
         return "";
     }
     //일정 삭제
-    @PostMapping(value = "deleteEvent")
+    @GetMapping(value = "deleteEvent")
     public String deleteEvent(HttpServletRequest request, HttpSession session) throws Exception {
 
         log.info("controller.addEvent start");

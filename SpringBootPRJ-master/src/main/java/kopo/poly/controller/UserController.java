@@ -10,6 +10,8 @@ import kopo.poly.util.MailUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -71,7 +73,7 @@ public class UserController {
         pDTO.setUserPw(regPw);
         pDTO.setRegDt(DateUtil.getDateTimeHMS());
         pDTO.setUpdateDt(DateUtil.getDateTimeHMS());
-        pDTO.setAppList(new ArrayList<>());
+        pDTO.setAppoList(new ArrayList<>());
         pDTO.setPrjList(new ArrayList<>());
         pDTO.setEventList(new ArrayList<>());
 
@@ -110,9 +112,15 @@ public class UserController {
     }
 
     //유저 기본 페이지
-    @GetMapping(value = "index")
-    public String mainPage() throws Exception {
+    @GetMapping(value = "/")
+    public String mainPage(HttpSession session, ModelMap model) throws Exception {
         log.info("controller.mainPage start");
+
+        String userId = CmmUtil.nvl((String)session.getAttribute("userId"));
+
+        UserInfoDTO pDTO = userSevice.getUserInfo(userId);
+        model.addAttribute("UserInfoDTO", pDTO);
+
         return "index";
     }
 

@@ -1,5 +1,7 @@
 package kopo.poly.persistance.mongodb.impl;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.result.UpdateResult;
@@ -28,8 +30,11 @@ public class EventMapper extends AbstractMongoDBComon implements IEventMapper {
         query.append("userId", userId);
 
         Document updateQuery = new Document();
-        updateQuery.append("eventList", pDTO);
 
+        ObjectMapper mapper = new ObjectMapper();
+        Document dto = mapper.convertValue(pDTO, Document.class);
+
+        updateQuery.append("eventList", dto);
 
         UpdateResult rs = col.updateOne(query, new Document("$push", updateQuery));
 
@@ -41,6 +46,10 @@ public class EventMapper extends AbstractMongoDBComon implements IEventMapper {
     @Override
     public int deleteEvent(String userId, String evnetId) throws Exception {
 
+        log.info("mapper.deleteEvent start");
+        log.info("userId : " + userId);
+        log.info("evnetId : " + evnetId);
+
         String colNm = "User";
 
         MongoCollection<Document> col = mongodb.getCollection(colNm);
@@ -49,7 +58,7 @@ public class EventMapper extends AbstractMongoDBComon implements IEventMapper {
         query.append("userId", userId);
 
         Document updateQuery = new Document();
-        updateQuery.append("eventList", new Document().append("id", evnetId));
+        updateQuery.append("eventList", new Document().append("event_id", evnetId));
 
         UpdateResult rs = col.updateOne(query, new Document("$pull", updateQuery));
 

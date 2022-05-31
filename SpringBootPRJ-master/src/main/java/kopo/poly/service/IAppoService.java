@@ -1,14 +1,17 @@
 package kopo.poly.service;
 
 import kopo.poly.dto.AppoInfoDTO;
+import kopo.poly.dto.UserInfoDTO;
 
 import java.util.HashMap;
 
 public interface IAppoService {
 
-    public int createAppo(AppoInfoDTO pDTO, String userid, String username) throws Exception;
+    int createAppo(AppoInfoDTO pDTO, UserInfoDTO uDTO) throws Exception;
 
-    public void deleteAppo(HashMap<String, Object> pMap) throws Exception;
+    void deleteAppo(HashMap<String, Object> pMap) throws Exception;
 
-    public AppoInfoDTO getAppoInfo(String roomcode) throws Exception;
+    AppoInfoDTO getAppoInfo(String code) throws Exception;
+
+    int voteAppo(HashMap<String, Object> pMap) throws Exception;
 }

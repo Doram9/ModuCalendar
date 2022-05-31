@@ -39,7 +39,7 @@ public class UserRestController {
             session.setAttribute("userName", pDTO.getUserName());
             session.setAttribute("regDt", pDTO.getRegDt());
             session.setAttribute("userEmail", pDTO.getUserEmail());
-            session.setAttribute("appList", pDTO.getAppList());
+            session.setAttribute("appoList", pDTO.getAppoList());
             session.setAttribute("prjList", pDTO.getPrjList());
 
             return "success";

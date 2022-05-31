@@ -3,6 +3,7 @@ package kopo.poly.persistance.mongodb.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import kopo.poly.dto.EventDTO;
 import kopo.poly.dto.UserInfoDTO;
 import kopo.poly.persistance.mongodb.AbstractMongoDBComon;
 import kopo.poly.persistance.mongodb.IUserMapper;
@@ -52,8 +53,7 @@ public class UserMapper extends AbstractMongoDBComon implements IUserMapper {
             rDTO.setUserName(CmmUtil.nvl(doc.getString("userName")));
             rDTO.setRegDt(CmmUtil.nvl(doc.getString("regDt")));
             rDTO.setUserEmail(CmmUtil.nvl(doc.getString("userEmail")));
-            rDTO.setAppList(doc.getList("appList", String.class));
-            rDTO.setPrjList(doc.getList("prjList", String.class));
+
 
         }
 
@@ -143,8 +143,26 @@ public class UserMapper extends AbstractMongoDBComon implements IUserMapper {
             rDTO.setUserName(CmmUtil.nvl(doc.getString("userName")));
             rDTO.setRegDt(CmmUtil.nvl(doc.getString("regDt")));
             rDTO.setUserEmail(CmmUtil.nvl(doc.getString("userEmail")));
+            rDTO.setAppoList(doc.getList("appoList", String.class));
+            rDTO.setPrjList(doc.getList("prjList", String.class));
 
+            List<Document> eList = doc.getList("eventList", Document.class);
 
+            ArrayList<EventDTO> rList = new ArrayList<>();
+            for(Document edoc : eList) {
+
+                EventDTO eDTO = new EventDTO();
+                eDTO.setEvent_id(edoc.getString("event_id"));
+                eDTO.setTitle(edoc.getString("title"));
+                eDTO.setStart(edoc.getString("start"));
+                eDTO.setEnd(edoc.getString("end"));
+
+                rList.add(eDTO);
+
+                eDTO = null;
+            }
+
+            rDTO.setEventList(rList);
 
         }
 

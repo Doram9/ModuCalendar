@@ -1,5 +1,55 @@
+        <%@ page import="kopo.poly.dto.AppoInfoDTO" %>
+<%@ page import="kopo.poly.dto.UserInfoDTO" %>
+<%@ page import="kopo.poly.dto.EventDTO" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="kopo.poly.util.CmmUtil" %>
+<%@ page import="kopo.poly.dto.VoteInfoDTO" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
+<%
+    AppoInfoDTO aDTO = (AppoInfoDTO) request.getAttribute("AppoInfoDTO");
+    UserInfoDTO uDTO = (UserInfoDTO) request.getAttribute("UserInfoDTO");
+
+    if (uDTO == null) {
+        uDTO = new UserInfoDTO();
+    }
+    List<EventDTO> eList = uDTO.getEventList();
+
+    if (eList == null) {
+        eList = new ArrayList<>();
+    }
+    List<String> appoList = uDTO.getAppoList();
+
+    if (appoList == null) {
+        appoList = new ArrayList<>();
+    }
+
+%>
+
+        <%
+            List<VoteInfoDTO> userlist = aDTO.getUserlist();
+            String yyyymm = CmmUtil.nvl(aDTO.getYyyymm());
+            String deadline = CmmUtil.nvl(aDTO.getDeadline());
+            String firdate = CmmUtil.nvl(aDTO.getFirdate());
+            String secdate = CmmUtil.nvl(aDTO.getSecdate());
+            String thidate = CmmUtil.nvl(aDTO.getThidate());
+
+            if (firdate == "") {
+                firdate = "아직 만나기 적당한 날짜가 없습니다.";
+            }
+            if (secdate == "") {
+                secdate = "아직 만나기 적당한 날짜가 없습니다.";
+            }
+            if (thidate == "") {
+                thidate = "아직 만나기 적당한 날짜가 없습니다.";
+            }
+
+            if (userlist == null) {
+                userlist = new ArrayList<>();
+            }
+
+        %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -59,7 +109,7 @@
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="index.html">Modu Calendar</a>
+    <a class="navbar-brand ps-3" href="/">Modu Calendar</a>
     <!-- Sidebar Toggle-->
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
     <!-- 여백-->
@@ -70,10 +120,8 @@
             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="#!">내정보</a></li>
-                <li>
-                    <hr class="dropdown-divider" />
-                </li>
-                <li><a class="dropdown-item" href="#!">로그인</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li><a class="dropdown-item" href="logout">로그아웃</a></li>
             </ul>
         </li>
     </ul>
@@ -84,62 +132,37 @@
             <div class="sb-sidenav-menu">
                 <div class="nav">
                     <div class="sb-sidenav-menu-heading">내 정보</div>
-                    <a class="nav-link" href="index.html">
+                    <a class="nav-link" href="myInfo">
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                        My Calendar
+                        <%=uDTO.getUserName()%>
                     </a>
                     <div class="sb-sidenav-menu-heading">약속 목록</div>
-                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                        Layouts
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                    </a>
-                    <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                        <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link" href="layout-static.html">Static Navigation</a>
-                            <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
-                        </nav>
-                    </div>
-                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                        <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                        Pages
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                    </a>
-                    <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-                        <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                Authentication
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="login.html">Login</a>
-                                    <a class="nav-link" href="register.html">Register</a>
-                                    <a class="nav-link" href="password.html">Forgot Password</a>
-                                </nav>
-                            </div>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
-                                Error
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="401.html">401 Page</a>
-                                    <a class="nav-link" href="404.html">404 Page</a>
-                                    <a class="nav-link" href="500.html">500 Page</a>
-                                </nav>
-                            </div>
-                        </nav>
-                    </div>
-                    <div class="sb-sidenav-menu-heading">팀 목록</div>
+                    <%
+                        String code = null;
+                        for (String appoCode : appoList) {
+                            String parse[] = appoCode.split("\\*_\\*");
+                            String title = parse[0];
+                            code = parse[1];
+                    %>
+                    <a class="nav-link" href="appo?code=<%=code%>
+                    "><div class="sb-nav-link-icon"><i class="fas fa-table"></i></div><%=title%></a>
+                    <%
+                        }
+                    %>
+                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#addAppo">
+                        약속 추가하기
+                    </button>
+                    <button class="btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#appoCode">초대코드 입력하기</button>
+                    <div class="sb-sidenav-menu-heading">프로젝트 목록</div>
                     <a class="nav-link" href="charts.html">
                         <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                        Charts
+                        팀프로젝트
                     </a>
-                    <a class="nav-link" href="tables.html">
-                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                        Tables
-                    </a>
+
+                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#teamPrj">
+                        프로젝트 추가하기
+                    </button>
+                    <button class="btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#appoCode">초대코드 입력하기</button>
                 </div>
             </div>
             <div class="sb-sidenav-footer">
@@ -165,8 +188,8 @@
                                     <div class="card text-dark bg-warning mb-3" style="max-width: 18rem;">
                                         <div class="card-header">1st</div>
                                         <div class="card-body">
-                                            <h5 class="card-title">00-00-00</h5>
-                                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                            <h5 class="card-title"><%=firdate%></h5>
+                                            <p class="card-text"></p>
                                         </div>
                                     </div>
                                 </div>
@@ -174,8 +197,8 @@
                                     <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
                                         <div class="card-header">2nd</div>
                                         <div class="card-body">
-                                            <h5 class="card-title">00-00-00</h5>
-                                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                            <h5 class="card-title"><%=secdate%></h5>
+                                            <p class="card-text"></p>
                                         </div>
                                     </div>
 
@@ -183,8 +206,8 @@
                                     <div class="card text-dark bg-light mb-3" style="max-width: 18rem;">
                                         <div class="card-header">3rd</div>
                                         <div class="card-body">
-                                            <h5 class="card-title">00-00-00</h5>
-                                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                            <h5 class="card-title"><%=thidate%></h5>
+                                            <p class="card-text"></p>
                                         </div>
                                     </div>
                                 </div>
@@ -213,23 +236,36 @@
                                     <span class="col h3">초</span>
                                 </div>
 
-                                <button type="button" class="btn btn-outline-danger col-6" id="voteBtn" data-bs-toggle="modal" data-bs-target="#voteModal">
-                                    투표하기
+                                <button type="button" id="voteBtn" data-bs-toggle="modal" data-bs-target="#voteModal" hidden>
                                 </button>
                             </div>
 
                         </div>
                     </div>
                 </div>
+
                 <div class="card mb-4">
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
                         참여자 명단
                     </div>
                     <div class="card-body">
-                        <div class="col-2">
-                            <div class="p-2 border bg-light rounded-pill">username</div>
-                        </div>
+                        <%
+                            for (VoteInfoDTO pDTO : userlist) {
+                                String username = pDTO.getUsername();
+                                boolean votetf = pDTO.isVotetf();
+                                String checktag = "";
+                                if (votetf) {
+                                    checktag = "<i class=\"bi bi-check2-circle\" style=\"color: red\"></i>";
+                                }
+
+                        %>
+                            <div class="col-2">
+                                <div class="p-2 border bg-light rounded-pill"><%=username%><%=checktag%></div>
+                            </div>
+                        <%
+                            }
+                        %>
                         <div class="row mt-2 justify-content-center">
                             <button class="btn btn-warning col-3 offset-1" onclick="kakaoInvite()" id="create-kakao-link-btn">초대 <i class="bi bi-share"></i></button>
                         </div>
@@ -253,26 +289,87 @@
     </div>
 </div>
 
-<!-- Event Modal -->
-<div class="modal fade" id="addEvent" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<!-- Appo Modal -->
+<div class="modal fade" id="addAppo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form class="modal-content" onsubmit="makeEvent(event)">
+        <form class="modal-content" action="createAppo" method="get">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">새 일정</h5>
+                <h5 class="modal-title" id="staticBackdropLabel">새 약속</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <div class="modal-body">
                 <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">일정 제목</label>
+                    <label for="exampleFormControlInput1" class="form-label">제목</label>
+                    <input type="text" name="title" class="form-control" autocomplete="off" id="exampleFormControlInput1" placeholder="~~에 만나요" required>
+
+                </div>
+                <p>만나는 년, 월 <input type="text" name="month" autocomplete="off" id="monthpicker" required></p>
+                <p>투표 기한</p>
+                <select name="deadline" class="form-select form-select-sm" aria-label=".form-select-sm example">
+                    <option value="1">앞으로 1일</option>
+                    <option value="3">앞으로 3일</option>
+                    <option value="5">앞으로 5일</option>
+                    <option value="7">앞으로 7일</option>
+                </select>
+            </div>
+
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                <button type="submit" class="btn btn-primary">생성</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- teamPrj Modal -->
+<div class="modal fade" id="teamPrj" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel4" aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content" action="mkPlan.do" method="post">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel4">새 프로젝트</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="exampleFormControlInput4" class="form-label">프로젝트 제목</label>
+                    <input type="text" name="title" class="form-control" autocomplete="off" id="exampleFormControlInput4" placeholder="" required>
+
+                </div>
+            </div>
+
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                <button type="submit" class="btn btn-primary">생성</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Event Modal -->
+<div class="modal fade" id="addEvent" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel3" aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content" onsubmit="makeEvent(event)">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel3">새 일정</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="title" class="form-label">일정 제목</label>
                     <input type="text" name="title" class="form-control" autocomplete="off" id="title" required>
 
                 </div>
-                <label for="exampleFormControlInput1" class="form-label">시작날짜</label>
-                <input type="text" name="month" autocomplete="off" id="startdatepicker" required>
+                <label for="startdatepicker" class="form-label">시작날짜</label>
+                <input type="text" name="startMonth" autocomplete="off" id="startdatepicker" required>
                 <br />
-                <label for="exampleFormControlInput1" class="form-label">종료날짜</label>
-                <input type="text" name="month" autocomplete="off" id="enddatepicker">
+                <label for="enddatepicker" class="form-label">종료날짜</label>
+                <input type="text" name="endMonth" autocomplete="off" id="enddatepicker">
+                <br />
             </div>
 
             <div class="modal-footer">
@@ -283,6 +380,29 @@
     </div>
 </div>
 
+<!-- inputCode Modal -->
+<div class="modal fade" id="appoCode" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content" onsubmit="inputCode()">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel2">초대 코드 입력하기</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">초대 코드</label>
+                    <input type="text" name="code" class="form-control" autocomplete="off" id="inviteCode" required>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                <button type="submit" class="btn btn-primary">참가</button>
+            </div>
+        </form>
+    </div>
+</div>
 <!-- ---------------------투표모달--------------------------------- -->
 <!-- Modal -->
 <div class="modal fade" id="voteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -356,6 +476,7 @@
                 center: 'title',
                 right: ''
             },
+            initialDate: "<%=yyyymm%>",
             height: 'auto',
             initialView: 'dayGridMonth',
             selectable: false,
@@ -401,27 +522,76 @@
     function vote() {
         let sendPosdays = Array.from(posdays);
         let sendNegdays = Array.from(negdays);
-        let roomcode = "";
-        let obj = JSON.stringify({"posdays" : sendPosdays, "negdays" : sendNegdays, "roomcode" : roomcode});
-        let url = "planPage.do?id=" + "";
+        console.log(sendPosdays);
+        console.log(sendNegdays);
+        let appoCode = "<%=code%>";
+        let url = "appo?code=" + "<%=code%>";
         $.ajax({
-            url: "voteDate.do",
+            url: "voteDate",
             contentType: 'application/json',
-            type: 'post',
-            data : obj,
+            type: 'get',
+            data : {
+                "posdays" : sendPosdays,
+                "negdays" : sendNegdays,
+                "appoCode" : appoCode
+            },
             contentType: "application/json; charset=utf-8",
             dataType: "text",
             success: function(data) {
-                alert("성공");
-                location.href = url;
+                if(data == 1) {
+                    location.href = url;
+                } else {
+                    location.href = "/";
+                }
             },
             error: function(error) {
-                alert("에러");
-                location.href = url;
             }
 
         });
     }
+
+</script>
+
+<script>
+    <%
+                String dl = deadline.replace(".", ",");
+                %>
+    const countDownTimer = function () {
+        var _vDate = new Date(<%=dl%>); // 전달 받은 일자
+        console.log(_vDate);
+        var _second = 1000;
+        var _minute = _second * 60;
+        var _hour = _minute * 60;
+        var _day = _hour * 24;
+        var timer;
+        let voteBtn = document.getElementById("voteBtn");
+        function showRemaining() {
+            var now = new Date();
+            var distDt = _vDate - now;
+            if (distDt < 0) { //기한 종료되면
+                clearInterval(timer);
+                voteBtn.textContent = "투표마감";
+                voteBtn.className = "btn btn-outline-secondary col-10";
+                voteBtn.disabled = true;
+                voteBtn.hidden = false;
+                return;
+            }
+            voteBtn.textContent = "투표하기";
+            voteBtn.className = "btn btn-outline-danger col-10";
+            voteBtn.disabled = false;
+            voteBtn.hidden = false;
+            var days = Math.floor(distDt / _day);
+            var hours = Math.floor((distDt % _day) / _hour);
+            var minutes = Math.floor((distDt % _hour) / _minute);
+            var seconds = Math.floor((distDt % _minute) / _second);
+            document.getElementById("d-day-day").textContent = days;
+            document.getElementById("d-day-hour").textContent = hours;
+            document.getElementById("d-day-min").textContent = minutes;
+            document.getElementById("d-day-sec").textContent = seconds;
+        }
+        timer = setInterval(showRemaining, 1000);
+    }
+    countDownTimer();
 
 </script>
 

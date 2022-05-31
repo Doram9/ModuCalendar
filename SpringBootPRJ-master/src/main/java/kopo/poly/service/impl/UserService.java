@@ -36,11 +36,7 @@ public class UserService implements IUserService {
     @Override
     public UserInfoDTO getUserInfo(String userId) throws Exception{
 
-        UserInfoDTO rDTO = new UserInfoDTO();
-
-        rDTO = userMapper.getUserInfo(userId);
-
-
+        UserInfoDTO rDTO = userMapper.getUserInfo(userId);
 
         return rDTO;
     }

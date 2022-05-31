@@ -1,6 +1,7 @@
 package kopo.poly.util;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class DateUtil {
@@ -30,6 +31,24 @@ public class DateUtil {
 
     public static String getDateTimeHMS() {
         return getDateTime("yyyy.MM.dd.HH.mm.ss");
+
+    }
+
+    public static String addDate(int day) throws Exception {
+
+        SimpleDateFormat date = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
+
+        Calendar cal = Calendar.getInstance();
+
+        Date today = new Date();
+
+        cal.setTime(today);
+
+        cal.add(Calendar.DATE, day);
+        cal.add(Calendar.MONTH , -1);
+
+
+        return date.format(cal.getTime());
 
     }
 }

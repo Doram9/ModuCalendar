@@ -25,7 +25,7 @@ public class UserInfoDTO {
     //계정업데이트일
     private String updateDt;
     //약속방 목록
-    private List<String> appList;
+    private List<String> appoList;
     //팀프로젝트방 목록
     private List<String> prjList;
     //일정 목록

@@ -33,76 +33,46 @@
 		</li>
 	</ul>
 </nav>
-
-		<main>
-
-			<div class="container">
-				<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
-					<div class="carousel-indicators">
-						<button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-						<button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-						<button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-					</div>
-					<div class="carousel-inner">
-						<div class="carousel-item active">
-							<img src="img/test_1.png" class="d-block w-100" alt="...">
-							<div class="carousel-caption d-none d-md-block">
-								<h5>First slide label</h5>
-								<p>Some representative placeholder content for the first slide.</p>
-							</div>
-						</div>
-						<div class="carousel-item">
-							<img src="img/test_2.png" class="d-block w-100" alt="...">
-							<div class="carousel-caption d-none d-md-block">
-								<h5>Second slide label</h5>
-								<p>Some representative placeholder content for the second slide.</p>
-							</div>
-						</div>
-						<div class="carousel-item">
-							<img src="..." class="d-block w-100" alt="...">
-							<div class="carousel-caption d-none d-md-block">
-								<h5>Third slide label</h5>
-								<p>Some representative placeholder content for the third slide.</p>
-							</div>
+		<div id="layoutSidenav">
+			<div id="layoutSidenav_content">
+				<main>
+					<div class="container">
+						<div class="row justify-content-around" style="height: 80vh;">
+							<a class="btn btn-primary col-6" href="login">
+								<div class="mt-5"></div>
+								<h1>가입한 계정이 있으신가요?</h1>
+								<br/>
+								<h3>로그인</h3>
+							</a>
+							<a class="btn btn-warning col-6" href="register">
+								<div class="mt-5"></div>
+								<h1>가입한 계정이 없으신가요?</h1>
+								<br/>
+								<h3>회원가입</h3>
+							</a>
 						</div>
 					</div>
-					<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-						<span class="visually-hidden">Previous</span>
-					</button>
-					<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-						<span class="carousel-control-next-icon" aria-hidden="true"></span>
-						<span class="visually-hidden">Next</span>
-					</button>
-				</div>
+				</main>
 
-				<div class="row justify-content-around">
-					<a class="btn btn-primary col-4" href="login">로그인</a>
-					<a class="btn btn-warning col-4" href="register">회원가입</a>
-				</div>
+				<footer class="py-4 bg-light mt-auto">
+					<div class="container-fluid px-4">
+						<div class="d-flex align-items-center justify-content-between small">
+							<div class="text-muted">Copyright &copy; Your Website 2022</div>
+							<div>
+								<a href="#">Privacy Policy</a>
+								&middot;
+								<a href="#">Terms &amp; Conditions</a>
+							</div>
+						</div>
+					</div>
+				</footer>
 			</div>
+		</div>
 
 
-
-
-		</main>
-		<footer class="py-4 bg-light mt-auto">
-			<div class="container-fluid px-4">
-				<div class="d-flex align-items-center justify-content-between small">
-					<div class="text-muted">Copyright &copy; Your Website 2022</div>
-					<div>
-						<a href="#">Privacy Policy</a>
-						&middot;
-						<a href="#">Terms &amp; Conditions</a>
-					</div>
-				</div>
-			</div>
-		</footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="js/scripts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-<script src="assets/demo/chart-area-demo.js"></script>
-<script src="assets/demo/chart-bar-demo.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
 <script src="js/datatables-simple-demo.js"></script>
 

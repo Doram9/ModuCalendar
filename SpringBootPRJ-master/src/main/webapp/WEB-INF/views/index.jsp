@@ -1,5 +1,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+		 pageEncoding="UTF-8"%>
+<%@ page import="kopo.poly.dto.UserInfoDTO" %>
+<%@ page import="kopo.poly.dto.EventDTO" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.List" %>
+<%
+	UserInfoDTO pDTO = (UserInfoDTO) request.getAttribute("UserInfoDTO");
+
+	if (pDTO == null) {
+		pDTO = new UserInfoDTO();
+	}
+	List<EventDTO> eList = pDTO.getEventList();
+
+	if(eList == null) {
+		eList = new ArrayList<>();
+	}
+	List<String> appoList = pDTO.getAppoList();
+
+	if(appoList == null) {
+		appoList = new ArrayList<>();
+	}
+%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -84,25 +105,33 @@
 					<div class="sb-sidenav-menu-heading">내 정보</div>
 					<a class="nav-link" href="index.html">
 						<div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-						My Calendar
+						<%= pDTO.getUserName()%>
 					</a>
 					<div class="sb-sidenav-menu-heading">약속 목록</div>
-					<a class="nav-link" href="tables">
-						<div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-						약속
-					</a>
-					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAppo">
+					<%
+						for(String appoCode : appoList) {
+							String parse[] = appoCode.split("\\*_\\*");
+							String title = parse[0];
+							String code = parse[1];
+					%>
+						<a class="nav-link" href="appo?code=<%= code%>"><div class="sb-nav-link-icon"><i class="fas fa-table"></i></div><%= title%></a>
+					<%
+						}
+					%>
+					<button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#addAppo">
 						약속 추가하기
 					</button>
-					<div class="sb-sidenav-menu-heading">팀 목록</div>
+					<button class="btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#appoCode">초대코드 입력하기</button>
+					<div class="sb-sidenav-menu-heading">프로젝트 목록</div>
 					<a class="nav-link" href="charts.html">
 						<div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-						Charts
+						팀프로젝트
 					</a>
-					<a class="nav-link" href="tables.html">
-						<div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-						Tables
-					</a>
+
+					<button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#teamPrj">
+						프로젝트 추가하기
+					</button>
+					<button class="btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#appoCode">초대코드 입력하기</button>
 				</div>
 			</div>
 			<div class="sb-sidenav-footer">
@@ -167,7 +196,7 @@
 <!-- Appo Modal -->
 <div class="modal fade" id="addAppo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 	<div class="modal-dialog">
-		<form class="modal-content" action="mkPlan.do" method="post">
+		<form class="modal-content" action="createAppo" method="get">
 			<div class="modal-header">
 				<h5 class="modal-title" id="staticBackdropLabel">새 약속</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -185,7 +214,34 @@
 					<option value="1">앞으로 1일</option>
 					<option value="3">앞으로 3일</option>
 					<option value="5">앞으로 5일</option>
+					<option value="7">앞으로 7일</option>
 				</select>
+			</div>
+
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+				<button type="submit" class="btn btn-primary">생성</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+<!-- teamPrj Modal -->
+<div class="modal fade" id="teamPrj" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel4" aria-hidden="true">
+	<div class="modal-dialog">
+		<form class="modal-content" action="mkPlan.do" method="post">
+			<div class="modal-header">
+				<h5 class="modal-title" id="staticBackdropLabel4">새 프로젝트</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+
+			<div class="modal-body">
+				<div class="mb-3">
+					<label for="exampleFormControlInput4" class="form-label">프로젝트 제목</label>
+					<input type="text" name="title" class="form-control" autocomplete="off" id="exampleFormControlInput4" placeholder="" required>
+
+				</div>
 			</div>
 
 
@@ -229,11 +285,11 @@
 </div>
 
 <!-- inputCode Modal -->
-<div class="modal fade" id="#inviteCode" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+<div class="modal fade" id="appoCode" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
 	<div class="modal-dialog">
 		<form class="modal-content" onsubmit="inputCode()">
 			<div class="modal-header">
-				<h5 class="modal-title" id="staticBackdropLabel2">새 일정</h5>
+				<h5 class="modal-title" id="staticBackdropLabel2">초대 코드 입력하기</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 
@@ -269,7 +325,11 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+<!-- monthpicker -->
+<script src="js/jquery.mtz.monthpicker.js"></script>
+
 <script>
+
 
 	//document.addEventListener('DOMContentLoaded', function() {
 	let calendarEl = document.getElementById('calendar');
@@ -299,14 +359,37 @@
 			$('#addEvent').modal('show');
 		},
 		weekends: true,
+		events: [
+				<%
+					for(EventDTO eDTO : eList) {
+						String id = eDTO.getEvent_id();
+						String title = eDTO.getTitle();
+						String start = eDTO.getStart();
+						String end = eDTO.getEnd();
+						%>
+			{
+				id : '<%=id%>',
+				title  : '<%=title%>',
+				start  : '<%=start%>',
+				end    : '<%=end%>'
+			},
+
+				<%
+					}
+				%>
+		],
 		eventClick: function(info) {
+			console.log(info.event.id);
+			console.log(info.event.title);
+			console.log(info.event.startStr);
+			console.log(info.event.endStr);
 			let eventId = info.event.id;
 			let answer = confirm("일정을 삭제하시겠습니까?");
 			if (answer) {
 				$.ajax({
 					url: "deleteEvent",
 					contentType: 'application/json',
-					type: 'post',
+					type: 'get',
 					data: {
 						eventId : eventId
 					},
@@ -316,7 +399,7 @@
 						location.href = '/';
 					},
 					error: function(error) {
-						location.href = '/';
+						location.href = '';
 					}
 
 				});
@@ -335,13 +418,17 @@
 		let start = document.getElementById('startdatepicker').value;
 		let end = document.getElementById('enddatepicker').value;
 
+		console.log(title);
+		console.log(start);
+		console.log(end);
+
 		$.ajax({
 			url: "addEvent",
-			type: 'post',
+			type: 'get',
 			data: {
-				title: title,
-				start: start,
-				end: end
+				"title": title,
+				"start": start,
+				"end": end
 			},
 			contentType: "application/json; charset=utf-8",
 			dataType: "text",
@@ -357,6 +444,8 @@
 </script>
 
 <script>
+
+
 	let now = new Date();
 	let options = {
 		pattern: 'yyyy-mm',
@@ -370,6 +459,26 @@
 
 	$("#monthpicker").monthpicker(options);
 
+
+</script>
+
+<script>
+	$.datepicker.setDefaults({
+		dateFormat: 'yy-mm-dd',
+		prevText: '이전 달',
+		nextText: '다음 달',
+		monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+		monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+		dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+		dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+		dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+		showMonthAfterYear: true,
+		yearSuffix: '년',
+		changeMonth: true,
+		changeYear: true,
+		showButtonPanel: true
+
+	});
 
 </script>
 

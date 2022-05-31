@@ -113,7 +113,7 @@
 
             success: function(result) {
                 if(result == "success") {
-                    location.href = "/index";
+                    location.href = "/";
                 } else if(result == "fail") {
                     alert("아이디 또는 비밀번호가 일치하지 않습니다.");
                 }
