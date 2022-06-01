@@ -34,6 +34,7 @@
             String firdate = CmmUtil.nvl(aDTO.getFirdate());
             String secdate = CmmUtil.nvl(aDTO.getSecdate());
             String thidate = CmmUtil.nvl(aDTO.getThidate());
+            String appoTitle = CmmUtil.nvl(aDTO.getTitle());
 
             if (firdate == "") {
                 firdate = "아직 만나기 적당한 날짜가 없습니다.";
@@ -60,6 +61,8 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Dashboard - SB Admin</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
     <link href="css/styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -135,24 +138,41 @@
                     <a class="nav-link" href="myInfo">
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         <%=uDTO.getUserName()%>
+
                     </a>
                     <div class="sb-sidenav-menu-heading">약속 목록</div>
                     <%
                         String code = null;
+                        int i = 0;
                         for (String appoCode : appoList) {
                             String parse[] = appoCode.split("\\*_\\*");
                             String title = parse[0];
                             code = parse[1];
                     %>
-                    <a class="nav-link" href="appo?code=<%=code%>
-                    "><div class="sb-nav-link-icon"><i class="fas fa-table"></i></div><%=title%></a>
+                        <div class="nav-link collapsed">
+                            <div class="sb-nav-link-icon">
+                                <i class="fas fa-table"></i>
+                            </div>
+                            <a class="link-warning" style="text-decoration-line: none" href="appo?code=<%= code%>&title=<%= title%>">
+                                <%= title%>
+                            </a>
+                            <div class="sb-sidenav-collapse-arrow" data-bs-toggle="collapse" data-bs-target="#collapseLayout<%=i%>" aria-expanded="false" aria-controls="collapseLayouts">
+                                <i class="fas fa-angle-down"></i>
+                            </div>
+                        </div>
+                        <div class="collapse" id="collapseLayout<%=i%>" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <button class="nav-link btn btn-outline-danger" onclick="deleteAppo('<%= title%>', '<%= code%>')">방 나가기</button>
+                            </nav>
+                        </div>
                     <%
+                            i++;
                         }
                     %>
                     <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#addAppo">
                         약속 추가하기
                     </button>
-                    <button class="btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#appoCode">초대코드 입력하기</button>
+                    <button class="btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#inputCode">초대코드 입력하기</button>
                     <div class="sb-sidenav-menu-heading">프로젝트 목록</div>
                     <a class="nav-link" href="charts.html">
                         <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
@@ -162,7 +182,7 @@
                     <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#teamPrj">
                         프로젝트 추가하기
                     </button>
-                    <button class="btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#appoCode">초대코드 입력하기</button>
+                    <button class="btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#appoCode">프로젝트 참가하기</button>
                 </div>
             </div>
             <div class="sb-sidenav-footer">
@@ -185,6 +205,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="row justify-content-center">
+
                                     <div class="card text-dark bg-warning mb-3" style="max-width: 18rem;">
                                         <div class="card-header">1st</div>
                                         <div class="card-body">
@@ -224,16 +245,17 @@
                                 투표 기한
                             </div>
                             <div class="row mt-3 justify-content-center">
-                                <div class="col-4 h3">투표기한까지</div>
+                                <div class="col-10 h1" style="text-align: center"><%= appoTitle%></div>
+                                <div class="col-4 h4">투표기한까지</div>
                                 <div class="time col-4">
-                                    <span id="d-day-day">00</span>
-                                    <span class="col h3">일</span>
-                                    <span id="d-day-hour">00</span>
-                                    <span class="col h3">시간</span>
-                                    <span id="d-day-min">00</span>
-                                    <span class="col h3">분</span>
-                                    <span id="d-day-sec">00</span>
-                                    <span class="col h3">초</span>
+                                    <span class="col h4" id="d-day-day">00</span>
+                                    <span class="col h4">일</span>
+                                    <span class="col h4" id="d-day-hour">00</span>
+                                    <span class="col h4">시간</span>
+                                    <span class="col h4" id="d-day-min">00</span>
+                                    <span class="col h4">분</span>
+                                    <span class="col h4" id="d-day-sec">00</span>
+                                    <span class="col h4">초</span>
                                 </div>
 
                                 <button type="button" id="voteBtn" data-bs-toggle="modal" data-bs-target="#voteModal" hidden>
@@ -249,7 +271,7 @@
                         <i class="fas fa-table me-1"></i>
                         참여자 명단
                     </div>
-                    <div class="card-body">
+                    <div class="card-body row">
                         <%
                             for (VoteInfoDTO pDTO : userlist) {
                                 String username = pDTO.getUsername();
@@ -267,7 +289,7 @@
                             }
                         %>
                         <div class="row mt-2 justify-content-center">
-                            <button class="btn btn-warning col-3 offset-1" onclick="kakaoInvite()" id="create-kakao-link-btn">초대 <i class="bi bi-share"></i></button>
+                            <button class="btn btn-warning col-3 offset-1" onclick="kakaoInvite()" id="create-kakao-link-btn">초대 <i class="bi bi-person-plus"></i></button>
                         </div>
 
                     </div>
@@ -381,9 +403,9 @@
 </div>
 
 <!-- inputCode Modal -->
-<div class="modal fade" id="appoCode" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+<div class="modal fade" id="inputCode" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
     <div class="modal-dialog">
-        <form class="modal-content" onsubmit="inputCode()">
+        <form class="modal-content" onsubmit="inputCode(event)">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel2">초대 코드 입력하기</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -438,9 +460,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="js/scripts.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-<script src="assets/demo/chart-area-demo.js"></script>
-<script src="assets/demo/chart-bar-demo.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
 <script src="js/datatables-simple-demo.js"></script>
 
@@ -452,12 +471,29 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+<!-- 카카오 api-->
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+
 <script>
     function deleteRoom(roomcode, title) {
         let answer = confirm("정말로 방을 삭제하시겠습니까?(다른 사람의 약속방 리스트에서는 삭제되지 않습니다.)");
         if(answer) {
             location.href = 'delPlan.do?roomcode=' + roomcode + "&title=" + title;
         }
+    }
+
+</script>
+
+<script>
+    Kakao.init('8fcf17bb04b908af3af02d2234b9f1dc');
+    let data = 'invite?roomcode=<%= code %>&title=<%= appoTitle %>';
+    function kakaoInvite() {
+        Kakao.Link.sendCustom({
+            templateId: 70212,
+            templateArgs: {
+                'path': data
+            }
+        });
     }
 
 </script>
@@ -522,18 +558,19 @@
     function vote() {
         let sendPosdays = Array.from(posdays);
         let sendNegdays = Array.from(negdays);
-        console.log(sendPosdays);
-        console.log(sendNegdays);
         let appoCode = "<%=code%>";
+        let obj = {
+            "posdays" : sendPosdays,
+            "negdays" : sendNegdays,
+            "appoCode" : appoCode
+        };
+        let sendObj = JSON.stringify(obj);
+
         let url = "appo?code=" + "<%=code%>";
         $.ajax({
             url: "voteDate",
-            contentType: 'application/json',
-            type: 'get',
-            data : {
-                "posdays" : sendPosdays,
-                "negdays" : sendNegdays,
-                "appoCode" : appoCode
+            data: {
+                "voteInfo" : sendObj
             },
             contentType: "application/json; charset=utf-8",
             dataType: "text",
@@ -595,6 +632,66 @@
 
 </script>
 
+<script>
+    function deleteAppo(title, code) {
+
+        if(confirm("방을 나가시겠습니까?")){
+
+            $.ajax({
+                url: "delAppo",
+                type: 'get',
+                data: {
+                    "title": title,
+                    "code": code
+                },
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                success: function(data) {
+                    if(data != 1) {
+                        alert("해당하는 방이 존재하지않습니다.");
+                    }
+                    location.href = '/';
+                },
+                error: function(error) {
+                    location.href = '/';
+                }
+
+            });
+        }
+    }
+
+</script>
+
+<script>
+    function inputCode(event) {
+        event.preventDefault();
+
+        let appoCode = document.getElementById('inviteCode').value;
+
+        $.ajax({
+            url: "inviteAppo",
+            type: 'get',
+            data: {
+                "appoCode": appoCode,
+            },
+            contentType: "application/json; charset=utf-8",
+            dataType: "text",
+            success: function(data) {
+                if(data == 0) {
+                    alert("해당하는 방이 존재하지 않습니다.");
+                }else if(data == 2) {
+                    alert("이미 해당 방에 참가중입니다.");
+                }
+                location.href = '/';
+            },
+            error: function(error) {
+                location.href = '/';
+            }
+
+        });
+    }
+
+</script>
 
 </body>
 

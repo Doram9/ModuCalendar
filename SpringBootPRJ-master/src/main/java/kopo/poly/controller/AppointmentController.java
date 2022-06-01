@@ -11,15 +11,19 @@ import kopo.poly.util.CmmUtil;
 import kopo.poly.util.DateUtil;
 import kopo.poly.util.EncryptUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
+
 
 @Slf4j
 @Controller
@@ -36,10 +40,22 @@ public class AppointmentController {
     public String appoPage(HttpServletRequest request, ModelMap model, HttpSession session) throws Exception {
         log.info("controller.appoPage start");
 
-        String appoCode = CmmUtil.nvl((String)request.getParameter("code"));
+        String appoCode = CmmUtil.nvl(request.getParameter("code"));
         String userId = CmmUtil.nvl((String)session.getAttribute("userId"));
-        log.info("userId : " + userId);
-        AppoInfoDTO rDTO = appoService.getAppoInfo(appoCode);
+        String title = CmmUtil.nvl(request.getParameter("title"));
+
+        HashMap<String, Object> pMap = new HashMap<>();
+
+        pMap.put("userId", userId);
+        pMap.put("title", title);
+        pMap.put("appoCode", appoCode);
+
+
+        AppoInfoDTO rDTO = appoService.getAppoInfo(pMap);
+
+        if(rDTO == null) {
+            return "/";
+        }
         UserInfoDTO pDTO = userSevice.getUserInfo(userId);
 
         model.addAttribute("UserInfoDTO", pDTO);
@@ -54,8 +70,8 @@ public class AppointmentController {
     public String createAppo(HttpServletRequest request, HttpSession session) throws Exception {
         log.info("controller.createAppo start");
 
-        String userId = session.getAttribute("userId").toString();
-        String userName = session.getAttribute("userName").toString();
+        String userId = CmmUtil.nvl((String)session.getAttribute("userId"));
+        String userName = CmmUtil.nvl((String)session.getAttribute("userName"));;
 
         String title = request.getParameter("title");
         String yyyymm = CmmUtil.nvl(request.getParameter("month"));
@@ -84,26 +100,70 @@ public class AppointmentController {
         return "redirect:/";
     }
 
+    //약속방 나가기
+    @GetMapping(value = "delAppo")
+    @ResponseBody
+    public String delAppo(HttpServletRequest request, HttpSession session) throws Exception {
+        log.info("controller.delAppo start");
+        String userId = CmmUtil.nvl((String)session.getAttribute("userId"));
+        String appoCode = CmmUtil.nvl(request.getParameter("code"));
+        String title = CmmUtil.nvl(request.getParameter("title"));
+
+        HashMap<String, Object> pMap = new HashMap<>();
+
+        pMap.put("userId", userId);
+        pMap.put("title", title);
+        pMap.put("appoCode", appoCode);
+
+        int res = appoService.deleteAppo(pMap);
+
+        return Integer.toString(res);
+    }
+
     //초대코드입력 페이지
+    @GetMapping(value = "inviteAppo")
+    @ResponseBody
+    public String inviteAppo(HttpServletRequest request, HttpSession session) throws Exception {
+        log.info("controller.inviteAppo start");
+
+        String userId = CmmUtil.nvl((String)session.getAttribute("userId"));
+        String userName = CmmUtil.nvl((String)session.getAttribute("userName"));
+
+        String appoCode = CmmUtil.nvl(request.getParameter("appoCode"));
+
+        HashMap<String, Object> pMap = new HashMap<>();
+
+        pMap.put("userId", userId);
+        pMap.put("userName", userName);
+        pMap.put("appoCode", appoCode);
+
+        int res = appoService.inviteAppo(pMap);
+
+        return Integer.toString(res);
+    }
 
     //투표하기
     @GetMapping(value = "voteDate")
     @ResponseBody
-    public String voteDate(@RequestParam(value="posdays[]") List<String> posdays, @RequestParam(value="negdays[]") List<String> negdays, @RequestParam(value="appoCode") String appoCode, HttpSession session) throws Exception {
+    public String voteDate(HttpServletRequest request, HttpSession session) throws Exception {
 
         log.info(this.getClass().getName() + "voteDate Start!");
-        log.info(posdays.get(0));
-        log.info(negdays.get(0));
-        log.info(appoCode);
 
-        String userId = session.getAttribute("userId").toString();
 
-//        param.put("userId", session.getAttribute("userId"));
-//
-//        int res = appoService.voteAppo(param);
+        String voteInfo = request.getParameter("voteInfo");
+        JSONParser parser = new JSONParser();
+        JSONObject jsonObject = (JSONObject)parser.parse(voteInfo);
 
-        String res = "1";
+        HashMap<String, Object> pMap = new HashMap<>();
 
-        return res;
+        pMap.put("posdays", jsonObject.get("posdays"));
+        pMap.put("negdays", jsonObject.get("negdays"));
+        pMap.put("appoCode", jsonObject.get("appoCode"));
+
+        pMap.put("userId", session.getAttribute("userId"));
+
+        int res = appoService.voteAppo(pMap);
+
+        return Integer.toString(res);
     }
 }

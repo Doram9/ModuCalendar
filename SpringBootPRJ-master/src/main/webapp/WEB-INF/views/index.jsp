@@ -109,19 +109,37 @@
 					</a>
 					<div class="sb-sidenav-menu-heading">약속 목록</div>
 					<%
+						int i = 0;
 						for(String appoCode : appoList) {
 							String parse[] = appoCode.split("\\*_\\*");
 							String title = parse[0];
 							String code = parse[1];
 					%>
-						<a class="nav-link" href="appo?code=<%= code%>"><div class="sb-nav-link-icon"><i class="fas fa-table"></i></div><%= title%></a>
+						<div class="nav-link collapsed">
+							<div class="sb-nav-link-icon">
+								<i class="fas fa-table"></i>
+							</div>
+							<a class="link-warning" style="text-decoration-line: none" href="appo?code=<%= code%>&title=<%= title%>">
+								<%= title%>
+							</a>
+							<div class="sb-sidenav-collapse-arrow" data-bs-toggle="collapse" data-bs-target="#collapseLayout<%=i%>" aria-expanded="false" aria-controls="collapseLayouts">
+								<i class="fas fa-angle-down"></i>
+							</div>
+						</div>
+						<div class="collapse" id="collapseLayout<%=i%>" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+							<nav class="sb-sidenav-menu-nested nav">
+								<button class="nav-link btn btn-outline-danger" onclick="deleteAppo('<%= title%>', '<%= code%>')">방 나가기</button>
+							</nav>
+						</div>
 					<%
+							i++;
 						}
 					%>
+
 					<button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#addAppo">
 						약속 추가하기
 					</button>
-					<button class="btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#appoCode">초대코드 입력하기</button>
+					<button class="btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#inputCode">초대코드 입력하기</button>
 					<div class="sb-sidenav-menu-heading">프로젝트 목록</div>
 					<a class="nav-link" href="charts.html">
 						<div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
@@ -131,7 +149,7 @@
 					<button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#teamPrj">
 						프로젝트 추가하기
 					</button>
-					<button class="btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#appoCode">초대코드 입력하기</button>
+					<button class="btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#appoCode">프로젝트 참가하기</button>
 				</div>
 			</div>
 			<div class="sb-sidenav-footer">
@@ -285,9 +303,9 @@
 </div>
 
 <!-- inputCode Modal -->
-<div class="modal fade" id="appoCode" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+<div class="modal fade" id="inputCode" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
 	<div class="modal-dialog">
-		<form class="modal-content" onsubmit="inputCode()">
+		<form class="modal-content" onsubmit="inputCode(event)">
 			<div class="modal-header">
 				<h5 class="modal-title" id="staticBackdropLabel2">초대 코드 입력하기</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -444,6 +462,36 @@
 </script>
 
 <script>
+	function inputCode(event) {
+		event.preventDefault();
+		let appoCode = document.getElementById('inviteCode').value;
+
+		$.ajax({
+			url: "inviteAppo",
+			type: 'get',
+			data: {
+				"appoCode": appoCode,
+			},
+			contentType: "application/json; charset=utf-8",
+			dataType: "text",
+			success: function(data) {
+				if(data == 0) {
+					alert("해당하는 방이 존재하지 않습니다.");
+				}else if(data == 2) {
+					alert("이미 해당 방에 참가중입니다.");
+				}
+				location.href = '/';
+			},
+			error: function(error) {
+				location.href = '/';
+			}
+
+		});
+	}
+
+</script>
+
+<script>
 
 
 	let now = new Date();
@@ -479,6 +527,36 @@
 		showButtonPanel: true
 
 	});
+
+</script>
+
+<script>
+	function deleteAppo(title, code) {
+
+		if(confirm("방을 나가시겠습니까?")){
+
+			$.ajax({
+				url: "delAppo",
+				type: 'get',
+				data: {
+					"title": title,
+					"code": code
+				},
+				contentType: "application/json; charset=utf-8",
+				dataType: "text",
+				success: function(data) {
+					if(data != 1) {
+						alert("해당하는 방이 존재하지않습니다.");
+					}
+					location.href = '/';
+				},
+				error: function(error) {
+					location.href = '/';
+				}
+
+			});
+		}
+	}
 
 </script>
 

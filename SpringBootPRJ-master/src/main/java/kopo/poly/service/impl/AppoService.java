@@ -32,14 +32,17 @@ public class AppoService implements IAppoService {
     }
 
     @Override
-    public void deleteAppo(HashMap<String, Object> pMap) throws Exception {
+    public int deleteAppo(HashMap<String, Object> pMap) throws Exception {
 
+        int res = appoMapper.deleteAppo(pMap);
+
+        return res;
     }
 
     @Override
-    public AppoInfoDTO getAppoInfo(String code) throws Exception {
+    public AppoInfoDTO getAppoInfo(HashMap<String, Object> pMap) throws Exception {
 
-        AppoInfoDTO rDTO = appoMapper.getAppoInfo(code);
+        AppoInfoDTO rDTO = appoMapper.getAppoInfo(pMap);
         return rDTO;
     }
 
@@ -105,6 +108,12 @@ public class AppoService implements IAppoService {
             res = 0;
         }
 
+        return res;
+    }
+
+    @Override
+    public int inviteAppo(HashMap<String, Object> pMap) throws Exception {
+        int res = appoMapper.inviteAppo(pMap);
         return res;
     }
 }

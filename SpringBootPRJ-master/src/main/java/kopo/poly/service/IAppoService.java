@@ -9,9 +9,12 @@ public interface IAppoService {
 
     int createAppo(AppoInfoDTO pDTO, UserInfoDTO uDTO) throws Exception;
 
-    void deleteAppo(HashMap<String, Object> pMap) throws Exception;
+    int deleteAppo(HashMap<String, Object> pMap) throws Exception;
 
-    AppoInfoDTO getAppoInfo(String code) throws Exception;
+    AppoInfoDTO getAppoInfo(HashMap<String, Object> pMap) throws Exception;
 
     int voteAppo(HashMap<String, Object> pMap) throws Exception;
+
+    int inviteAppo(HashMap<String, Object> pMap) throws Exception;
+
 }

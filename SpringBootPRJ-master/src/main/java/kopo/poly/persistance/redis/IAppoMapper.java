@@ -11,11 +11,14 @@ public interface IAppoMapper {
 
     int createAppo(AppoInfoDTO rDTO, UserInfoDTO uDTO) throws Exception;
 
-    void deleteAppo(HashMap<String, Object> pMap) throws Exception;
+    int deleteAppo(HashMap<String, Object> pMap) throws Exception;
 
-    AppoInfoDTO getAppoInfo(String code) throws Exception;
+    AppoInfoDTO getAppoInfo(HashMap<String, Object> pMap) throws Exception;
 
     HashMap<String, ArrayList<String>> getVoteInfo(Map<String, Object> pMap) throws Exception;
 
     void updateResult(Map<String, Object> pMap) throws Exception;
+
+    int inviteAppo(HashMap<String, Object> pMap) throws Exception;
+
 }

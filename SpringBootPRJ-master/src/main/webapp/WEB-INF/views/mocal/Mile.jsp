@@ -1,5 +1,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
+<%@ page import="kopo.poly.dto.UserInfoDTO" %>
+<%@ page import="kopo.poly.dto.EventDTO" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.List" %>
+<%
+    UserInfoDTO pDTO = (UserInfoDTO) request.getAttribute("UserInfoDTO");
+
+    if (pDTO == null) {
+        pDTO = new UserInfoDTO();
+    }
+    List<EventDTO> eList = pDTO.getEventList();
+
+    if(eList == null) {
+        eList = new ArrayList<>();
+    }
+    List<String> appoList = pDTO.getAppoList();
+
+    if(appoList == null) {
+        appoList = new ArrayList<>();
+    }
+%>
 <!DOCTYPE html>
 <html lang="en">
 
