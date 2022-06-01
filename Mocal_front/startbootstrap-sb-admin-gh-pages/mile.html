@@ -150,13 +150,13 @@
             <main>
                 <div class="container-fluid px-4">
                     <div class="mt-4"></div>
-                    <form class="card mb-4">
+                    <form class="card mb-4" onsubmit="send(event)">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
                             내 마일스톤
 
                             <button type="button" class="btn btn-outline-danger">취소</button>
-                            <button type="submit" class="btn btn-outline-success" onsubmit="send()">저장</button>
+                            <button type="submit" class="btn btn-outline-success">저장</button>
                         </div>
 
                         <!-- 마일스톤 container -->
@@ -652,12 +652,14 @@
             let itemNum = Number(splitedEvent[2]);
             // 마일 번호
             let mileNum = splitedEvent[3];
+            console.log(mileNum);
             
             //객체가 들어간 인덱스 번호
             let indexNum = allInfo.mileInfo.findIndex(i => i.stepNum == stepNum);
             
             // mileTF배열이 담긴 배열
             let mileArr = allInfo.mileInfo[indexNum].step_info.item_info.mileTF;
+            console.log(mileArr);
             
             //item 번호가 담긴 배열
             let itemArr = allInfo.mileInfo[indexNum].step_info.item_info.itemNum;
@@ -674,8 +676,9 @@
             mileArr[idx][mileNum] = (mileArr[idx][mileNum]) ? false : true;
         }
         
-        function send() {
-            alert(allInfo);
+        function send(event) {
+            event.preventDefault();
+            console.log(allInfo);
         }
         
     </script>

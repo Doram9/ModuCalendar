@@ -390,16 +390,17 @@
 <script>
     //마일스톤 정보
     let allInfo = {
-        "startDate" : "",
-        "endDate" : "",
-        "mileInfo" : [{
-            "stepNum" : 0,
-            "step_info" : {
-                "value" : "",
-                "item_info" : {
-                    "itemNum" : [0],
-                    "itemValue" : [""],
-                    "mileTF" : [[false, false, false, false, false, false, false, false, false, false, false, false]]
+
+        "startDate" : "", //프로젝트 시작일
+        "endDate" : "", //프로젝트 마감일
+        "mileInfo" : [{ //mileInfo : 단계 배열
+            "stepNum" : 0, //단계 구분 index (어차피 처리는 배열순으로)
+            "step_info" : { //단계 세부항목(단계명, 항목정보, 마일스톤정보)
+                "value" : "", //단계명
+                "item_info" : { //항목정보
+                    "itemNum" : [0], //항목 구분 index(무시해도 ok)
+                    "itemValue" : [""], //항목명 배열
+                    "mileTF" : [[false, false, false, false, false, false, false, false, false, false, false, false]] //항목의 마일스톤on_off
                 },
             }
         }]
