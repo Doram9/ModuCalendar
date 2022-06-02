@@ -266,6 +266,29 @@
 					<option value="5">앞으로 5일</option>
 					<option value="7">앞으로 7일</option>
 				</select>
+
+				<p>투표 기한</p>
+				<select name="region" class="form-select form-select-sm" aria-label=".form-select-sm example">
+					<option value="서울">서울</option>
+					<option value="인천">인천</option>
+					<option value="경기북부">경기북부</option>
+					<option value="경기남부">경기남부</option>
+					<option value="강원영서">강원영서</option>
+					<option value="강원영동">강원영동</option>
+					<option value="대전">대전</option>
+					<option value="세종">세종</option>
+					<option value="충남">충남</option>
+					<option value="충북">충북</option>
+					<option value="광주">광주</option>
+					<option value="전북">전북</option>
+					<option value="전남">전남</option>
+					<option value="부산">부산</option>
+					<option value="대구">대구</option>
+					<option value="울산">울산</option>
+					<option value="경북">경북</option>
+					<option value="경남">경남</option>
+					<option value="제주">제주</option>
+				</select>
 			</div>
 
 

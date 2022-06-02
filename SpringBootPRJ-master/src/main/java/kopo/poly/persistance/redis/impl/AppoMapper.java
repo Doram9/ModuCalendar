@@ -25,8 +25,6 @@ public class AppoMapper extends AbstractMongoDBComon implements IAppoMapper {
 
     public AppoMapper(RedisTemplate<String, Object> redisDB) {
         this.redisDB = redisDB;
-
-
     }
 
     @Override

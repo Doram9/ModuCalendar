@@ -1,6 +1,8 @@
 package kopo.poly.service;
 
+import kopo.poly.dto.DustInfoDTO;
+
 public interface IWeatherService {
 
-    String getDustInfo(String appKey) throws Exception;
+    DustInfoDTO getDustInfo(String appKey) throws Exception;
 }

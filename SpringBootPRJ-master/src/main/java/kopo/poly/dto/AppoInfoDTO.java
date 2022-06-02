@@ -8,6 +8,7 @@ public class AppoInfoDTO {
 	private String appoCode;
 	private List<VoteInfoDTO> userlist;
 	private String title;
+	private String region;
 	private String yyyymm;
 	private String deadline;
 	private String firdate;

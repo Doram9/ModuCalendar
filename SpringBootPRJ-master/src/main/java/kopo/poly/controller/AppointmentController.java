@@ -2,6 +2,7 @@ package kopo.poly.controller;
 
 
 import kopo.poly.dto.AppoInfoDTO;
+import kopo.poly.dto.DustInfoDTO;
 import kopo.poly.dto.UserInfoDTO;
 import kopo.poly.service.IAppoService;
 import kopo.poly.service.IEventService;
@@ -60,29 +61,22 @@ public class AppointmentController {
 
         if(rDTO == null) {
             return "/";
+        } else {
+            String region = rDTO.getRegion();
+
+            UserInfoDTO pDTO = userSevice.getUserInfo(userId);
+
+            //미세먼지 정보 가져오기
+            DustInfoDTO wDTO = weatherService.getDustInfo(region);
+
+            model.addAttribute("UserInfoDTO", pDTO);
+            model.addAttribute("AppoInfoDTO", rDTO);
+            model.addAttribute("DustInfoDTO", wDTO);
+
+            return "/mocal/Appo";
         }
-        UserInfoDTO pDTO = userSevice.getUserInfo(userId);
 
-        model.addAttribute("UserInfoDTO", pDTO);
-        model.addAttribute("AppoInfoDTO", rDTO);
-
-
-
-        return "/mocal/Appo";
     }
-
-    //미세먼지 정보 가져오기
-    @GetMapping(value = "getDustInfo")
-    @ResponseBody
-    public String getDustInfo() throws Exception {
-
-        String appKey = KeyUtil.getDustKey();
-
-        String res = weatherService.getDustInfo(appKey);
-
-        return res;
-    }
-
 
     //약속방 만들기
     @GetMapping(value = "createAppo")
@@ -93,6 +87,7 @@ public class AppointmentController {
         String userName = CmmUtil.nvl((String)session.getAttribute("userName"));;
 
         String title = request.getParameter("title");
+        String region = request.getParameter("region");
         String yyyymm = CmmUtil.nvl(request.getParameter("month"));
         int voteday = Integer.parseInt(request.getParameter("deadline"));
         String deadline = DateUtil.addDate(voteday);
@@ -106,6 +101,7 @@ public class AppointmentController {
         AppoInfoDTO pDTO = new AppoInfoDTO();
         pDTO.setAppoCode(appoCode);
         pDTO.setTitle(title);
+        pDTO.setRegion(region);
         pDTO.setYyyymm(yyyymm);
         pDTO.setDeadline(deadline);
 
