@@ -1,6 +1,7 @@
 package kopo.poly.service;
 
 import kopo.poly.dto.UserInfoDTO;
+import org.apache.catalina.User;
 
 public interface IUserService {
 
@@ -23,8 +24,9 @@ public interface IUserService {
     int findPw(String email) throws Exception;
 
     //비밀번호 변경
-
+    int resetPw(UserInfoDTO pDTO) throws Exception;
     //회원정보 전체삭제
+    int deleteUser(UserInfoDTO pDTO) throws Exception;
 
     //약속방 추가
 

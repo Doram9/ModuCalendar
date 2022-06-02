@@ -4,6 +4,8 @@
 <%@ page import="kopo.poly.dto.EventDTO" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
+<%@ page import="kopo.poly.util.EncryptUtil" %>
+<%@ page import="kopo.poly.util.CmmUtil" %>
 <%
 	UserInfoDTO pDTO = (UserInfoDTO) request.getAttribute("UserInfoDTO");
 
@@ -90,7 +92,7 @@
 		<li class="nav-item dropdown">
 			<a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
 			<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-				<li><a class="dropdown-item" href="#!">내정보</a></li>
+				<li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#userInfo">내정보</a></li>
 				<li><hr class="dropdown-divider" /></li>
 				<li><a class="dropdown-item" href="logout">로그아웃</a></li>
 			</ul>
@@ -103,7 +105,7 @@
 			<div class="sb-sidenav-menu">
 				<div class="nav">
 					<div class="sb-sidenav-menu-heading">내 정보</div>
-					<a class="nav-link" href="index.html">
+					<a class="nav-link" data-bs-toggle="modal" data-bs-target="#userInfo">
 						<div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
 						<%= pDTO.getUserName()%>
 					</a>
@@ -208,6 +210,36 @@
 				</div>
 			</div>
 		</footer>
+	</div>
+</div>
+
+<!-- UserInfo Modal -->
+<div class="modal fade" id="userInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelUserInfo" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="staticBackdropLabelUserInfo">내 정보</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+
+			<div class="modal-body">
+				<div class="mb-3">
+					<label for="userName" class="form-label">이름</label>
+					<p name="userName" class="form-control" id="userName"><%= pDTO.getUserName()%></p>
+				</div>
+				<div class="mb-3">
+					<label for="userRegDt" class="form-label">가입일</label>
+					<p name="userRegDt" class="form-control" id="userRegDt"><%= pDTO.getRegDt()%></p>
+				</div>
+				<div class="mb-3">
+					<label for="userPw" class="form-label">비밀번호</label> <button class="btn btn-sm btn-outline-success" onclick="chgPw()">비밀번호 변경하기</button>
+					<p name="userPw" class="form-control" id="userPw">**********</p>
+				</div>
+				<div class="mb-3 row justify-content-end">
+					<button class="btn btn-sm btn-warning btn-outline-danger col-6" onclick="deleteUser()">회원탈퇴하기</button>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 
@@ -558,6 +590,18 @@
 		}
 	}
 
+</script>
+
+<script>
+	function chgPw() {
+		location.href = "resetPw?code=<%=CmmUtil.nvl(pDTO.getUserId())%>";
+	}
+
+	function deleteUser() {
+		if(confirm("정말로 회원을 탈퇴하시겠습니까? (주의! 되돌릴 수 없습니다.)")){
+			location.href = "deleteUser";
+		}
+	}
 </script>
 
 </body>

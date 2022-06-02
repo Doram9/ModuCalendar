@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
+<%
+    String resetCode = (String) request.getAttribute("resetCode");
+%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,53 +18,33 @@
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 </head>
-<body class="sb-nav-fixed">
+<body class="sb-nav">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
     <a class="navbar-brand ps-3" href="/">Start Bootstrap</a>
-    <!-- Sidebar Toggle-->
-    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
 </nav>
 <div id="layoutSidenav">
-    <div id="layoutSidenav_nav">
-        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-            <div class="sb-sidenav-menu">
-                <div class="nav">
-                    <a class="nav-link" href="title">
-                        로그인 후 이용해주세요
-                    </a>
-                </div>
-            </div>
-            <div class="sb-sidenav-footer">
-                <div class="small">Logged in as:</div>
-                Start Bootstrap
-            </div>
-        </nav>
-    </div>
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
                 <div class="row justify-content-center">
                     <div class="col-lg-5">
                         <div class="card shadow-lg border-0 rounded-lg mt-5">
-                            <div class="card-header"><h3 class="text-center font-weight-light my-4">로그인</h3></div>
+                            <div class="card-header"><h3 class="text-center font-weight-light my-4">비밀번호 재설정</h3></div>
                             <div class="card-body">
                                 <form>
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="inputPassword" type="password" placeholder="Password" required/>
-                                        <label for="inputPassword">비밀번호</label>
+                                        <label for="inputPassword">변경할 비밀번호</label>
                                     </div>
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="inputPasswordConfirm" type="password" placeholder="Password" required/>
-                                        <label for="inputPasswordConfirm">비밀번호확인</label>
+                                        <label for="inputPasswordConfirm">변경할 비밀번호확인</label>
                                     </div>
                                     <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                         <button type="button" class="btn btn-primary" onclick="doResetPw()">비밀번호 재설정</button>
                                     </div>
                                 </form>
-                            </div>
-                            <div class="card-footer text-center py-3">
-                                <div class="small"><a href="register">아직 계정이 없으신가요? 회원가입 하러가기</a></div>
                             </div>
                         </div>
                     </div>
@@ -99,20 +82,27 @@
             alert("비밀번호가 입력되지 않았습니다.");
             return 0;
         }
-
+        let resetCode = "<%=resetCode%>";
+        alert(resetCode);
         $.ajax({
             url: "doResetPw",
-            type: 'post',
+            type: 'get',
             data: {
-                userId: userid,
+                resetCode: resetCode,
                 resetPw: pw1
             },
             dataType: "text",
             contentType: "application/json; charset=utf-8",
 
             success: function(result) {
-                alert("비밀번호 변경이 완료되었습니다. 다시 로그인해주세요");
-                location.href = "/login";
+                if(result == 1) {
+                    alert("비밀번호 변경이 완료되었습니다. 다시 로그인해주세요");
+                    location.href = "/login";
+                } else {
+                    alert("에러!");
+                    location.href = "/";
+                }
+
             },
             error: function(request,status,error) {
                 //alert("아이디 또는 비밀번호가 일치하지 않습니다.");

@@ -3,12 +3,16 @@ package kopo.poly.controller;
 
 import kopo.poly.dto.miledto.AllInfoDTO;
 import kopo.poly.dto.miledto.MileInfoDTO;
+import kopo.poly.service.ITeamPrjService;
+import kopo.poly.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
@@ -16,6 +20,9 @@ import java.util.HashMap;
 @Slf4j
 @RestController
 public class TeamPrjController {
+
+    @Resource(name = "TeamPrjService")
+    private ITeamPrjService teamPrjService;
 
     //팀프로젝트방 페이지
     @GetMapping(value = "teamPrj")
@@ -34,29 +41,14 @@ public class TeamPrjController {
     public String updateMile(HttpServletRequest request, HttpSession session) throws Exception {
         log.info("controller.updateMile start");
 
-        String mileInfo = request.getParameter("mileInfo");
-        JSONParser parser = new JSONParser();
-        JSONObject jsonObject = (JSONObject)parser.parse(mileInfo);
+        String allInfo = request.getParameter("allInfo");
+        String prjCode = request.getParameter("prjCode");
 
         HashMap<String, Object> pMap = new HashMap<>();
+        pMap.put("prjCode", prjCode);
+        pMap.put("allInfo", allInfo);
 
-        //프로젝트 시작일
-        pMap.put("posdays", jsonObject.get("posdays"));
-        //프로젝트 마감일
-        pMap.put("endDate", jsonObject.get("endDate"));
-        //mileInfo : 단계 배열
-        pMap.put("mileInfo", jsonObject.get("mileInfo"));
-        //단계 세부항목(단계명, 항목정보, 마일스톤정보)
-        pMap.put("step_info", jsonObject.get("step_info"));
-        //단계명
-        pMap.put("value", jsonObject.get("value"));
-        //항목정보
-        pMap.put("item_info", jsonObject.get("item_info"));
-        //항목명 배열
-        pMap.put("itemValue", jsonObject.get("itemValue"));
-        //항목의 마일스톤on_off정보
-        pMap.put("mileTF", jsonObject.get("mileTF"));
-
-        return "";
+        int res = teamPrjService.updateMile(pMap);
+        return Integer.toString(res);
     }
 }

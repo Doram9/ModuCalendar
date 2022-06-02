@@ -85,4 +85,21 @@ public class UserService implements IUserService {
 
         return res;
     }
+
+    @Override
+    public int resetPw(UserInfoDTO pDTO) throws Exception {
+        log.info("service.resetPw start");
+
+        int res = userMapper.resetPw(pDTO);
+
+        return res;
+    }
+
+    @Override
+    public int deleteUser(UserInfoDTO pDTO) throws Exception {
+
+        log.info("service.deleteUser start");
+        int res = userMapper.deleteUser(pDTO);
+        return res;
+    }
 }

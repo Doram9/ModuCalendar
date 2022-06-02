@@ -101,13 +101,11 @@ public class UserController {
 
     //비밀번호 재설정 페이지
     @GetMapping(value = "resetPw")
-    public String resetPw(HttpServletRequest request) throws Exception {
+    public String resetPw(HttpServletRequest request, ModelMap model) throws Exception {
+        String code = request.getParameter("code");
         log.info("controller.resetPw start");
 
-        if(CmmUtil.nvl(request.getParameter("code")) == "") {
-            return "/";
-        }
-
+        model.addAttribute("resetCode", code);
         return "/mocal/resetPassword";
     }
 
@@ -135,6 +133,7 @@ public class UserController {
 
         UserInfoDTO pDTO = userSevice.getUserInfo(userId);
         model.addAttribute("UserInfoDTO", pDTO);
+        model.addAttribute("prjCode", EncryptUtil.encHashSHA256(userId));
 
         return "/mocal/Mile";
     }

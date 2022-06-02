@@ -15,7 +15,7 @@
 	<script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 
 </head>
-<body class="sb-nav-fixed">
+<body class="sb-nav">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
 	<!-- Navbar Brand-->
 	<a class="navbar-brand ps-3" href="/">Modu Calendar</a>
@@ -37,7 +37,7 @@
 			<div id="layoutSidenav_content">
 				<main>
 					<div class="container">
-						<div class="row justify-content-around" style="height: 80vh;">
+						<div class="row justify-content-around" style="height: 90vh;">
 							<a class="btn btn-primary col-6" href="login">
 								<div class="mt-5"></div>
 								<h1>가입한 계정이 있으신가요?</h1>

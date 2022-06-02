@@ -196,7 +196,7 @@
             <div class="container-fluid px-4">
                 <div class="mt-4"></div>
                 <div class="row">
-                    <div class="col-xl-6">
+                    <div class="col-xl-7">
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-chart-area me-1"></i>
@@ -238,16 +238,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-6">
+                    <div class="col-xl-5">
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-chart-bar me-1"></i>
                                 투표 기한
                             </div>
                             <div class="row mt-3 justify-content-center">
-                                <div class="col-10 h1" style="text-align: center"><%= appoTitle%></div>
-                                <div class="col-4 h4">투표기한까지</div>
-                                <div class="time col-4">
+                                <div class="col-12 h1" style="text-align: center"><%= appoTitle%></div>
+                                <div class="col-5 h4" style="text-align: center">투표기한까지</div>
+                                <div class="time col-7">
                                     <span class="col h4" id="d-day-day">00</span>
                                     <span class="col h4">일</span>
                                     <span class="col h4" id="d-day-hour">00</span>
@@ -371,36 +371,6 @@
     </div>
 </div>
 
-<!-- Event Modal -->
-<div class="modal fade" id="addEvent" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel3" aria-hidden="true">
-    <div class="modal-dialog">
-        <form class="modal-content" onsubmit="makeEvent(event)">
-            <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel3">새 일정</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label for="title" class="form-label">일정 제목</label>
-                    <input type="text" name="title" class="form-control" autocomplete="off" id="title" required>
-
-                </div>
-                <label for="startdatepicker" class="form-label">시작날짜</label>
-                <input type="text" name="startMonth" autocomplete="off" id="startdatepicker" required>
-                <br />
-                <label for="enddatepicker" class="form-label">종료날짜</label>
-                <input type="text" name="endMonth" autocomplete="off" id="enddatepicker">
-                <br />
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                <button type="submit" class="btn btn-primary">생성</button>
-            </div>
-        </form>
-    </div>
-</div>
 
 <!-- inputCode Modal -->
 <div class="modal fade" id="inputCode" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
@@ -499,11 +469,15 @@
 </script>
 
 <script>
+
     let posdays = new Set();
     let negdays = new Set();
     let redcol = 'rgba(232, 38, 37, 0.9)';
     let greencol = 'rgba(113, 232, 42, 0.9)';
     $('#voteModal').on('shown.bs.modal', function(e) { //모달 실행이 끝나면 실행되는 function
+
+
+
         let calendarEl = document.getElementById('modalCal');
         let calendar = new FullCalendar.Calendar(calendarEl, {
             locale: 'ko',
@@ -569,6 +543,7 @@
         let url = "appo?code=" + "<%=code%>";
         $.ajax({
             url: "voteDate",
+            type: 'get',
             data: {
                 "voteInfo" : sendObj
             },

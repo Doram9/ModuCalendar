@@ -3,22 +3,36 @@ package kopo.poly.persistance.mongodb.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
+import kopo.poly.dto.AppoInfoDTO;
 import kopo.poly.dto.EventDTO;
 import kopo.poly.dto.UserInfoDTO;
+import kopo.poly.dto.VoteInfoDTO;
 import kopo.poly.persistance.mongodb.AbstractMongoDBComon;
 import kopo.poly.persistance.mongodb.IUserMapper;
 import kopo.poly.util.CmmUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 @Slf4j
 @Component("UserMapper")
 public class UserMapper extends AbstractMongoDBComon implements IUserMapper {
+
+    public final RedisTemplate<String, Object> redisDB;
+
+    public UserMapper(RedisTemplate<String, Object> redisDB) {
+        this.redisDB = redisDB;
+    }
 
     //로그인
     @Override
@@ -170,6 +184,39 @@ public class UserMapper extends AbstractMongoDBComon implements IUserMapper {
 
     }
 
+    @Override
+    public int resetPw(UserInfoDTO pDTO) throws Exception {
+
+        log.info("mapper.resetPw start");
+
+        String userId = pDTO.getUserId();
+        String userPw = pDTO.getUserPw();
+
+        log.info("userId : " + userId);
+        log.info("userPw : " + userPw);
+
+        String colNm = "User";
+
+        MongoCollection<Document> col = mongodb.getCollection(colNm);
+
+        Document query = new Document();
+        query.append("userId", userId);
+
+        Document updateQuery = new Document();
+
+        updateQuery.append("userPw", userPw);
+
+        UpdateResult rs = col.updateOne(query, new Document("$set", updateQuery));
+
+        log.info("rs : " + rs);
+        log.info("mapper.resetPw end");
+
+        int res = (int) rs.getMatchedCount();
+
+        return res;
+
+    }
+
     //회원가입
     @Override
     public int regUser(UserInfoDTO pDTO) throws Exception{
@@ -186,6 +233,80 @@ public class UserMapper extends AbstractMongoDBComon implements IUserMapper {
         col.insertOne(new Document(new ObjectMapper().convertValue(pDTO, Map.class)));
 
         res = 1;
+
+        return res;
+    }
+
+    @Override
+    public int deleteUser(UserInfoDTO pDTO) throws Exception {
+
+        log.info("mapper.deleteUser start");
+
+        String userId = pDTO.getUserId();
+        List<String> appoList = pDTO.getAppoList();
+        if(appoList == null) {
+            log.info("appoList = null");
+            appoList = new ArrayList<>();
+        }
+        List<String> prjList = pDTO.getPrjList();
+        if(prjList == null) {
+            prjList = new ArrayList<>();
+        }
+
+
+        //사용자가 속해있는 약속 방에 사용자 정보 제거
+        redisDB.setKeySerializer(new StringRedisSerializer());
+        redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(AppoInfoDTO.class));
+
+        for(String appoTitleCode : appoList) {
+
+            String[] appoArray = appoTitleCode.split("\\*_\\*");
+            String appoCode = appoArray[1];
+
+            AppoInfoDTO aDTO = null;
+            if(redisDB.hasKey(appoCode)) {
+                List<AppoInfoDTO> rList = (List) redisDB.opsForList().range(appoCode, 0, -1);
+                aDTO = rList.get(0);
+                Iterator<VoteInfoDTO> pList = aDTO.getUserlist().iterator();
+                List<VoteInfoDTO> nList = new ArrayList<>();
+                while(pList.hasNext()) {
+                    VoteInfoDTO vDTO = pList.next();
+                    String delid = vDTO.getUserid(); //나갈 아이디
+                    if(delid.equals(userId)) { //발견하면
+                        log.info("삭제 : " + delid);
+                    } else {
+                        log.info("유지 : " + delid);
+                        nList.add(vDTO);
+                    }
+                }
+
+                if(nList.size() == 0) { //방에 사람이 없으면
+                    redisDB.delete(appoCode);
+                } else {
+                    aDTO.setUserlist(nList);
+
+                    redisDB.opsForList().set(appoCode, 0, aDTO);
+                }
+
+            }
+        }
+
+        //사용자가 속해있는 프로젝트 방에 사용자 정보 제거
+
+
+        String colNm = "User";
+
+        MongoCollection<Document> col = mongodb.getCollection(colNm);
+
+        Document query = new Document();
+        query.append("userId", userId);
+
+        DeleteResult rs = col.deleteOne(query);
+
+        log.info("rs : " + rs);
+        log.info("mapper.resetPw end");
+
+        int res = (int) rs.getDeletedCount();
 
         return res;
     }

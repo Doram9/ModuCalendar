@@ -4,6 +4,7 @@ package kopo.poly.controller;
 import kopo.poly.dto.UserInfoDTO;
 import kopo.poly.service.IUserService;
 import kopo.poly.util.CmmUtil;
+import kopo.poly.util.EncryptUtil;
 import kopo.poly.util.MailUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.jasper.tagplugins.jstl.core.Url;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -86,18 +89,55 @@ public class UserRestController {
     }
 
     //비밀번호 재설정
-    @PostMapping(value = "doResetPw")
-    public String doResetPw(HttpServletRequest request) throws Exception {
+    @GetMapping(value = "doResetPw")
+    public String doResetPw(HttpServletRequest request, HttpSession session) throws Exception {
 
         log.info("controller.doResetPw start");
 
-        String userId = CmmUtil.nvl(request.getParameter("userId"));
+        String resetCode = CmmUtil.nvl(request.getParameter("resetCode"));
+        log.info("resetCode : " + resetCode);
         String resetPw = CmmUtil.nvl(request.getParameter("resetPw"));
+        log.info("resetPw : " + resetPw);
 
+        UserInfoDTO pDTO = new UserInfoDTO();
+        pDTO.setUserId(resetCode);
+        pDTO.setUserPw(EncryptUtil.encHashSHA256(resetPw));
 
+        int res = userSevice.resetPw(pDTO);
 
-        return "";
+        if(res == 1) {
+            session.invalidate();
+        }
+
+        return Integer.toString(res);
     }
 
+    //회원탈퇴
+    @GetMapping(value = "deleteUser")
+    public String deleteUser(HttpServletRequest request, HttpSession session) throws Exception {
+
+        log.info("controller.deleteUser start");
+
+        String userId = CmmUtil.nvl((String)session.getAttribute("userId"));
+        log.info(userId);
+        UserInfoDTO rDTO = userSevice.getUserInfo(userId);
+
+        UserInfoDTO pDTO = new UserInfoDTO();
+        pDTO.setUserId(userId);
+        pDTO.setAppoList(rDTO.getAppoList());
+        pDTO.setPrjList(rDTO.getPrjList());
+
+        String msg = "";
+
+        int res = userSevice.deleteUser(pDTO);
+        if(res == 1) {
+            session.invalidate();
+            msg = "정상적으로 회원탈퇴가 진행되었습니다. 이용해주셔서 감사합니다.";
+        } else {
+            msg = "회원탈퇴 과정에서 에러가 발생했습니다.";
+        }
+
+        return msg;
+    }
 
 }

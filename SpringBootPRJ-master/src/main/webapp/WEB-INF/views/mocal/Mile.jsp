@@ -6,6 +6,7 @@
 <%@ page import="java.util.List" %>
 <%
     UserInfoDTO pDTO = (UserInfoDTO) request.getAttribute("UserInfoDTO");
+    String prjCode = (String) request.getParameter("prjCode");
 
     if (pDTO == null) {
         pDTO = new UserInfoDTO();
@@ -173,13 +174,13 @@
         <main>
             <div class="container-fluid px-4">
                 <div class="mt-4"></div>
-                <form class="card mb-4">
+                <form class="card mb-4" onsubmit="send(event)">
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
                         내 마일스톤
 
                         <button type="button" class="btn btn-outline-danger">취소</button>
-                        <button type="submit" class="btn btn-outline-success" onsubmit="send()">저장</button>
+                        <button type="submit" class="btn btn-outline-success">저장</button>
                     </div>
 
                     <!-- 마일스톤 container -->
@@ -273,13 +274,6 @@
 
                             </div>
                         </div>
-
-
-
-
-
-
-
 
 
                     </div>
@@ -698,19 +692,20 @@
         mileArr[idx][mileNum] = (mileArr[idx][mileNum]) ? false : true;
     }
 
-    function send() {
-
-        let obj = JSON.stringify({"mileInfo" : allInfo});
+    function send(event) {
+        event.preventDefault();
+        let obj = JSON.stringify({"allInfo" : allInfo, "prjCode" : <%= prjCode%>});
+        alert(obj);
 
         $.ajax({
             url: "updateMile",
-            type: 'post',
+            type: 'get',
             data: obj,
             dataType: "text",
             contentType: "application/json; charset=utf-8",
 
             success: function(result) {
-
+                location.href = "/";
             },
             error: function(request,status,error) {
                 //alert("아이디 또는 비밀번호가 일치하지 않습니다.");

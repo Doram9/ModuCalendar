@@ -6,10 +6,13 @@ import kopo.poly.dto.UserInfoDTO;
 import kopo.poly.service.IAppoService;
 import kopo.poly.service.IEventService;
 import kopo.poly.service.IUserService;
+import kopo.poly.service.IWeatherService;
 import kopo.poly.service.impl.AppoService;
+import kopo.poly.service.impl.WeatherService;
 import kopo.poly.util.CmmUtil;
 import kopo.poly.util.DateUtil;
 import kopo.poly.util.EncryptUtil;
+import kopo.poly.util.KeyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Controller;
@@ -28,6 +31,9 @@ import java.util.Map;
 @Slf4j
 @Controller
 public class AppointmentController {
+
+    @Resource(name = "WeatherService")
+    private IWeatherService weatherService;
 
     @Resource(name = "AppoService")
     private IAppoService appoService;
@@ -50,7 +56,6 @@ public class AppointmentController {
         pMap.put("title", title);
         pMap.put("appoCode", appoCode);
 
-
         AppoInfoDTO rDTO = appoService.getAppoInfo(pMap);
 
         if(rDTO == null) {
@@ -61,7 +66,21 @@ public class AppointmentController {
         model.addAttribute("UserInfoDTO", pDTO);
         model.addAttribute("AppoInfoDTO", rDTO);
 
+
+
         return "/mocal/Appo";
+    }
+
+    //미세먼지 정보 가져오기
+    @GetMapping(value = "getDustInfo")
+    @ResponseBody
+    public String getDustInfo() throws Exception {
+
+        String appKey = KeyUtil.getDustKey();
+
+        String res = weatherService.getDustInfo(appKey);
+
+        return res;
     }
 
 
