@@ -22,6 +22,10 @@
 	if(appoList == null) {
 		appoList = new ArrayList<>();
 	}
+	List<String> prjList = pDTO.getPrjList();
+	if(prjList == null) {
+		prjList = new ArrayList<>();
+	}
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -137,26 +141,13 @@
 							i++;
 						}
 					%>
-
-					<button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#addAppo">
+					<div class="mt-2"></div>
+					<button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#addAppo">
 						약속 추가하기
 					</button>
-					<button class="btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#inputCode">초대코드 입력하기</button>
-					<div class="sb-sidenav-menu-heading">프로젝트 목록</div>
-					<a class="nav-link" href="charts.html">
-						<div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-						팀프로젝트
-					</a>
-
-					<button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#teamPrj">
-						프로젝트 추가하기
-					</button>
-					<button class="btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#appoCode">프로젝트 참가하기</button>
+					<div class="mt-2"></div>
+					<button type="button" class="btn btn-dark btn-outline-warning" data-bs-toggle="modal" data-bs-target="#inputCode">초대코드 입력하기</button>
 				</div>
-			</div>
-			<div class="sb-sidenav-footer">
-				<div class="small">Logged in as:</div>
-				Start Bootstrap
 			</div>
 		</nav>
 	</div>
@@ -181,35 +172,38 @@
 							<div class="card-header">
 								<i class="fas fa-chart-bar me-1"></i>
 								내 프로젝트
+								<button class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#appoCode">프로젝트 참가하기</button>
 							</div>
 
-							<!--마일스톤 -->
+							<!--프로젝트 -->
 							<div class="card-body row justify-content-center">
 
 								<div class="card" style="width: 18rem;">
-									<div class="card-body btn btn-warning">
-										<h6 class="card-subtitle mb-2 text-muted">아직 마일스톤이 없습니다</h6>
-										<p class="card-text">마일스톤 추가하기</p>
+									<div class="card-body btn btn-success" data-bs-toggle="modal" data-bs-target="#teamPrj">
+										<p class="card-text">프로젝트 추가하기</p>
 									</div>
 								</div>
 							</div>
+								<%
+									for(String titleCode : prjList) {
+										String parse[] = titleCode.split("\\*_\\*");
+										String title = parse[0];
+										String code = parse[1];
+
+								%>
+								<div class="card" style="width: 18rem;">
+									<div class="card-body btn btn-primary" data-bs-toggle="modal" data-bs-target="#teamPrj" href="prj?code=<%= code%>">
+										<p class="card-text"><%= title%></p>
+									</div>
+								</div>
+								<%
+									}
+								%>
 						</div>
 					</div>
 				</div>
 			</div>
 		</main>
-		<footer class="py-4 bg-light mt-auto">
-			<div class="container-fluid px-4">
-				<div class="d-flex align-items-center justify-content-between small">
-					<div class="text-muted">Copyright &copy; Your Website 2022</div>
-					<div>
-						<a href="#">Privacy Policy</a>
-						&middot;
-						<a href="#">Terms &amp; Conditions</a>
-					</div>
-				</div>
-			</div>
-		</footer>
 	</div>
 </div>
 
@@ -232,7 +226,7 @@
 					<p name="userRegDt" class="form-control" id="userRegDt"><%= pDTO.getRegDt()%></p>
 				</div>
 				<div class="mb-3">
-					<label for="userPw" class="form-label">비밀번호</label> <button class="btn btn-sm btn-outline-success" onclick="chgPw()">비밀번호 변경하기</button>
+					<label for="userPw" class="form-label">비밀번호</label> <button class="btn btn-sm btn-outline-info" onclick="chgPw()">비밀번호 변경하기</button>
 					<p name="userPw" class="form-control" id="userPw">**********</p>
 				</div>
 				<div class="mb-3 row justify-content-end">
@@ -266,8 +260,8 @@
 					<option value="5">앞으로 5일</option>
 					<option value="7">앞으로 7일</option>
 				</select>
-
-				<p>투표 기한</p>
+				<div class="mb-3"></div>
+				<p>약속 장소</p>
 				<select name="region" class="form-select form-select-sm" aria-label=".form-select-sm example">
 					<option value="서울">서울</option>
 					<option value="인천">인천</option>
@@ -294,7 +288,7 @@
 
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-				<button type="submit" class="btn btn-primary">생성</button>
+				<button type="submit" class="btn btn-warning">생성</button>
 			</div>
 		</form>
 	</div>
@@ -303,7 +297,7 @@
 <!-- teamPrj Modal -->
 <div class="modal fade" id="teamPrj" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel4" aria-hidden="true">
 	<div class="modal-dialog">
-		<form class="modal-content" action="mkPlan.do" method="post">
+		<form class="modal-content" action="createPrj" method="get">
 			<div class="modal-header">
 				<h5 class="modal-title" id="staticBackdropLabel4">새 프로젝트</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -313,14 +307,20 @@
 				<div class="mb-3">
 					<label for="exampleFormControlInput4" class="form-label">프로젝트 제목</label>
 					<input type="text" name="title" class="form-control" autocomplete="off" id="exampleFormControlInput4" placeholder="" required>
-
 				</div>
+
+				<label for="startdatepicker" class="form-label">시작날짜</label>
+				<input type="text" name="startDate" autocomplete="off" id="prjstartdatepicker" required>
+				<br />
+				<label for="enddatepicker" class="form-label">종료날짜</label>
+				<input type="text" name="endDate" autocomplete="off" id="prjenddatepicker">
+				<br />
 			</div>
 
 
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-				<button type="submit" class="btn btn-primary">생성</button>
+				<button type="submit" class="btn btn-success">생성</button>
 			</div>
 		</form>
 	</div>
@@ -375,7 +375,7 @@
 
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-				<button type="submit" class="btn btn-primary">참가</button>
+				<button type="submit" class="btn btn-outline-dark btn-warning">참가</button>
 			</div>
 		</form>
 	</div>
@@ -400,6 +400,28 @@
 
 <!-- monthpicker -->
 <script src="js/jquery.mtz.monthpicker.js"></script>
+
+<!-- 팀프로젝트 일정 -->
+<script>
+	$("#prjstartdatepicker").datepicker();
+	$("#prjenddatepicker").datepicker();
+
+
+	//시작일 선택시 종료일 제한걸기-선택일자로 부터 1년뒤 전달의 마지막날로
+	$("#prjstartdatepicker").datepicker("option", "onClose", function(selectedDate) {
+		if(document.getElementById("prjstartdatepicker").value != '') {
+
+			//yyyy-mm-dd를 split으로 나누고 년,월에 하나씩 넣기, 일은 전달의 마지막 날을 넣기 때문에 0
+			let yyyymmdd = selectedDate.split('-');
+			let maxDate = new Date(Number(yyyymmdd[0]) + 1, Number(yyyymmdd[1]) - 1, 0);
+			$("#prjenddatepicker").datepicker("option", "minDate", selectedDate);
+			$("#prjenddatepicker").datepicker("option", "maxDate", maxDate);
+
+		}
+
+	});
+</script>
+
 
 <script>
 

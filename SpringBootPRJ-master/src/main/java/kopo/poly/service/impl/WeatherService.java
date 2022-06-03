@@ -34,7 +34,8 @@ public class WeatherService implements IWeatherService {
     public DustInfoDTO getDustInfo(String region) throws Exception {
 
         //오늘 날짜이자 미세먼지정보 redisKey
-        String today = DateUtil.getDateTime("yyyy-MM-dd");
+        String today = DateUtil.addDateYMD(-3);
+        log.info("요청 일자 : " + today);
 
         DustInfoDTO rDTO = weatherMapper.getDustInfo(today);
 
@@ -67,6 +68,7 @@ public class WeatherService implements IWeatherService {
             rd.close();
             conn.disconnect();
 
+            log.info("REST API RESULT : " + sb.toString());
             //2. Parser
             JSONParser jsonParser = new JSONParser();
 
@@ -75,21 +77,32 @@ public class WeatherService implements IWeatherService {
 
             //4. To JsonObject
             JSONObject jsonObj = (JSONObject) obj;
+            log.info("jsonObj : " + jsonObj.toString());
+            JSONObject jsonObj_1 = (JSONObject) jsonObj.get("response");
+            log.info("jsonObj_1 : " + jsonObj_1.toString());
+            JSONObject jsonObj_2 = (JSONObject) jsonObj_1.get("body");
+            log.info("jsonObj_2 : " + jsonObj_2.toString());
+            JSONArray items = (JSONArray) jsonObj_2.get("items");
+            log.info("items : " + items.toString());
+            log.info("jsonArray Size : " + items.size());
+            JSONObject item = (JSONObject) items.get(0);
+
 
             DustInfoDTO pDTO = new DustInfoDTO();
-            pDTO.setPresnatnDt((String)jsonObj.get("presnatnDt"));
+            pDTO.setPresnatnDt((String)item.get("presnatnDt"));
+            log.info("요청날짜 : " + pDTO.getPresnatnDt());
 
-            pDTO.setFrcstOneDt((String)jsonObj.get("frcstOneDt"));
-            pDTO.setFrcstOneCn((String)jsonObj.get("frcstOneCn"));
+            pDTO.setFrcstOneDt((String)item.get("frcstOneDt"));
+            pDTO.setFrcstOneCn((String)item.get("frcstOneCn"));
 
-            pDTO.setFrcstTwoDt((String)jsonObj.get("frcstTwoDt"));
-            pDTO.setFrcstTwoCn((String)jsonObj.get("frcstTwoCn"));
+            pDTO.setFrcstTwoDt((String)item.get("frcstTwoDt"));
+            pDTO.setFrcstTwoCn((String)item.get("frcstTwoCn"));
 
-            pDTO.setFrcstThreeDt((String)jsonObj.get("frcstThreeDt"));
-            pDTO.setFrcstThreeCn((String)jsonObj.get("frcstThreeCn"));
+            pDTO.setFrcstThreeDt((String)item.get("frcstThreeDt"));
+            pDTO.setFrcstThreeCn((String)item.get("frcstThreeCn"));
 
-            pDTO.setFrcstFourDt((String)jsonObj.get("frcstFourDt"));
-            pDTO.setFrcstFourCn((String)jsonObj.get("frcstFourCn"));
+            pDTO.setFrcstFourDt((String)item.get("frcstFourDt"));
+            pDTO.setFrcstFourCn((String)item.get("frcstFourCn"));
 
             rDTO = weatherMapper.insertDustInfo(pDTO);
         }

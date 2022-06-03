@@ -1,34 +1,69 @@
 package kopo.poly.controller;
 
 
-import kopo.poly.dto.miledto.AllInfoDTO;
-import kopo.poly.dto.miledto.MileInfoDTO;
-import kopo.poly.service.ITeamPrjService;
-import kopo.poly.service.IUserService;
+import kopo.poly.dto.MileDTO;
+import kopo.poly.dto.PlayerInfo;
+import kopo.poly.dto.PrjInfoDTO;
+import kopo.poly.service.IPrjService;
+import kopo.poly.util.CmmUtil;
+import kopo.poly.util.DateUtil;
+import kopo.poly.util.EncryptUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @Slf4j
-@RestController
+@Controller
 public class TeamPrjController {
 
-    @Resource(name = "TeamPrjService")
-    private ITeamPrjService teamPrjService;
+    @Resource(name = "PrjService")
+    private IPrjService prjService;
 
     //팀프로젝트방 페이지
     @GetMapping(value = "teamPrj")
     public String teamPrjPage() throws Exception {
         log.info("controller.title start");
         return "teamPrj";
+    }
+    //팀프로젝트 생성
+    @GetMapping(value = "createPrj")
+    public String createPrj(HttpServletRequest request, HttpSession session) throws Exception {
+        log.info("controller.createPrj start");
+        String userId = (String) session.getAttribute("userId");
+        String title = CmmUtil.nvl(request.getParameter("title"));
+        String startPrjDate = CmmUtil.nvl(request.getParameter("startDate"));
+        String endPrjDate = CmmUtil.nvl(request.getParameter("endDate"));
+        String regDt = DateUtil.getDateTime("yyyy-MM-dd");
+        String prjCode = title + "*_*" + EncryptUtil.encHashSHA256(regDt);
+
+        PrjInfoDTO pDTO = new PrjInfoDTO();
+        pDTO.setPrjCode(prjCode);
+        pDTO.setPrjTitle(title);
+        pDTO.setPrjStartDate(startPrjDate);
+        pDTO.setPrjEndDate(endPrjDate);
+        pDTO.setPrjRegDt(regDt);
+        MileDTO mDTO = new MileDTO();
+        pDTO.setPrjMileInfo(mDTO);
+        PlayerInfo lDTO = new PlayerInfo();
+        lDTO.setUserId(userId);
+        lDTO.setUserName((String) session.getAttribute("userName"));
+        lDTO.setUserRole("팀장");
+        lDTO.setUserGrant("master");
+        List<PlayerInfo> pList = new ArrayList<>();
+        pList.add(lDTO);
+        pDTO.setPrjPlayer(pList);
+
+        int res = prjService.createPrj(pDTO, userId);
+
+
+        return "redirect:/";
     }
     //초대코드입력 페이지
 
@@ -37,18 +72,4 @@ public class TeamPrjController {
     //단체채팅 페이지
 
     //마일스톤수정
-    @GetMapping(value = "updateMile")
-    public String updateMile(HttpServletRequest request, HttpSession session) throws Exception {
-        log.info("controller.updateMile start");
-
-        String allInfo = request.getParameter("allInfo");
-        String prjCode = request.getParameter("prjCode");
-
-        HashMap<String, Object> pMap = new HashMap<>();
-        pMap.put("prjCode", prjCode);
-        pMap.put("allInfo", allInfo);
-
-        int res = teamPrjService.updateMile(pMap);
-        return Integer.toString(res);
-    }
 }

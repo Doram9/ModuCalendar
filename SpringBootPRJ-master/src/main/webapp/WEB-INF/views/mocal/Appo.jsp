@@ -6,18 +6,22 @@
          pageEncoding="UTF-8"%>
 <%
     AppoInfoDTO aDTO = (AppoInfoDTO) request.getAttribute("AppoInfoDTO");
-    UserInfoDTO uDTO = (UserInfoDTO) request.getAttribute("UserInfoDTO");
+    UserInfoDTO pDTO = (UserInfoDTO) request.getAttribute("UserInfoDTO");
     DustInfoDTO wDTO = (DustInfoDTO) request.getAttribute("DustInfoDTO");
 
-    if (uDTO == null) {
-        uDTO = new UserInfoDTO();
+    if(wDTO == null) {
+        wDTO = new DustInfoDTO();
     }
-    List<EventDTO> eList = uDTO.getEventList();
+
+    if (pDTO == null) {
+        pDTO = new UserInfoDTO();
+    }
+    List<EventDTO> eList = pDTO.getEventList();
 
     if (eList == null) {
         eList = new ArrayList<>();
     }
-    List<String> appoList = uDTO.getAppoList();
+    List<String> appoList = pDTO.getAppoList();
 
     if (appoList == null) {
         appoList = new ArrayList<>();
@@ -133,10 +137,9 @@
             <div class="sb-sidenav-menu">
                 <div class="nav">
                     <div class="sb-sidenav-menu-heading">내 정보</div>
-                    <a class="nav-link" href="myInfo">
+                    <a class="nav-link" data-bs-toggle="modal" data-bs-target="#userInfo">
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                        <%=uDTO.getUserName()%>
-
+                        <%= pDTO.getUserName()%>
                     </a>
                     <div class="sb-sidenav-menu-heading">약속 목록</div>
                     <%
@@ -167,25 +170,13 @@
                             i++;
                         }
                     %>
-                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#addAppo">
+                    <div class="mt-2"></div>
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#addAppo">
                         약속 추가하기
                     </button>
-                    <button class="btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#inputCode">초대코드 입력하기</button>
-                    <div class="sb-sidenav-menu-heading">프로젝트 목록</div>
-                    <a class="nav-link" href="charts.html">
-                        <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                        팀프로젝트
-                    </a>
-
-                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#teamPrj">
-                        프로젝트 추가하기
-                    </button>
-                    <button class="btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#appoCode">프로젝트 참가하기</button>
+                    <div class="mt-2"></div>
+                    <button type="button" class="btn btn-dark btn-outline-warning" data-bs-toggle="modal" data-bs-target="#inputCode">초대코드 입력하기</button>
                 </div>
-            </div>
-            <div class="sb-sidenav-footer">
-                <div class="small">Logged in as:</div>
-                Start Bootstrap
             </div>
         </nav>
     </div>
@@ -271,9 +262,9 @@
                     </div>
                     <div class="card-body row">
                         <%
-                            for (VoteInfoDTO pDTO : userlist) {
-                                String username = pDTO.getUsername();
-                                boolean votetf = pDTO.isVotetf();
+                            for (VoteInfoDTO vDTO : userlist) {
+                                String username = vDTO.getUsername();
+                                boolean votetf = vDTO.isVotetf();
                                 String checktag = "";
                                 if (votetf) {
                                     checktag = "<i class=\"bi bi-check2-circle\" style=\"color: red\"></i>";
@@ -309,6 +300,36 @@
     </div>
 </div>
 
+<!-- UserInfo Modal -->
+<div class="modal fade" id="userInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelUserInfo" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabelUserInfo">내 정보</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="userName" class="form-label">이름</label>
+                    <p name="userName" class="form-control" id="userName"><%= pDTO.getUserName()%></p>
+                </div>
+                <div class="mb-3">
+                    <label for="userRegDt" class="form-label">가입일</label>
+                    <p name="userRegDt" class="form-control" id="userRegDt"><%= pDTO.getRegDt()%></p>
+                </div>
+                <div class="mb-3">
+                    <label for="userPw" class="form-label">비밀번호</label> <button class="btn btn-sm btn-outline-info" onclick="chgPw()">비밀번호 변경하기</button>
+                    <p name="userPw" class="form-control" id="userPw">**********</p>
+                </div>
+                <div class="mb-3 row justify-content-end">
+                    <button class="btn btn-sm btn-warning btn-outline-danger col-6" onclick="deleteUser()">회원탈퇴하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Appo Modal -->
 <div class="modal fade" id="addAppo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -332,8 +353,8 @@
                     <option value="5">앞으로 5일</option>
                     <option value="7">앞으로 7일</option>
                 </select>
-
-                <p>투표 기한</p>
+                <div class="mb-3"></div>
+                <p>약속 장소</p>
                 <select name="region" class="form-select form-select-sm" aria-label=".form-select-sm example">
                     <option value="서울">서울</option>
                     <option value="인천">인천</option>
@@ -366,33 +387,6 @@
     </div>
 </div>
 
-<!-- teamPrj Modal -->
-<div class="modal fade" id="teamPrj" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel4" aria-hidden="true">
-    <div class="modal-dialog">
-        <form class="modal-content" action="mkPlan.do" method="post">
-            <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel4">새 프로젝트</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label for="exampleFormControlInput4" class="form-label">프로젝트 제목</label>
-                    <input type="text" name="title" class="form-control" autocomplete="off" id="exampleFormControlInput4" placeholder="" required>
-
-                </div>
-            </div>
-
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                <button type="submit" class="btn btn-primary">생성</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-
 <!-- inputCode Modal -->
 <div class="modal fade" id="inputCode" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
     <div class="modal-dialog">
@@ -420,12 +414,13 @@
 <!-- Modal -->
 <div class="modal fade" id="voteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form class="modal-content" action="planPage.html">
+        <form class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">투표하기</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <i class="bi bi-square-fill" style="color : #004EA2"></i>미세먼지 정보
                 <div id="modalCal" class="mt-2"></div>
                 <!-- Page content-->
                 <div class="container-fluid">
@@ -465,15 +460,6 @@
 <!-- 카카오 api-->
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 
-<script>
-    function deleteRoom(roomcode, title) {
-        let answer = confirm("정말로 방을 삭제하시겠습니까?(다른 사람의 약속방 리스트에서는 삭제되지 않습니다.)");
-        if(answer) {
-            location.href = 'delPlan.do?roomcode=' + roomcode + "&title=" + title;
-        }
-    }
-
-</script>
 
 <script>
     Kakao.init('8fcf17bb04b908af3af02d2234b9f1dc');
@@ -496,8 +482,6 @@
     let redcol = 'rgba(232, 38, 37, 0.9)';
     let greencol = 'rgba(113, 232, 42, 0.9)';
     $('#voteModal').on('shown.bs.modal', function(e) { //모달 실행이 끝나면 실행되는 function
-
-
 
         let calendarEl = document.getElementById('modalCal');
         let calendar = new FullCalendar.Calendar(calendarEl, {
@@ -529,7 +513,7 @@
                     start  : '<%=CmmUtil.nvl(wDTO.getFrcstFourDt())%>'
                 },
             ],
-            eventColor: '#1e57c9',
+            eventColor: '#004EA2',
             dateClick: function DateClick(info) {
                 let day = String(info.dateStr);
                 if(document.getElementById("inlineRadio1").checked) {
@@ -706,6 +690,18 @@
         });
     }
 
+</script>
+
+<script>
+    function chgPw() {
+        location.href = "resetPw?code=<%=CmmUtil.nvl(pDTO.getUserId())%>";
+    }
+
+    function deleteUser() {
+        if(confirm("정말로 회원을 탈퇴하시겠습니까? (주의! 되돌릴 수 없습니다.)")){
+            location.href = "deleteUser";
+        }
+    }
 </script>
 
 </body>

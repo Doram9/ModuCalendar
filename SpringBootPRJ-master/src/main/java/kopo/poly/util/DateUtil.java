@@ -51,4 +51,21 @@ public class DateUtil {
         return date.format(cal.getTime());
 
     }
+    public static String addDateYMD(int day) throws Exception {
+
+        SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+
+        Calendar cal = Calendar.getInstance();
+
+        Date today = new Date();
+
+        cal.setTime(today);
+
+        cal.add(Calendar.DATE, day);
+
+        return date.format(cal.getTime());
+
+
+    }
+
 }
