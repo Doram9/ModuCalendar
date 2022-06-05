@@ -18,7 +18,7 @@
 <body class="sb-nav">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="/">Start Bootstrap</a>
+    <a class="navbar-brand ps-3" href="/">Modu Calendar</a>
 </nav>
 <div id="layoutSidenav">
     <div id="layoutSidenav_content">
@@ -43,9 +43,12 @@
                                         <a class="btn btn-primary" onclick="doLogin()">로그인</a>
                                     </div>
                                 </form>
+                                <div class="mt-2" id="capcha">
+                                    <div id="mes"></div>
+                                    <canvas id="captchaCanvas" style="background-color: #dee2e6;"></canvas>
+                                </div>
 
-                                <p id="mes"></p>
-                                <canvas id="captcha" style="background-color: #f6f9fc;"></canvas>
+
                             </div>
                             <div class="card-footer text-center py-3">
                                 <div class="small"><a href="register">아직 계정이 없으신가요? 회원가입 하러가기</a></div>
@@ -115,12 +118,13 @@
 
 
 
-    const canvas = document.querySelector("#captcha");
+    const capcha = document.getElementById("capcha");
+    const canvas = document.querySelector("#captchaCanvas");
     const ctx = canvas.getContext("2d");
     const mes = document.querySelector("#mes");
-    const CANVASSIZE = 300;
+    const CANVASSIZE = 250;
     canvas.width =  CANVASSIZE;
-    canvas.height = CANVASSIZE * 1.5;
+    canvas.height = CANVASSIZE;
 
     //도형 사이즈 : canvas 사이즈 / 10
     const figsize = CANVASSIZE / 10;
@@ -128,11 +132,18 @@
 
     let color = ['#2c2c2c', '#FF3B30', '#0579FF'];
     let colorName = ["빨강색", "검정색", "파랑색"];
-
-    function shuffle(array) {
-        for (let i = array.length - 1; i > 0; i--) {
+    let colorClass = ["alert alert-danger", "alert alert-dark", "alert alert-primary"];
+    function shuffle(array_1, array_2) {
+        for (let i = array_1.length - 1; i > 0; i--) {
             let j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
+            [array_1[i], array_1[j]] = [array_1[j], array_1[i]];
+            [array_2[i], array_2[j]] = [array_2[j], array_2[i]];
+        }
+    }
+    function shuffle_color(array_1) {
+        for (let i = array_1.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            [array_1[i], array_1[j]] = [array_1[j], array_1[i]];
         }
     }
 
@@ -156,9 +167,10 @@
             ctx.fillRect(x,y, figsize, figsize);
         }
     }
-    shuffle(colorName);
+    shuffle(colorName, colorClass);
+    mes.className = colorClass[0];
     mes.innerText = colorName[0] + "을 클릭하십시오";
-    shuffle(color);
+    shuffle_color(color);
     fill();
 
 
@@ -168,19 +180,19 @@
         const clickedColor = ctx.getImageData(x, y, 1, 1);
         let test = clickedColor.data[0];
         if(colorName[0] == "빨강색" && test == 255) {
-            alert("통과");
             capchaTF = true;
+            capcha.style.display = 'none';
         } else if(colorName[0] == "파랑색" && test == 5) {
-            alert("통과");
             capchaTF = true;
+            capcha.style.display = 'none';
         } else if(colorName[0] == "검정색" && test == 44) {
-            alert("통과");
             capchaTF = true;
+            capcha.style.display = 'none';
         } else {
-            alert("실패");
             canvasReset();
-            shuffle(color);
-            shuffle(colorName);
+            shuffle_color(color);
+            shuffle(colorName, colorClass);
+            mes.className = colorClass[0];
             mes.innerText = colorName[0] + "을 클릭하십시오";
             fill();
         }

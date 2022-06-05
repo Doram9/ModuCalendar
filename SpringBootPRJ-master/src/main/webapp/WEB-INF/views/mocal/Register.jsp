@@ -17,7 +17,7 @@
 <body class="sb-nav">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
+    <a class="navbar-brand ps-3" href="/">Modu Calendar</a>
     <!-- 여백-->
     <div class="ms-auto"></div>
 </nav>

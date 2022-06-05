@@ -83,7 +83,6 @@
             return 0;
         }
         let resetCode = "<%=resetCode%>";
-        alert(resetCode);
         $.ajax({
             url: "doResetPw",
             type: 'get',

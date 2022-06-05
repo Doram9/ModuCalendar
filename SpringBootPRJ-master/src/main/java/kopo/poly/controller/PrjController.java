@@ -1,36 +1,51 @@
 package kopo.poly.controller;
 
 
-import kopo.poly.dto.MileDTO;
-import kopo.poly.dto.PlayerInfo;
-import kopo.poly.dto.PrjInfoDTO;
+import kopo.poly.dto.*;
 import kopo.poly.service.IPrjService;
+import kopo.poly.service.IUserService;
 import kopo.poly.util.CmmUtil;
 import kopo.poly.util.DateUtil;
 import kopo.poly.util.EncryptUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
 @Controller
-public class TeamPrjController {
-
+public class PrjController {
+    @Resource(name = "UserService")
+    private IUserService userSevice;
     @Resource(name = "PrjService")
     private IPrjService prjService;
 
     //팀프로젝트방 페이지
-    @GetMapping(value = "teamPrj")
-    public String teamPrjPage() throws Exception {
-        log.info("controller.title start");
-        return "teamPrj";
+    @GetMapping(value = "prj")
+    public String prjPage(HttpServletRequest request, ModelMap model, HttpSession session) throws Exception {
+        log.info("controller.prjPage start");
+
+        String prjCode = request.getParameter("code");
+        log.info("prjCode : "  + prjCode);
+
+        String userId = CmmUtil.nvl((String)session.getAttribute("userId"));
+
+
+        if(false) {
+            return "/";
+        } else {
+            UserInfoDTO pDTO = userSevice.getUserInfo(userId);
+
+            model.addAttribute("UserInfoDTO", pDTO);
+
+            return "/mocal/Prj";
+        }
     }
     //팀프로젝트 생성
     @GetMapping(value = "createPrj")
@@ -72,4 +87,10 @@ public class TeamPrjController {
     //단체채팅 페이지
 
     //마일스톤수정
+    @GetMapping(value = "mile")
+    public String updateMile(HttpServletRequest request, ModelMap model) throws Exception {
+        log.info("controller.updateMile start");
+
+        return "/mocal/Mile";
+    }
 }

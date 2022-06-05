@@ -156,46 +156,28 @@
 			<div class="container-fluid px-4">
 				<div class="mt-4"></div>
 				<div class="row">
-					<div class="col-xl-5">
-						<div class="card mb-4">
-							<div class="card-header">
-								<i class="fas fa-chart-area me-1"></i>
-								내 일정
-							</div>
-							<div class="card-body">
-								<div id="calendar" class="mt-2"></div> <!-- 캘린더 -->
-							</div>
-						</div>
-					</div>
 					<div class="col-xl-7">
 						<div class="card mb-4">
 							<div class="card-header">
-								<i class="fas fa-chart-bar me-1"></i>
-								내 프로젝트
-								<button class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#appoCode">프로젝트 참가하기</button>
+								<i class="fas fa-chart-area me-1"></i>
+								프로젝트 마일스톤
+								<a class="btn btn-outline-success" href="mile">추가</a>
+								<button class="btn btn-outline-warning" onclick="deleteMile()">삭제</button>
 							</div>
+							<div class="card-body">
 
-							<!--프로젝트 -->
-								<div class="card">
-									<div class="card-body btn btn-success" data-bs-toggle="modal" data-bs-target="#teamPrj">
-										<p class="card-text">프로젝트 추가하기</p>
-									</div>
-								</div>
-								<%
-									for(String titleCode : prjList) {
-										String parse[] = titleCode.split("\\*_\\*");
-										String title = parse[0];
-										String code = parse[1];
-
-								%>
-								<div class="card">
-									<a class="card-body btn btn-primary" href="prj?code=<%= code%>">
-										<p class="card-text"><%= title%></p>
-									</a>
-								</div>
-								<%
-									}
-								%>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-5">
+						<div class="card mb-4">
+							<div class="card-header">
+								<i class="fas fa-chart-bar me-1"></i>
+								팀 채팅
+							</div>
+							<div class="card-body">
+								dsfsadf
+							</div>
 						</div>
 					</div>
 				</div>
@@ -291,71 +273,9 @@
 	</div>
 </div>
 
-<!-- teamPrj Modal -->
-<div class="modal fade" id="teamPrj" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel4" aria-hidden="true">
-	<div class="modal-dialog">
-		<form class="modal-content" action="createPrj" method="get">
-			<div class="modal-header">
-				<h5 class="modal-title" id="staticBackdropLabel4">새 프로젝트</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-
-			<div class="modal-body">
-				<div class="mb-3">
-					<label for="exampleFormControlInput4" class="form-label">프로젝트 제목</label>
-					<input type="text" name="title" class="form-control" autocomplete="off" id="exampleFormControlInput4" placeholder="" required>
-				</div>
-
-				<label for="startdatepicker" class="form-label">시작날짜</label>
-				<input type="text" name="startDate" autocomplete="off" id="prjstartdatepicker" required>
-				<br />
-				<label for="enddatepicker" class="form-label">종료날짜</label>
-				<input type="text" name="endDate" autocomplete="off" id="prjenddatepicker">
-				<br />
-			</div>
-
-
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-				<button type="submit" class="btn btn-success">생성</button>
-			</div>
-		</form>
-	</div>
-</div>
-
-<!-- Event Modal -->
-<div class="modal fade" id="addEvent" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel3" aria-hidden="true">
-	<div class="modal-dialog">
-		<form class="modal-content" onsubmit="makeEvent(event)">
-			<div class="modal-header">
-				<h5 class="modal-title" id="staticBackdropLabel3">새 일정</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-
-			<div class="modal-body">
-				<div class="mb-3">
-					<label for="title" class="form-label">일정 제목</label>
-					<input type="text" name="title" class="form-control" autocomplete="off" id="title" required>
-
-				</div>
-				<label for="startdatepicker" class="form-label">시작날짜</label>
-				<input type="text" name="startMonth" autocomplete="off" id="startdatepicker" required>
-				<br />
-				<label for="enddatepicker" class="form-label">종료날짜</label>
-				<input type="text" name="endMonth" autocomplete="off" id="enddatepicker">
-				<br />
-			</div>
-
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-				<button type="submit" class="btn btn-primary">생성</button>
-			</div>
-		</form>
-	</div>
-</div>
-
 <!-- inputCode Modal -->
-<div class="modal fade" id="inputCode" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+<div class="modal fade" id="inputCode" data-bs-bac
+	 kdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
 	<div class="modal-dialog">
 		<form class="modal-content" onsubmit="inputCode(event)">
 			<div class="modal-header">
@@ -387,9 +307,6 @@
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
 <script src="js/datatables-simple-demo.js"></script>
 
-<!-- 풀캘린더 -->
-<script src='js/fullcal/main.js'></script>
-<script src='js/fullcal/locales-all.js'></script>
 
 <!-- 데이트피커용 j쿼리 -->
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -398,142 +315,6 @@
 <!-- monthpicker -->
 <script src="js/jquery.mtz.monthpicker.js"></script>
 
-<!-- 팀프로젝트 일정 -->
-<script>
-	$("#prjstartdatepicker").datepicker();
-	$("#prjenddatepicker").datepicker();
-
-
-	//시작일 선택시 종료일 제한걸기-선택일자로 부터 1년뒤 전달의 마지막날로
-	$("#prjstartdatepicker").datepicker("option", "onClose", function(selectedDate) {
-		if(document.getElementById("prjstartdatepicker").value != '') {
-
-			//yyyy-mm-dd를 split으로 나누고 년,월에 하나씩 넣기, 일은 전달의 마지막 날을 넣기 때문에 0
-			let yyyymmdd = selectedDate.split('-');
-			let maxDate = new Date(Number(yyyymmdd[0]) + 1, Number(yyyymmdd[1]) - 1, 0);
-			$("#prjenddatepicker").datepicker("option", "minDate", selectedDate);
-			$("#prjenddatepicker").datepicker("option", "maxDate", maxDate);
-
-		}
-
-	});
-</script>
-
-
-<script>
-
-
-	//document.addEventListener('DOMContentLoaded', function() {
-	let calendarEl = document.getElementById('calendar');
-	let calendar = new FullCalendar.Calendar(calendarEl, {
-		locale: 'ko',
-		headerToolbar: {
-			left: 'title',
-			center: '',
-			right: 'prev,next,today'
-		},
-		height: 'auto',
-		selectable: true,
-		select: function(info) {
-			$("#startdatepicker").datepicker();
-			$("#enddatepicker").datepicker();
-			//시작일 설정
-			$("#startdatepicker").datepicker("setDate", info.start);
-			$("#enddatepicker").datepicker("setDate", info.end);
-
-			$('#startdatepicker').datepicker("option", "onClose", function(selectedDate) {
-				$("#enddatepicker").datepicker("option", "minDate", selectedDate);
-			});
-
-			$('#enddatepicker').datepicker("option", "minDate", $("#startdatepicker").val());
-
-
-			$('#addEvent').modal('show');
-		},
-		weekends: true,
-		events: [
-				<%
-					for(EventDTO eDTO : eList) {
-						String id = eDTO.getEvent_id();
-						String title = eDTO.getTitle();
-						String start = eDTO.getStart();
-						String end = eDTO.getEnd();
-						%>
-			{
-				id : '<%=id%>',
-				title  : '<%=title%>',
-				start  : '<%=start%>',
-				end    : '<%=end%>'
-			},
-
-				<%
-					}
-				%>
-		],
-		eventClick: function(info) {
-			console.log(info.event.id);
-			console.log(info.event.title);
-			console.log(info.event.startStr);
-			console.log(info.event.endStr);
-			let eventId = info.event.id;
-			let answer = confirm("일정을 삭제하시겠습니까?");
-			if (answer) {
-				$.ajax({
-					url: "deleteEvent",
-					contentType: 'application/json',
-					type: 'get',
-					data: {
-						eventId : eventId
-					},
-					contentType: "application/json; charset=utf-8",
-					dataType: "text",
-					success: function(data) {
-						location.href = '/';
-					},
-					error: function(error) {
-						location.href = '';
-					}
-
-				});
-			}
-		}
-	});
-	calendar.render();
-
-
-	//});
-
-	function makeEvent(event) {
-		event.preventDefault();
-
-		let title = document.getElementById('title').value;
-		let start = document.getElementById('startdatepicker').value;
-		let end = document.getElementById('enddatepicker').value;
-
-		console.log(title);
-		console.log(start);
-		console.log(end);
-
-		$.ajax({
-			url: "addEvent",
-			type: 'get',
-			data: {
-				"title": title,
-				"start": start,
-				"end": end
-			},
-			contentType: "application/json; charset=utf-8",
-			dataType: "text",
-			success: function(data) {
-				location.href = '/';
-			},
-			error: function(error) {
-				location.href = '/';
-			}
-
-		});
-	}
-</script>
 
 <script>
 	function inputCode(event) {
@@ -584,25 +365,6 @@
 
 </script>
 
-<script>
-	$.datepicker.setDefaults({
-		dateFormat: 'yy-mm-dd',
-		prevText: '이전 달',
-		nextText: '다음 달',
-		monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-		monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-		dayNames: ['일', '월', '화', '수', '목', '금', '토'],
-		dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
-		dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
-		showMonthAfterYear: true,
-		yearSuffix: '년',
-		changeMonth: true,
-		changeYear: true,
-		showButtonPanel: true
-
-	});
-
-</script>
 
 <script>
 	function deleteAppo(title, code) {
@@ -643,6 +405,10 @@
 		if(confirm("정말로 회원을 탈퇴하시겠습니까? (주의! 되돌릴 수 없습니다.)")){
 			location.href = "deleteUser";
 		}
+	}
+
+	function deleteMile() {
+
 	}
 </script>
 
