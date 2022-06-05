@@ -43,6 +43,9 @@
                                         <a class="btn btn-primary" onclick="doLogin()">로그인</a>
                                     </div>
                                 </form>
+
+                                <p id="mes"></p>
+                                <canvas id="captcha" style="background-color: #f6f9fc;"></canvas>
                             </div>
                             <div class="card-footer text-center py-3">
                                 <div class="small"><a href="register">아직 계정이 없으신가요? 회원가입 하러가기</a></div>
@@ -73,39 +76,116 @@
 
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script>
+    let capchaTF = false;
     function doLogin() {
-        let reqId = document.getElementById('inputId').value;
-        let reqPw = document.getElementById('inputPassword').value;
+        if(capchaTF) {
+            let reqId = document.getElementById('inputId').value;
+            let reqPw = document.getElementById('inputPassword').value;
 
-        console.log(reqId);
-        console.log(reqPw);
+            console.log(reqId);
+            console.log(reqPw);
 
-        $.ajax({
-            url: "dologin",
-            type: 'get',
-            data: {
-                reqId: reqId,
-                reqPw: reqPw
-            },
-            dataType: "text",
-            contentType: "application/json; charset=utf-8",
+            $.ajax({
+                url: "dologin",
+                type: 'get',
+                data: {
+                    reqId: reqId,
+                    reqPw: reqPw
+                },
+                dataType: "text",
+                contentType: "application/json; charset=utf-8",
 
-            success: function(result) {
-                if(result == "success") {
-                    location.href = "/";
-                } else if(result == "fail") {
-                    alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+                success: function(result) {
+                    if(result == "success") {
+                        location.href = "/";
+                    } else if(result == "fail") {
+                        alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+                    }
+                },
+                error: function(request,status,error) {
+                    //alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+                    //location.reload();
                 }
-            },
-            error: function(request,status,error) {
-                //alert("아이디 또는 비밀번호가 일치하지 않습니다.");
-                //location.reload();
-            }
 
-        });
-        
+            });
+        } else {
+            alert("캡챠인증을 통과해주세요.");
+        }
     }
 
+
+
+    const canvas = document.querySelector("#captcha");
+    const ctx = canvas.getContext("2d");
+    const mes = document.querySelector("#mes");
+    const CANVASSIZE = 300;
+    canvas.width =  CANVASSIZE;
+    canvas.height = CANVASSIZE * 1.5;
+
+    //도형 사이즈 : canvas 사이즈 / 10
+    const figsize = CANVASSIZE / 10;
+
+
+    let color = ['#2c2c2c', '#FF3B30', '#0579FF'];
+    let colorName = ["빨강색", "검정색", "파랑색"];
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function canvasReset() {
+        ctx.clearRect(0, 0, CANVASSIZE, CANVASSIZE);
+    }
+
+    function fill() {
+        for(let i = 0; i < color.length; i++) {
+            let x = Math.round(Math.random() * (figsize * 7)) + figsize;
+            let y;
+            if(i==0) {
+                y = Math.round(Math.random() * figsize) + figsize;
+            } else if(i==1) {
+                y = Math.round(Math.random() * figsize) + figsize * 4;
+            } else {
+                y = Math.round(Math.random() * figsize) + figsize * 7;
+            }
+
+            ctx.fillStyle = color[i];
+            ctx.fillRect(x,y, figsize, figsize);
+        }
+    }
+    shuffle(colorName);
+    mes.innerText = colorName[0] + "을 클릭하십시오";
+    shuffle(color);
+    fill();
+
+
+    function handleFig(event) {
+        const x = event.offsetX;
+        const y = event.offsetY;
+        const clickedColor = ctx.getImageData(x, y, 1, 1);
+        let test = clickedColor.data[0];
+        if(colorName[0] == "빨강색" && test == 255) {
+            alert("통과");
+            capchaTF = true;
+        } else if(colorName[0] == "파랑색" && test == 5) {
+            alert("통과");
+            capchaTF = true;
+        } else if(colorName[0] == "검정색" && test == 44) {
+            alert("통과");
+            capchaTF = true;
+        } else {
+            alert("실패");
+            canvasReset();
+            shuffle(color);
+            shuffle(colorName);
+            mes.innerText = colorName[0] + "을 클릭하십시오";
+            fill();
+        }
+    }
+    canvas.addEventListener("click", handleFig);
 </script>
 </body>
 </html>
