@@ -122,19 +122,4 @@ public class UserController {
         return "index";
     }
 
-    //유저 정보 페이지
-
-    //유저, 팀 마일스톤 수정페이지
-    @GetMapping(value = "mile")
-    public String mile(HttpSession session, ModelMap model) throws Exception {
-        log.info("controller.mile start");
-
-        String userId = CmmUtil.nvl((String)session.getAttribute("userId"));
-
-        UserInfoDTO pDTO = userSevice.getUserInfo(userId);
-        model.addAttribute("UserInfoDTO", pDTO);
-        model.addAttribute("prjCode", EncryptUtil.encHashSHA256(userId));
-
-        return "/mocal/Mile";
-    }
 }

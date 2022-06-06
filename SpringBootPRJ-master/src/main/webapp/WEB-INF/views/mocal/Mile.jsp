@@ -187,7 +187,7 @@
                     <div class="card-body container-fluid" id="milestone">
                         <!-- 첫줄 row-->
                         <div class="row mb-1">
-                            <div class="offset-5 col-7 btn-primary">
+                            <div class="offset-6 col-6 btn-primary">
                                 <!-- 3:9 비율 -->
                                 기간 :
                                 <input type="text" name="month" autocomplete="off" id="startdatepicker" required>
@@ -200,80 +200,70 @@
                         <!-- 기간 추가 row-->
                         <div class="row">
                             <div class="col-5">
-                                <div class="row justify-content-around">
-                                    <div class="col-5 btn-primary">
-                                        단계
+                                <div class="row">
+                                    <div class="col-5">
+                                        <div class="btn-primary" style="text-align: center">
+                                            항목
+                                        </div>
                                     </div>
-
-                                    <div class="col-5 btn-primary">
-                                        항목
+                                    <div class="col-3">
+                                        <div class="btn-primary" style="text-align: center">
+                                            시작일
+                                        </div>
+                                    </div>
+                                    <div class="col-1"></div>
+                                    <div class="col-3">
+                                        <div class="btn-primary" style="text-align: center">
+                                            종료일
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- 기간 생성 col -->
                             <div class="col-7">
-                                <!-- 기간 생성 row -->
-                                <div class="row" id="m_period">
+                                <div class="row" id="m_period" style="text-align: center">
 
                                 </div>
                             </div>
                         </div>
 
                         <!-- object 추가 row -->
-                        <div id="step_0">
-                            <div class="row mt-2" id="item_0_0">
+                        <form id="mileForm">
+                            <div class="row mt-2" id="item_0">
                                 <div class="col-5">
                                     <div class="row justify-content-around">
-                                        <div class="col-6">
-                                            <!-- 단계 obj 추가 row -->
-                                            <div class="justify-content-center btn-group">
-                                                <button type="button" class="btn btn-secondary" onclick="addStep('step_0')">+</button>
-
-
-                                                <input class="form-control" id="stepValue_0" type="text" placeholder="단계명" onchange="chgStepValue('step_0')" required>
-
-                                                <button type="button" class="btn btn-secondary" disabled>-</button>
-                                            </div>
-
-                                        </div>
-                                        <div class="col-6">
-
+                                        <div class="col-5">
                                             <!-- 항목 obj 추가 row -->
                                             <div class="justify-content-center btn-group">
-                                                <button type="button" class="btn btn-xs btn-secondary" onclick="addItem('item_0_0')">+</button>
+                                                <button type="button" class="btn btn-xs btn-secondary" onclick="addStep('item_0')">+</button>
 
-                                                <input class="form-control" id="itemValue_0_0" type="text" placeholder="항목명" onchange="chgItemValue('item_0_0')" required>
+                                                <input class="form-control" id="itemValue_0" type="text" placeholder="항목명" onchange="chgStepValue('item_0')" required>
 
                                                 <button type="button" class="btn btn-secondary" disabled>-</button>
                                             </div>
-
-
                                         </div>
+                                        <div class="col-3">
+                                            <input class="form-control" autocomplete="off" required>
+                                        </div>
+                                        <div class="col-1">
+                                            <p style="text-align: center">~</p>
+                                        </div>
+                                        <div class="col-3">
+                                            <input class="form-control" autocomplete="off" required>
+                                        </div>
+
                                     </div>
                                 </div>
 
                                 <!-- 마일스톤 생성col -->
                                 <div class="col-7">
-                                    <div class="row">
-                                        <div class="col-1 btn btn-outline-primary" id="mile_0_0_0" onclick="chgMile('mile_0_0_0')"></div>
-                                        <div class="col-1 btn btn-outline-primary" id="mile_0_0_1" onclick="chgMile('mile_0_0_1')"></div>
-                                        <div class="col-1 btn btn-outline-primary" id="mile_0_0_2" onclick="chgMile('mile_0_0_2')"></div>
-                                        <div class="col-1 btn btn-outline-primary" id="mile_0_0_3" onclick="chgMile('mile_0_0_3')"></div>
-                                        <div class="col-1 btn btn-outline-primary" id="mile_0_0_4" onclick="chgMile('mile_0_0_4')"></div>
-                                        <div class="col-1 btn btn-outline-primary" id="mile_0_0_5" onclick="chgMile('mile_0_0_5')"></div>
-                                        <div class="col-1 btn btn-outline-primary" id="mile_0_0_6" onclick="chgMile('mile_0_0_6')"></div>
-                                        <div class="col-1 btn btn-outline-primary" id="mile_0_0_7" onclick="chgMile('mile_0_0_7')"></div>
-                                        <div class="col-1 btn btn-outline-primary" id="mile_0_0_8" onclick="chgMile('mile_0_0_8')"></div>
-                                        <div class="col-1 btn btn-outline-primary" id="mile_0_0_9" onclick="chgMile('mile_0_0_9')"></div>
-                                        <div class="col-1 btn btn-outline-primary" id="mile_0_0_10" onclick="chgMile('mile_0_0_10')"></div>
-                                        <div class="col-1 btn btn-outline-primary" id="mile_0_0_11" onclick="chgMile('mile_0_0_11')"></div>
+                                    <div class="row" id="stone_0">
+                                        <div class="col-1 btn btn-outline-primary"></div>
                                     </div>
 
 
                                 </div>
-
                             </div>
-                        </div>
+                        </form>
 
 
                     </div>
@@ -383,28 +373,17 @@
 
 <script>
     //마일스톤 정보
-    let allInfo = {
+    let mileInfo = [{
+        "itemValue" : "",
+        "itemStartDate" : "", //프로젝트 시작일
+        "itemEndDate" : "", //프로젝트 마감일
+    }];
 
-        "startDate" : "", //프로젝트 시작일
-        "endDate" : "", //프로젝트 마감일
-        "mileInfo" : [{ //mileInfo : 단계 배열
-            "stepNum" : 0, //단계 구분 index (어차피 처리는 배열순으로)
-            "step_info" : { //단계 세부항목(단계명, 항목정보, 마일스톤정보)
-                "value" : "", //단계명
-                "item_info" : { //항목정보
-                    "itemNum" : [0], //항목 구분 index(무시해도 ok)
-                    "itemValue" : [""], //항목명 배열
-                    "mileTF" : [[false, false, false, false, false, false, false, false, false, false, false, false]] //항목의 마일스톤on_off
-                },
-            }
-        }]
-    };
+
+
 
     //단계 생성 count 변수
     let stepCnt = 0;
-
-    //항목 생성 count 변수
-    //let maxItemNum = 0;
 
 
     function addStep(event) {
@@ -413,82 +392,55 @@
         let splitedEvent = event.split('_');
 
 
-        //event객체의 인덱스 번호
-        let indexNum = allInfo.mileInfo.findIndex(i => i.stepNum == splitedEvent[1]);
+        let stepInfo = {
+            "itemValue" : "",
+            "itemStartDate" : "", //프로젝트 시작일
+            "itemEndDate" : "", //프로젝트 마감일
+        };
+
+        //+1 하는 이유는 splice 시작위치를 event객체 바로 뒤로 지정해주기위해
+        mileInfo.splice(splitedEvent[1] + 1, 0, stepInfo);
 
         //count + 1
         stepCnt += 1;
 
-        let stepInfo = {
-            "stepNum" : stepCnt,
-            "step_info" : {
-                "value" : "",
-                "item_info" : {
-                    "itemNum" : [0],
-                    "itemValue" : [""],
-                    "mileTF" : [[false, false, false, false, false, false, false, false, false, false, false, false]]
-                },
-            }
-        };
-
-        //+1 하는 이유는 splice 시작위치를 event객체 바로 뒤로 지정해주기위해
-        allInfo.mileInfo.splice(indexNum + 1, 0, stepInfo);
-
         $("#" + event).after($(
-            `<div id="step_${stepCnt}">
-                            <div class="row mt-2" id="item_${stepCnt}_0">
+            `<div class="row mt-2" id="item_\${stepCnt}">
                                 <div class="col-5">
                                     <div class="row justify-content-around">
-                                        <div class="col-6">
-                                            <!-- 단계 obj 추가 row -->
-                                            <div class="justify-content-center btn-group">
-                                                <button type="button" class="btn btn-secondary" onclick="addStep('step_${stepCnt}')">+</button>
-
-
-                                                <input class="form-control" id="stepValue_${stepCnt}" type="text" onchange="chgStepValue('step_${stepCnt}')" placeholder="단계명" required>
-
-                                                <button type="button" class="btn btn-secondary" onclick="rmStep('step_${stepCnt}')">-</button>
-                                            </div>
-
-                                        </div>
-                                        <div class="col-6">
-
+                                        <div class="col-5">
                                             <!-- 항목 obj 추가 row -->
                                             <div class="justify-content-center btn-group">
-                                                <button type="button" class="btn btn-xs btn-secondary" onclick="addItem('item_${stepCnt}_0')">+</button>
+                                                <button type="button" class="btn btn-xs btn-secondary" onclick="addStep('item_\${stepCnt}')">+</button>
 
-                                                <input class="form-control" id="itemValue_${stepCnt}_0" type="text" placeholder="항목명" onchange="chgItemValue('item_${stepCnt}_0')" required>
+                                                <input class="form-control" id="itemValue_\${stepCnt}" type="text" placeholder="항목명" onchange="chgStepValue('item_\${stepCnt}')" required>
 
-                                                <button type="button" class="btn btn-secondary" disabled>-</button>
+                                                <button type="button" class="btn btn-secondary" onclick="rmStep('item_\${stepCnt}')">-</button>
                                             </div>
-
-
                                         </div>
+                                        <div class="col-3">
+                                            <input class="form-control" autocomplete="off" required>
+                                        </div>
+                                        <div class="col-1">
+                                            <p style="text-align: center">~</p>
+                                        </div>
+                                        <div class="col-3">
+                                            <input class="form-control" autocomplete="off" required>
+                                        </div>
+
                                     </div>
                                 </div>
 
                                 <!-- 마일스톤 생성col -->
                                 <div class="col-7">
-                                        <div class="row">
-                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_0_0" onclick="chgMile('mile_${stepCnt}_0_0')"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_0_1" onclick="chgMile('mile_${stepCnt}_0_1')"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_0_2" onclick="chgMile('mile_${stepCnt}_0_2')"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_0_3" onclick="chgMile('mile_${stepCnt}_0_3')"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_0_4" onclick="chgMile('mile_${stepCnt}_0_4')"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_0_5" onclick="chgMile('mile_${stepCnt}_0_5')"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_0_6" onclick="chgMile('mile_${stepCnt}_0_6')"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_0_7" onclick="chgMile('mile_${stepCnt}_0_7')"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_0_8" onclick="chgMile('mile_${stepCnt}_0_8')"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_0_9" onclick="chgMile('mile_${stepCnt}_0_9')"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_0_10" onclick="chgMile('mile_${stepCnt}_0_10')"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_0_11" onclick="chgMile('mile_${stepCnt}_0_11')"></div>
-                                        </div>
-
-
+                                    <div class="row" id="stone_\${stepCnt}">
+                                        <div class="col-1 btn btn-outline-primary"></div>
                                     </div>
 
-                            </div>
-                        </div>`
+
+                                </div>
+
+                            </div>`
 
         ));
     }
@@ -498,127 +450,11 @@
         // event = step_n
         let splitedEvent = event.split('_');
 
-        //객체가 들어갈 인덱스 번호
-        let indexNum = allInfo.mileInfo.findIndex(i => i.stepNum == splitedEvent[1]);
-
         //데이터 삭제
-        allInfo.mileInfo.splice(indexNum, 1, );
+        mileInfo.splice(splitedEvent[1], 1, );
         //태그 삭제
         $("#" + event).remove();
-    }
 
-    function addItem(event) {
-        console.log(event);
-        // event = step_n
-        let splitedEvent = event.split('_');
-        // 단계 번호
-        let stepNum = Number(splitedEvent[1]); //stepCnt 가 담김
-
-        //객체가 들어간 인덱스 번호
-        let indexNum = allInfo.mileInfo.findIndex(i => i.stepNum == stepNum);
-
-        // 항목 번호
-        let itemNum = Number(splitedEvent[2]); //itemNum 담김
-
-
-
-        //item 번호가 담긴 배열
-        let itemArr = allInfo.mileInfo[indexNum].step_info.item_info.itemNum;
-        console.log(itemArr);
-        //itemValue 가 담긴 배열
-        let itemValueArr = allInfo.mileInfo[indexNum].step_info.item_info.itemValue;
-        // mileTF배열이 담긴 배열
-        let mileArr = allInfo.mileInfo[indexNum].step_info.item_info.mileTF;
-
-        //배열속 항목번호의 위치
-        let idx = itemArr.indexOf(itemNum);
-
-        //생성될 아이템 번호 = max(삭제된 아이템 번호, item번호 배열중 최댓값 + 1)
-        let maxItemNum = Math.max(...itemArr) + 1;
-
-        //+1 하는 이유는 splice 시작위치를 event객체 바로 뒤로 지정해주기위해
-        itemArr.splice(idx + 1, 0, maxItemNum);
-        itemValueArr.splice(idx + 1, 0, "");
-        mileArr.splice(idx + 1, 0, [false, false, false, false, false, false, false, false, false, false, false, false]);
-
-        $("#" + event).after($(
-            `<div class="row mt-2" id="item_${stepNum}_${maxItemNum}">
-                                <div class="col-5">
-                                    <div class="row justify-content-around">
-                                        <div class="col-6">
-                                            <!-- 단계 obj 추가 row -->
-                                        </div>
-                                        <div class="col-6">
-
-                                            <!-- 항목 obj 추가 row -->
-                                            <div class="justify-content-center btn-group">
-                                                <button type="button" class="btn btn-xs btn-secondary" onclick="addItem('item_${stepNum}_${maxItemNum}')">+</button>
-
-                                                <input class="form-control" id="itemValue_${stepNum}_${maxItemNum}" type="text" onchange="chgItemValue('item_${stepNum}_${maxItemNum}')" placeholder="항목명" required>
-
-                                                <button type="button" class="btn btn-secondary" onclick="rmItem('item_${stepNum}_${maxItemNum}')">-</button>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- 마일스톤 생성col -->
-                                <div class="col-7">
-                                        <div class="row">
-                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_${maxItemNum}_0" onclick="chgMile('mile_${stepCnt}_${maxItemNum}_0')"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_${maxItemNum}_1" onclick="chgMile('mile_${stepCnt}_${maxItemNum}_1')"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_${maxItemNum}_2" onclick="chgMile('mile_${stepCnt}_${maxItemNum}_2')"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_${maxItemNum}_3" onclick="chgMile('mile_${stepCnt}_${maxItemNum}_3')"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_${maxItemNum}_4" onclick="chgMile('mile_${stepCnt}_${maxItemNum}_4')"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_${maxItemNum}_5" onclick="chgMile('mile_${stepCnt}_${maxItemNum}_5')"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_${maxItemNum}_6" onclick="chgMile('mile_${stepCnt}_${maxItemNum}_6')"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_${maxItemNum}_7" onclick="chgMile('mile_${stepCnt}_${maxItemNum}_7')"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_${maxItemNum}_8" onclick="chgMile('mile_${stepCnt}_${maxItemNum}_8')"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_${maxItemNum}_9" onclick="chgMile('mile_${stepCnt}_${maxItemNum}_9')"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_${maxItemNum}_10" onclick="chgMile('mile_${stepCnt}_${maxItemNum}_10')"></div>
-                                            <div class="col-1 btn btn-outline-primary" id="mile_${stepCnt}_${maxItemNum}_11" onclick="chgMile('mile_${stepCnt}_${maxItemNum}_11')"></div>
-                                        </div>
-
-
-                                    </div>
-
-                            </div>`
-
-        ));
-    }
-
-    function rmItem(event) {
-        console.log(event);
-        // event = step_n
-        let splitedEvent = event.split('_');
-        // 단계 번호
-        let stepNum = splitedEvent[1];
-        // 항목 번호
-        let itemNum = Number(splitedEvent[2]);
-
-        //객체가 들어간 인덱스 번호
-        let indexNum = allInfo.mileInfo.findIndex(i => i.stepNum == stepNum);
-
-        //item 번호가 담긴 배열
-        let itemArr = allInfo.mileInfo[indexNum].step_info.item_info.itemNum;
-
-        //itemValue 가 담긴 배열
-        let itemValueArr = allInfo.mileInfo[indexNum].step_info.item_info.itemValue;
-
-        // mileTF배열이 담긴 배열
-        let mileArr = allInfo.mileInfo[indexNum].step_info.item_info.mileTF;
-
-        //배열속 항목번호의 위치
-        let idx = itemArr.indexOf(itemNum);
-
-        //+1 하는 이유는 splice 시작위치를 event객체 바로 뒤로 지정해주기위해
-        itemArr.splice(idx, 1, );
-        itemValueArr.splice(idx, 1, );
-        mileArr.splice(idx, 1, );
-
-        $("#" + event).remove();
     }
 
 
@@ -626,70 +462,13 @@
         // event = step_n
         let splitedEvent = event.split('_');
 
-        //event객체의 인덱스 번호
-        let indexNum = allInfo.mileInfo.findIndex(i => i.stepNum == splitedEvent[1]);
 
         //단계명
-        let stepValue = document.getElementById("stepValue_" + splitedEvent[1]).value;
+        let stepValue = document.getElementById("itemValue_" + splitedEvent[1]).value;
         console.log(stepValue);
 
-        allInfo.mileInfo[indexNum].step_info.value = stepValue;
+        mileInfo[splitedEvent[1]].itemValue = stepValue;
 
-    }
-    function chgItemValue(event) {
-
-        // event = step_n
-        let splitedEvent = event.split('_');
-        // 단계 번호
-        let stepNum = splitedEvent[1];
-        // 항목 번호
-        let itemNum = Number(splitedEvent[2]);
-
-        //객체가 들어간 인덱스 번호
-        let indexNum = allInfo.mileInfo.findIndex(i => i.stepNum == stepNum);
-
-        //item 번호가 담긴 배열
-        let itemArr = allInfo.mileInfo[indexNum].step_info.item_info.itemNum;
-        //itemValue 가 담긴 배열
-        let itemValueArr = allInfo.mileInfo[indexNum].step_info.item_info.itemValue;
-
-        //배열속 항목번호의 위치
-        let idx = itemArr.indexOf(itemNum);
-
-        //항목명
-        let itemValue = document.getElementById("itemValue_" + stepNum + "_" + itemNum).value;
-
-        itemValueArr[idx] = itemValue;
-    }
-
-    function chgMile(event) {
-        let splitedEvent = event.split('_');
-        // 단계 번호
-        let stepNum = splitedEvent[1];
-        // 항목 번호
-        let itemNum = Number(splitedEvent[2]);
-        // 마일 번호
-        let mileNum = splitedEvent[3];
-
-        //객체가 들어간 인덱스 번호
-        let indexNum = allInfo.mileInfo.findIndex(i => i.stepNum == stepNum);
-
-        // mileTF배열이 담긴 배열
-        let mileArr = allInfo.mileInfo[indexNum].step_info.item_info.mileTF;
-
-        //item 번호가 담긴 배열
-        let itemArr = allInfo.mileInfo[indexNum].step_info.item_info.itemNum;
-
-        //배열속 항목번호의 위치
-        let idx = itemArr.indexOf(itemNum);
-
-        //항목명
-        let mileTag = document.getElementById("mile_" + stepNum + "_" + itemNum + "_" + mileNum);
-
-
-        mileTag.className = (mileArr[idx][mileNum]) ? "col-1 btn btn-outline-primary" : "col-1 btn btn-primary";
-
-        mileArr[idx][mileNum] = (mileArr[idx][mileNum]) ? false : true;
     }
 
     function send(event) {
