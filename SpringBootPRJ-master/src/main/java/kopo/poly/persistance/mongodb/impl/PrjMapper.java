@@ -26,10 +26,8 @@ public class PrjMapper extends AbstractMongoDBComon implements IPrjMapper {
         List<MileDTO> mList = new ArrayList<>();
         pDTO.setPrjMileInfo(mList);
 
-        String titleCode = pDTO.getPrjCode();
-        String[] title_code = titleCode.split("\\*_\\*");
-        String code = title_code[1];
-        pDTO.setPrjCode(code);
+        String prjCode = pDTO.getPrjCode();
+        String prjTitle = pDTO.getPrjTitle();
 
         String colNm = "Prj";
 
@@ -49,7 +47,7 @@ public class PrjMapper extends AbstractMongoDBComon implements IPrjMapper {
         query.append("userId", userId);
 
         Document updateQuery = new Document();
-        updateQuery.append("prjList", titleCode);
+        updateQuery.append("prjList", prjTitle + "*_*" + prjCode);
 
         UpdateResult updateResults = rCol.updateOne(query, new Document("$push", updateQuery));
         int res = (int) updateResults.getMatchedCount();
@@ -86,10 +84,6 @@ public class PrjMapper extends AbstractMongoDBComon implements IPrjMapper {
                 if(doc == null) {
                     doc = new Document();
                 }
-
-                log.info("prjCode : " + doc.getString("prjCode"));
-                log.info("prjStartDate : " + doc.getString("prjStartDate"));
-                log.info("prjEndDate : " + doc.getString("prjEndDate"));
                 rDTO.setPrjCode(CmmUtil.nvl(doc.getString("prjCode")));
                 rDTO.setPrjStartDate(CmmUtil.nvl(doc.getString("prjStartDate")));
                 rDTO.setPrjEndDate(CmmUtil.nvl(doc.getString("prjEndDate")));
@@ -139,7 +133,7 @@ public class PrjMapper extends AbstractMongoDBComon implements IPrjMapper {
 
     @Override
     public int updatePrj(PrjInfoDTO pDTO) throws Exception {
-
+        log.info("mapper.updatePrj start");
         String colNm = "Prj";
         MongoCollection<Document> col = mongodb.getCollection(colNm);
 
@@ -147,6 +141,15 @@ public class PrjMapper extends AbstractMongoDBComon implements IPrjMapper {
         String prjStartDate = pDTO.getPrjStartDate();
         String prjEndDate = pDTO.getPrjEndDate();
         List<MileDTO> mList = pDTO.getPrjMileInfo();
+        List<Document> dList = new ArrayList<>();
+        for(MileDTO mDTO : mList) {
+            Document dtoQuery = new Document();
+            dtoQuery.append("itemValue", mDTO.getItemValue());
+            dtoQuery.append("itemStartDate", mDTO.getItemStartDate());
+            dtoQuery.append("itemEndDate", mDTO.getItemEndDate());
+
+            dList.add(dtoQuery);
+        }
 
         Document query = new Document();
         query.append("prjCode", prjCode);
@@ -154,12 +157,12 @@ public class PrjMapper extends AbstractMongoDBComon implements IPrjMapper {
         Document updateQuery = new Document();
         updateQuery.append("prjStartDate", prjStartDate);
         updateQuery.append("prjEndDate", prjEndDate);
-        updateQuery.append("prjMileInfo", mList);
+        updateQuery.append("prjMileInfo", dList);
 
-        UpdateResult updateResults = col.updateOne(query, new Document("$set", updateQuery));
+        UpdateResult updateResults = col.updateMany(query, new Document("$set", updateQuery));
 
         int res = (int) updateResults.getMatchedCount();
-
+        log.info("mapper.updatePrj end");
         return res;
     }
 }

@@ -154,11 +154,6 @@
         }
     }
 
-    //id 값 변화시 다시 중복확인하게끔 false로 변경
-    $('#inputPassword').keyup( function(){
-        capchaTF = false;
-
-    });
 
     function canvasReset() {
         ctx.clearRect(0, 0, CANVASSIZE, CANVASSIZE);

@@ -34,8 +34,6 @@ public class PrjController {
     @GetMapping(value = "prj")
     public String prjPage(HttpServletRequest request, ModelMap model, HttpSession session) throws Exception {
         log.info("controller.prjPage start");
-        String prjTitle = request.getParameter("title");
-        log.info("prjTitle : "  + prjTitle);
         String prjCode = request.getParameter("code");
         log.info("prjCode : "  + prjCode);
         PrjInfoDTO pDTO = new PrjInfoDTO();
@@ -73,9 +71,9 @@ public class PrjController {
         log.info("startPrjDate : " + startPrjDate);
         String endPrjDate = CmmUtil.nvl(request.getParameter("endDate"));
         log.info("endPrjDate : " + endPrjDate);
-        String regDt = DateUtil.getDateTime("yyyy-MM-dd");
+        String regDt = DateUtil.getDateTime("YYYYMMddHHmmss");
         log.info("regDt : " + regDt);
-        String prjCode = title + "*_*" + EncryptUtil.encHashSHA256(regDt);
+        String prjCode = EncryptUtil.encHashSHA256(userId + regDt);
 
         PrjInfoDTO pDTO = new PrjInfoDTO();
         pDTO.setPrjCode(prjCode);
@@ -111,13 +109,19 @@ public class PrjController {
         log.info("controller.updateMile start");
 
         String userId = CmmUtil.nvl((String)session.getAttribute("userId"));
+        String prjCode = request.getParameter("prjCode");
+        log.info("prjCode : " + prjCode);
+        PrjInfoDTO pDTO = new PrjInfoDTO();
+        pDTO.setPrjCode(prjCode);
+        PrjInfoDTO rDTO = prjService.getPrjInfo(pDTO);
 
-        if(false) {
+        if(rDTO == null) {
             return "/";
         } else {
-            UserInfoDTO pDTO = userSevice.getUserInfo(userId);
+            UserInfoDTO uDTO = userSevice.getUserInfo(userId);
 
-            model.addAttribute("UserInfoDTO", pDTO);
+            model.addAttribute("UserInfoDTO", uDTO);
+            model.addAttribute("PrjInfoDTO", rDTO);
 
             return "/mocal/Mile";
         }
@@ -165,7 +169,9 @@ public class PrjController {
         }
         pDTO.setPrjMileInfo(mList);
 
+        int res = prjService.updateMile(pDTO);
 
-        return "";
+
+        return Integer.toString(res);
     }
 }

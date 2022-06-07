@@ -19,33 +19,20 @@
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
 	<!-- Navbar Brand-->
 	<a class="navbar-brand ps-3" href="/">Modu Calendar</a>
-	<!-- 여백-->
-	<div class="ms-auto"></div>
-	<!-- Navbar-->
-	<ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-		<li class="nav-item dropdown">
-			<a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-			<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-				<li><a class="dropdown-item" href="#!">내정보</a></li>
-				<li><hr class="dropdown-divider" /></li>
-				<li><a class="dropdown-item" href="login">로그인</a></li>
-			</ul>
-		</li>
-	</ul>
 </nav>
 		<div id="layoutSidenav">
 			<div id="layoutSidenav_content">
 				<main>
 					<div class="container">
 						<div class="row justify-content-around" style="height: 90vh;">
-							<a class="btn btn-primary col-6" href="login">
-								<div class="mt-5"></div>
+							<a class="btn btn-primary btn-outline-primary col-6" href="login">
+								<div class="mt-5" style="height: 30%"></div>
 								<h1>가입한 계정이 있으신가요?</h1>
 								<br/>
 								<h3>로그인</h3>
 							</a>
-							<a class="btn btn-warning col-6" href="register">
-								<div class="mt-5"></div>
+							<a class="btn btn-secondary btn-outline-secondary col-6" href="register">
+								<div class="mt-5" style="height: 30%"></div>
 								<h1>가입한 계정이 없으신가요?</h1>
 								<br/>
 								<h3>회원가입</h3>

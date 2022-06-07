@@ -161,37 +161,78 @@
 			<div class="container-fluid px-4">
 				<div class="mt-4"></div>
 				<div class="row">
-					<div class="col-xl-7">
+					<div class="col-xl-12">
 						<div class="card mb-4">
 							<div class="card-header">
 								<i class="fas fa-chart-area me-1"></i>
 								프로젝트 마일스톤
-								<a class="btn btn-outline-success" href="mile">추가</a>
-								<button class="btn btn-outline-warning" onclick="deleteMile()">삭제</button>
+								<a class="btn btn-outline-success" href="mile?prjCode=<%=rDTO.getPrjCode()%>">수정</a>
+								<button class="btn btn-outline-danger" onclick="deleteMile()">삭제</button>
 
 							</div>
 							<div class="card-body">
-								<div>
-									프로젝트 시작일
-									<input type="text" value="<%=rDTO.getPrjStartDate()%>" disabled>
-									프로젝트 종료일
-									<input type="text" value="<%=rDTO.getPrjEndDate()%>" disabled>
-								</div>
-								<div>
+								<div class="row">
+
+									<div class="row mb-3" style="text-align: center">
+										<div class="col-3">
+											프로젝트 시작일
+										</div>
+										<div class="col-3">
+											<input class="form-control" type="text" value="<%=rDTO.getPrjStartDate()%>" disabled>
+										</div>
+										<div class="col-3">
+											프로젝트 종료일
+										</div>
+										<div class="col-3">
+											<input class="form-control" type="text" value="<%=rDTO.getPrjEndDate()%>" disabled>
+										</div>
+									</div>
+									<div class="col-6">
+										<div class="row mt-1 justify-content-around">
+											<div class="col-3 btn btn-primary" style="text-align: center">
+												항목명
+											</div>
+											<div class="col-3 btn btn-primary" style="text-align: center">
+												시작일
+											</div>
+											<div class="col-3 btn btn-primary" style="text-align: center">
+												종료일
+											</div>
+										</div>
+									</div>
+									<div class="col-6">
+										<div class="row"></div>
+									</div>
 									<%
 										for(MileDTO mDTO : mList) {
 											String itemValue = mDTO.getItemValue();
 											String itemStartDate = mDTO.getItemStartDate();
 											String itemEndDate = mDTO.getItemEndDate();
 									%>
-<%--									<div class="justify-content-center btn-group">--%>
-<%--										<input class="form-control" type="text" value="" disabled />--%>
-<%--									</div>--%>
-										<%=itemValue%>
+									<div class="row">
+										<div class="col-6" id="MileItem">
+											<div class="row mt-1">
+												<div class="col-4">
+													<input class="form-control" style="text-align: center" type="text" value="<%=itemValue%>" disabled />
+												</div>
+												<div class="col-4">
+													<input class="form-control" type="text" value="<%=itemStartDate%>" disabled />
+												</div>
+												<div class="col-4">
+													<input class="form-control" type="text" value="<%=itemEndDate%>" disabled />
+												</div>
+											</div>
+										</div>
+										<div class="col-6" id="MileStone">
+											asdfasd
+										</div>
+									</div>
 									<%
 										}
 									%>
 								</div>
+
+
 							</div>
 						</div>
 					</div>

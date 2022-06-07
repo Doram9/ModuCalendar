@@ -4,9 +4,10 @@
 <%@ page import="kopo.poly.dto.EventDTO" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
+<%@ page import="kopo.poly.dto.PrjInfoDTO" %>
+<%@ page import="kopo.poly.dto.MileDTO" %>
 <%
     UserInfoDTO pDTO = (UserInfoDTO) request.getAttribute("UserInfoDTO");
-    String prjCode = (String) request.getParameter("prjCode");
 
     if (pDTO == null) {
         pDTO = new UserInfoDTO();
@@ -20,6 +21,15 @@
 
     if(appoList == null) {
         appoList = new ArrayList<>();
+    }
+
+    PrjInfoDTO rDTO = (PrjInfoDTO) request.getAttribute("PrjInfoDTO");
+    if(rDTO == null) {
+        rDTO = new PrjInfoDTO();
+    }
+    List<MileDTO> mList = rDTO.getPrjMileInfo();
+    if(mList == null) {
+        mList = new ArrayList<>();
     }
 %>
 <!DOCTYPE html>
@@ -157,61 +167,55 @@
                         <i class="fas fa-table me-1"></i>
                         내 마일스톤
 
-                        <button type="button" class="btn btn-outline-danger">취소</button>
+                        <a type="button" class="btn btn-outline-danger" href="prj?code=<%= rDTO.getPrjCode()%>">취소</a>
                         <button type="submit" class="btn btn-outline-success">저장</button>
                     </div>
 
                     <!-- 마일스톤 container -->
                     <div class="card-body container-fluid" id="milestone">
                         <!-- 첫줄 row-->
-                        <div class="row mb-1">
-                            <div class="offset-5 col-7 btn-primary">
+                        <div class="row mb-1 btn-primary justify-content-end">
+                            <div class="col-8">
                                 <!-- 5:7 비율 -->
                                 기간 :
-                                <input type="text" name="month" autocomplete="off" id="startdatepicker" required>
+                                <input type="text" name="month" autocomplete="off" id="startdatepicker" value="<%=rDTO.getPrjStartDate()%>" required>
 
-                                <input type="text" name="month" autocomplete="off" id="enddatepicker" required>
+                                <input type="text" name="month" autocomplete="off" id="enddatepicker" value="<%=rDTO.getPrjEndDate()%>" required>
                             </div>
 
                         </div>
 
                         <!-- 기간 추가 row-->
                         <div class="row">
-                            <div class="col-5">
-                                <div class="row">
-                                    <div class="col-5">
-                                        <div class="btn-primary" style="text-align: center">
-                                            항목
-                                        </div>
-                                    </div>
-                                    <div class="col-3">
-                                        <div class="btn-primary" style="text-align: center">
-                                            시작일
-                                        </div>
-                                    </div>
-                                    <div class="col-1"></div>
-                                    <div class="col-3">
-                                        <div class="btn-primary" style="text-align: center">
-                                            종료일
-                                        </div>
-                                    </div>
+                            <div class="col-4">
+                                <div class="btn-primary" style="text-align: center">
+                                    항목
                                 </div>
                             </div>
-                            <div class="col-7">
-                                <div class="row" id="m_period" style="text-align: center">
+                            <div class="col-2">
+                                <div class="btn-primary" style="text-align: center">
+                                    시작일
+                                </div>
+                            </div>
+                            <div class="col-1"></div>
+                            <div class="col-2">
+                                <div class="btn-primary" style="text-align: center">
+                                    종료일
+                                </div>
+                            </div>
+<%--                            <div class="col-7">--%>
+<%--                                <div class="row" id="m_period" style="text-align: center">--%>
 
-                                </div>
-                            </div>
+<%--                                </div>--%>
+<%--                            </div>--%>
                         </div>
 
                         <!-- object 추가 row -->
                         <div id="mileForm">
                             <div class="row mt-2" id="item_0">
-                                <div class="col-5">
-                                    <div class="row justify-content-around">
-                                        <div class="col-5">
+                                        <div class="col-4">
                                             <!-- 항목 obj 추가 row -->
-                                            <div class="justify-content-center btn-group">
+                                            <div class="btn-group">
                                                 <button type="button" class="btn btn-xs btn-secondary" onclick="addStep('item_0')">+</button>
 
                                                 <input class="form-control" id="itemValue_0" type="text" placeholder="항목명" onchange="chgStepValue('item_0')" required>
@@ -219,27 +223,24 @@
                                                 <button type="button" class="btn btn-secondary" disabled>-</button>
                                             </div>
                                         </div>
-                                        <div class="col-3">
+                                        <div class="col-2">
                                             <input class="form-control" name="month" id="itemStartDate_0" onchange="chgDateValue('itemStartDate_0')" type="text" autocomplete="off" required>
                                         </div>
                                         <div class="col-1">
                                             <p style="text-align: center">~</p>
                                         </div>
-                                        <div class="col-3">
+                                        <div class="col-2">
                                             <input class="form-control" name="month" id="itemEndDate_0" onchange="chgDateValue('itemEndDate_0')" type="text" autocomplete="off" required>
                                         </div>
 
-                                    </div>
-                                </div>
-
                                 <!-- 마일스톤 생성col -->
-                                <div class="col-7">
-                                    <div class="row" id="stone_0">
-                                        <div class="col-1 btn btn-outline-primary"></div>
-                                    </div>
+<%--                                <div class="col-7">--%>
+<%--                                    <div class="row" id="stone_0">--%>
+<%--                                        <div class="col-1" style="background-color: #0a58ca">a</div>--%>
+<%--                                    </div>--%>
 
 
-                                </div>
+<%--                                </div>--%>
                             </div>
                         </div>
 
@@ -393,6 +394,7 @@
     $("#enddatepicker").datepicker();
     $("#itemStartDate_0").datepicker();
     $("#itemEndDate_0").datepicker();
+
 </script>
 
 <script>
@@ -412,34 +414,34 @@
 
     });
 
-    //종료일 선택시 마일스톤 생성
-    $("#enddatepicker").datepicker("option", "onClose", function(selectedDate) {
-        if(document.getElementById("enddatepicker").value != '' && document.getElementById("startdatepicker").value != '') {
-
-            //allInfo.endDate = document.getElementById("enddatepicker").value;
-
-            //#m_period 하위의 모든 태그 제거
-            $("#m_period").empty();
-            //기간이 총 몇달인지 계산
-            let startY = $("#startdatepicker").datepicker('getDate').getFullYear();
-            let startM = $("#startdatepicker").datepicker('getDate').getMonth();
-            let endY = $("#enddatepicker").datepicker('getDate').getFullYear();
-            let endM = $("#enddatepicker").datepicker('getDate').getMonth();
-
-            //기간 = 년도가 같으면 끝달 - 시작달, 년도가 다르면 12 - (시작달 - 끝달)
-            let periodM = (Number(startY) - Number(endY) == 0) ? Number(endM) - Number(startM) : 12 - (Number(startM) - Number(endM));
-
-            console.log(periodM);
-
-            //달 개수 만큼 div 생성, 텍스트에는 해당 월입력
-            //periodM까지 반복 즉, 최소 1번은 반복
-            for (let i = 0; i <= periodM; i++) {
-                let mileM = new Date(Number(startY), Number(startM + i), 1).getMonth() + 1;
-                let attr = $("<div>")
-                $("#m_period").append($("<div class='col-1 btn-primary'>").text(mileM));
-            }
-        }
-    });
+    // //종료일 선택시 마일스톤 생성
+    // $("#enddatepicker").datepicker("option", "onClose", function(selectedDate) {
+    //     if(document.getElementById("enddatepicker").value != '' && document.getElementById("startdatepicker").value != '') {
+    //
+    //         //allInfo.endDate = document.getElementById("enddatepicker").value;
+    //
+    //         //#m_period 하위의 모든 태그 제거
+    //         $("#m_period").empty();
+    //         //기간이 총 몇달인지 계산
+    //         let startY = $("#startdatepicker").datepicker('getDate').getFullYear();
+    //         let startM = $("#startdatepicker").datepicker('getDate').getMonth();
+    //         let endY = $("#enddatepicker").datepicker('getDate').getFullYear();
+    //         let endM = $("#enddatepicker").datepicker('getDate').getMonth();
+    //
+    //         //기간 = 년도가 같으면 끝달 - 시작달, 년도가 다르면 12 - (시작달 - 끝달)
+    //         let periodM = (Number(startY) - Number(endY) == 0) ? Number(endM) - Number(startM) : 12 - (Number(startM) - Number(endM));
+    //
+    //         console.log(periodM);
+    //
+    //         //달 개수 만큼 div 생성, 텍스트에는 해당 월입력
+    //         //periodM까지 반복 즉, 최소 1번은 반복
+    //         for (let i = 0; i <= periodM; i++) {
+    //             let mileM = new Date(Number(startY), Number(startM + i), 1).getMonth() + 1;
+    //             let attr = $("<div>")
+    //             $("#m_period").append($("<div class='col-1 btn-primary'>").text(mileM));
+    //         }
+    //     }
+    // });
 </script>
 
 <script>
@@ -482,11 +484,9 @@
 
         $("#" + event).after($(
             `<div class="row mt-2" id="item_\${stepCnt}">
-                                <div class="col-5">
-                                    <div class="row justify-content-around">
-                                        <div class="col-5">
+                                        <div class="col-4">
                                             <!-- 항목 obj 추가 row -->
-                                            <div class="justify-content-center btn-group">
+                                            <div class="btn-group">
                                                 <button type="button" class="btn btn-xs btn-secondary" onclick="addStep('item_\${stepCnt}')">+</button>
 
                                                 <input class="form-control" id="itemValue_\${stepCnt}" type="text" placeholder="항목명" onchange="chgStepValue('item_\${stepCnt}')" required>
@@ -494,31 +494,20 @@
                                                 <button type="button" class="btn btn-secondary" onclick="rmStep('item_\${stepCnt}')">-</button>
                                             </div>
                                         </div>
-                                        <div class="col-3">
+                                        <div class="col-2">
                                             <input class="form-control" name="month" id="itemStartDate_\${stepCnt}" onchange="chgDateValue('itemStartDate_\${stepCnt}')" type="text" autocomplete="off" required>
                                         </div>
                                         <div class="col-1">
                                             <p style="text-align: center">~</p>
                                         </div>
-                                        <div class="col-3">
+                                        <div class="col-2">
                                             <input class="form-control" name="month" id="itemEndDate_\${stepCnt}" onchange="chgDateValue('itemEndDate_\${stepCnt}')" type="text" autocomplete="off" required>
                                         </div>
-
-                                    </div>
-                                </div>
-
-                                <!-- 마일스톤 생성col -->
-                                <div class="col-7">
-                                    <div class="row" id="stone_\${stepCnt}">
-                                        <div class="col-1 btn btn-outline-primary"></div>
-                                    </div>
-
-
-                                </div>
-
                             </div>`
 
         ));
+        //yyyy-mm-dd를 split으로 나누고 년,월에 하나씩 넣기, 일은 전달의 마지막 날을 넣기 때문에 0
+
         $(`#itemStartDate_\${stepCnt}`).datepicker();
         $(`#itemEndDate_\${stepCnt}`).datepicker();
     }
@@ -568,9 +557,6 @@
             mileInfo[indexNum].itemEndDate = stepValue;
         }
 
-
-
-
         console.log(stepValue);
 
 
@@ -584,7 +570,7 @@
         console.log(obj);
         let startDate = document.getElementById("startdatepicker").value;
         let endDate = document.getElementById("enddatepicker").value;
-        let prjCode = "<%= prjCode%>";
+        let prjCode = "<%= rDTO.getPrjCode()%>";
 
         $.ajax({
             url: "updateMile",
@@ -600,6 +586,9 @@
             contentType: "application/json; charset=utf-8",
 
             success: function(result) {
+                if(result == 1) {
+                    alert("성공");
+                }
                 location.href = "/";
             },
             error: function(request,status,error) {
