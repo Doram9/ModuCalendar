@@ -6,25 +6,30 @@
 <%@ page import="java.util.List" %>
 <%@ page import="kopo.poly.util.EncryptUtil" %>
 <%@ page import="kopo.poly.util.CmmUtil" %>
+<%@ page import="kopo.poly.dto.PrjInfoDTO" %>
+<%@ page import="kopo.poly.dto.MileDTO" %>
 <%
 	UserInfoDTO pDTO = (UserInfoDTO) request.getAttribute("UserInfoDTO");
 
+
+
 	if (pDTO == null) {
 		pDTO = new UserInfoDTO();
-	}
-	List<EventDTO> eList = pDTO.getEventList();
-
-	if(eList == null) {
-		eList = new ArrayList<>();
 	}
 	List<String> appoList = pDTO.getAppoList();
 
 	if(appoList == null) {
 		appoList = new ArrayList<>();
 	}
-	List<String> prjList = pDTO.getPrjList();
-	if(prjList == null) {
-		prjList = new ArrayList<>();
+
+
+	PrjInfoDTO rDTO = (PrjInfoDTO) request.getAttribute("PrjInfoDTO");
+	if(rDTO == null) {
+		rDTO = new PrjInfoDTO();
+	}
+	List<MileDTO> mList = rDTO.getPrjMileInfo();
+	if(mList == null) {
+		mList = new ArrayList<>();
 	}
 %>
 <!DOCTYPE html>
@@ -163,9 +168,30 @@
 								프로젝트 마일스톤
 								<a class="btn btn-outline-success" href="mile">추가</a>
 								<button class="btn btn-outline-warning" onclick="deleteMile()">삭제</button>
+
 							</div>
 							<div class="card-body">
-
+								<div>
+									프로젝트 시작일
+									<input type="text" value="<%=rDTO.getPrjStartDate()%>" disabled>
+									프로젝트 종료일
+									<input type="text" value="<%=rDTO.getPrjEndDate()%>" disabled>
+								</div>
+								<div>
+									<%
+										for(MileDTO mDTO : mList) {
+											String itemValue = mDTO.getItemValue();
+											String itemStartDate = mDTO.getItemStartDate();
+											String itemEndDate = mDTO.getItemEndDate();
+									%>
+<%--									<div class="justify-content-center btn-group">--%>
+<%--										<input class="form-control" type="text" value="" disabled />--%>
+<%--									</div>--%>
+										<%=itemValue%>
+									<%
+										}
+									%>
+								</div>
 							</div>
 						</div>
 					</div>

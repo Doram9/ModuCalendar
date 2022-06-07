@@ -20,4 +20,17 @@ public class PrjService implements IPrjService {
         int res = prjMapper.createPrj(pDTO, userId);
         return res;
     }
+
+    @Override
+    public int updateMile(PrjInfoDTO pDTO) throws Exception {
+
+        int res = prjMapper.updatePrj(pDTO);
+        return res;
+    }
+
+    @Override
+    public PrjInfoDTO getPrjInfo(PrjInfoDTO pDTO) throws Exception {
+
+        return prjMapper.getPrjInfo(pDTO);
+    }
 }

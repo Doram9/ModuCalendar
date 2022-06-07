@@ -189,7 +189,7 @@
 
 								%>
 								<div class="card">
-									<a class="card-body btn btn-primary" href="prj?code=<%= code%>">
+									<a class="card-body btn btn-primary" href="prj?title=<%=title%>&code=<%= code%>">
 										<p class="card-text"><%= title%></p>
 									</a>
 								</div>

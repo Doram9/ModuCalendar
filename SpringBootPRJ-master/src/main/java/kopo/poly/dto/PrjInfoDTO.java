@@ -19,7 +19,7 @@ public class PrjInfoDTO {
 //    프로젝트 마감일
     private String prjEndDate;
 //    프로젝트 멤버
-    private List<PlayerInfo> prjPlayer;
+    private List<PlayerInfoDTO> prjPlayer;
 //    프로젝트 마일스톤
-    private MileDTO prjMileInfo;
+    private List<MileDTO> prjMileInfo;
 }

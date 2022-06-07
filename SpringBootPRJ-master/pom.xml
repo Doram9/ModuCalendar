@@ -11,6 +11,7 @@
     <groupId>kopo</groupId>
     <artifactId>poly</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
     <name>SpringBootPRJ</name>
     <description>SpringBootPRJ</description>
     <properties>
@@ -95,6 +96,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
         </dependency>
 
     </dependencies>

@@ -81,7 +81,7 @@
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="index.html">Modu Calendar</a>
+    <a class="navbar-brand ps-3" href="/">Modu Calendar</a>
     <!-- Sidebar Toggle-->
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
     <!-- 여백-->
@@ -106,67 +106,45 @@
             <div class="sb-sidenav-menu">
                 <div class="nav">
                     <div class="sb-sidenav-menu-heading">내 정보</div>
-                    <a class="nav-link" href="index.html">
+                    <a class="nav-link" data-bs-toggle="modal" data-bs-target="#userInfo">
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                        My Calendar
+                        <%= pDTO.getUserName()%>
                     </a>
                     <div class="sb-sidenav-menu-heading">약속 목록</div>
-                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                        Layouts
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                    </a>
-                    <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <%
+                        int i = 0;
+                        for(String appoCode : appoList) {
+                            String parse[] = appoCode.split("\\*_\\*");
+                            String title = parse[0];
+                            String code = parse[1];
+                    %>
+                    <div class="nav-link collapsed">
+                        <div class="sb-nav-link-icon">
+                            <i class="fas fa-table"></i>
+                        </div>
+                        <a class="link-warning" style="text-decoration-line: none" href="appo?code=<%= code%>&title=<%= title%>">
+                            <%= title%>
+                        </a>
+                        <div class="sb-sidenav-collapse-arrow" data-bs-toggle="collapse" data-bs-target="#collapseLayout<%=i%>" aria-expanded="false" aria-controls="collapseLayouts">
+                            <i class="fas fa-angle-down"></i>
+                        </div>
+                    </div>
+                    <div class="collapse" id="collapseLayout<%=i%>" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link" href="layout-static.html">Static Navigation</a>
-                            <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
+                            <button class="nav-link btn btn-outline-danger" onclick="deleteAppo('<%= title%>', '<%= code%>')">방 나가기</button>
                         </nav>
                     </div>
-                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                        <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                        Pages
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                    </a>
-                    <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-                        <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                Authentication
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="login.html">Login</a>
-                                    <a class="nav-link" href="register.html">Register</a>
-                                    <a class="nav-link" href="password.html">Forgot Password</a>
-                                </nav>
-                            </div>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
-                                Error
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="401.html">401 Page</a>
-                                    <a class="nav-link" href="404.html">404 Page</a>
-                                    <a class="nav-link" href="500.html">500 Page</a>
-                                </nav>
-                            </div>
-                        </nav>
-                    </div>
-                    <div class="sb-sidenav-menu-heading">팀 목록</div>
-                    <a class="nav-link" href="charts.html">
-                        <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                        Charts
-                    </a>
-                    <a class="nav-link" href="tables.html">
-                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                        Tables
-                    </a>
+                    <%
+                            i++;
+                        }
+                    %>
+                    <div class="mt-2"></div>
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#addAppo">
+                        약속 추가하기
+                    </button>
+                    <div class="mt-2"></div>
+                    <button type="button" class="btn btn-dark btn-outline-warning" data-bs-toggle="modal" data-bs-target="#inputCode">초대코드 입력하기</button>
                 </div>
-            </div>
-            <div class="sb-sidenav-footer">
-                <div class="small">Logged in as:</div>
-                Start Bootstrap
             </div>
         </nav>
     </div>
@@ -187,8 +165,8 @@
                     <div class="card-body container-fluid" id="milestone">
                         <!-- 첫줄 row-->
                         <div class="row mb-1">
-                            <div class="offset-6 col-6 btn-primary">
-                                <!-- 3:9 비율 -->
+                            <div class="offset-5 col-7 btn-primary">
+                                <!-- 5:7 비율 -->
                                 기간 :
                                 <input type="text" name="month" autocomplete="off" id="startdatepicker" required>
 
@@ -227,7 +205,7 @@
                         </div>
 
                         <!-- object 추가 row -->
-                        <form id="mileForm">
+                        <div id="mileForm">
                             <div class="row mt-2" id="item_0">
                                 <div class="col-5">
                                     <div class="row justify-content-around">
@@ -242,13 +220,13 @@
                                             </div>
                                         </div>
                                         <div class="col-3">
-                                            <input class="form-control" autocomplete="off" required>
+                                            <input class="form-control" name="month" id="itemStartDate_0" onchange="chgDateValue('itemStartDate_0')" type="text" autocomplete="off" required>
                                         </div>
                                         <div class="col-1">
                                             <p style="text-align: center">~</p>
                                         </div>
                                         <div class="col-3">
-                                            <input class="form-control" autocomplete="off" required>
+                                            <input class="form-control" name="month" id="itemEndDate_0" onchange="chgDateValue('itemEndDate_0')" type="text" autocomplete="off" required>
                                         </div>
 
                                     </div>
@@ -263,7 +241,7 @@
 
                                 </div>
                             </div>
-                        </form>
+                        </div>
 
 
                     </div>
@@ -286,6 +264,94 @@
 </div>
 
 
+<!-- UserInfo Modal -->
+<div class="modal fade" id="userInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelUserInfo" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabelUserInfo">내 정보</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="userName" class="form-label">이름</label>
+                    <p name="userName" class="form-control" id="userName"><%= pDTO.getUserName()%></p>
+                </div>
+                <div class="mb-3">
+                    <label for="userRegDt" class="form-label">가입일</label>
+                    <p name="userRegDt" class="form-control" id="userRegDt"><%= pDTO.getRegDt()%></p>
+                </div>
+                <div class="mb-3">
+                    <label for="userPw" class="form-label">비밀번호</label> <button class="btn btn-sm btn-outline-info" onclick="chgPw()">비밀번호 변경하기</button>
+                    <p name="userPw" class="form-control" id="userPw">**********</p>
+                </div>
+                <div class="mb-3 row justify-content-end">
+                    <button class="btn btn-sm btn-warning btn-outline-danger col-6" onclick="deleteUser()">회원탈퇴하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Appo Modal -->
+<div class="modal fade" id="addAppo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content" action="createAppo" method="get">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">새 약속</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">제목</label>
+                    <input type="text" name="title" class="form-control" autocomplete="off" id="exampleFormControlInput1" placeholder="~~에 만나요" required>
+
+                </div>
+                <p>만나는 년, 월 <input type="text" name="month" autocomplete="off" id="monthpicker" required></p>
+                <p>투표 기한</p>
+                <select name="deadline" class="form-select form-select-sm" aria-label=".form-select-sm example">
+                    <option value="1">앞으로 1일</option>
+                    <option value="3">앞으로 3일</option>
+                    <option value="5">앞으로 5일</option>
+                    <option value="7">앞으로 7일</option>
+                </select>
+                <div class="mb-3"></div>
+                <p>약속 장소</p>
+                <select name="region" class="form-select form-select-sm" aria-label=".form-select-sm example">
+                    <option value="서울">서울</option>
+                    <option value="인천">인천</option>
+                    <option value="경기북부">경기북부</option>
+                    <option value="경기남부">경기남부</option>
+                    <option value="강원영서">강원영서</option>
+                    <option value="강원영동">강원영동</option>
+                    <option value="대전">대전</option>
+                    <option value="세종">세종</option>
+                    <option value="충남">충남</option>
+                    <option value="충북">충북</option>
+                    <option value="광주">광주</option>
+                    <option value="전북">전북</option>
+                    <option value="전남">전남</option>
+                    <option value="부산">부산</option>
+                    <option value="대구">대구</option>
+                    <option value="울산">울산</option>
+                    <option value="경북">경북</option>
+                    <option value="경남">경남</option>
+                    <option value="제주">제주</option>
+                </select>
+            </div>
+
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                <button type="submit" class="btn btn-warning">생성</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="js/scripts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
@@ -301,6 +367,9 @@
 <!-- 데이트피커용 j쿼리 -->
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
 
 <script>
     $.datepicker.setDefaults({
@@ -322,6 +391,8 @@
 
     $("#startdatepicker").datepicker();
     $("#enddatepicker").datepicker();
+    $("#itemStartDate_0").datepicker();
+    $("#itemEndDate_0").datepicker();
 </script>
 
 <script>
@@ -329,7 +400,7 @@
     $("#startdatepicker").datepicker("option", "onClose", function(selectedDate) {
         if(document.getElementById("startdatepicker").value != '') {
 
-            allInfo.startDate = document.getElementById("startdatepicker").value;
+            //allInfo.startDate = document.getElementById("startdatepicker").value;
 
             //yyyy-mm-dd를 split으로 나누고 년,월에 하나씩 넣기, 일은 전달의 마지막 날을 넣기 때문에 0
             let yyyymmdd = selectedDate.split('-');
@@ -345,7 +416,7 @@
     $("#enddatepicker").datepicker("option", "onClose", function(selectedDate) {
         if(document.getElementById("enddatepicker").value != '' && document.getElementById("startdatepicker").value != '') {
 
-            allInfo.endDate = document.getElementById("enddatepicker").value;
+            //allInfo.endDate = document.getElementById("enddatepicker").value;
 
             //#m_period 하위의 모든 태그 제거
             $("#m_period").empty();
@@ -374,6 +445,7 @@
 <script>
     //마일스톤 정보
     let mileInfo = [{
+        "itemIdx" : 0,
         "itemValue" : "",
         "itemStartDate" : "", //프로젝트 시작일
         "itemEndDate" : "", //프로젝트 마감일
@@ -389,20 +461,24 @@
     function addStep(event) {
         console.log(event);
         // event = step_n
-        let splitedEvent = event.split('_');
+        let splitedEvent = event.split('_'); //splitedEvent[1] 에는 번호가 들어감
 
+        let indexNum = mileInfo.findIndex(i => i.itemIdx == splitedEvent[1]);
+
+        //count + 1
+        stepCnt += 1;
 
         let stepInfo = {
+            "itemIdx" : stepCnt,
             "itemValue" : "",
             "itemStartDate" : "", //프로젝트 시작일
             "itemEndDate" : "", //프로젝트 마감일
         };
 
         //+1 하는 이유는 splice 시작위치를 event객체 바로 뒤로 지정해주기위해
-        mileInfo.splice(splitedEvent[1] + 1, 0, stepInfo);
+        mileInfo.splice(indexNum + 1, 0, stepInfo);
 
-        //count + 1
-        stepCnt += 1;
+
 
         $("#" + event).after($(
             `<div class="row mt-2" id="item_\${stepCnt}">
@@ -419,13 +495,13 @@
                                             </div>
                                         </div>
                                         <div class="col-3">
-                                            <input class="form-control" autocomplete="off" required>
+                                            <input class="form-control" name="month" id="itemStartDate_\${stepCnt}" onchange="chgDateValue('itemStartDate_\${stepCnt}')" type="text" autocomplete="off" required>
                                         </div>
                                         <div class="col-1">
                                             <p style="text-align: center">~</p>
                                         </div>
                                         <div class="col-3">
-                                            <input class="form-control" autocomplete="off" required>
+                                            <input class="form-control" name="month" id="itemEndDate_\${stepCnt}" onchange="chgDateValue('itemEndDate_\${stepCnt}')" type="text" autocomplete="off" required>
                                         </div>
 
                                     </div>
@@ -443,6 +519,8 @@
                             </div>`
 
         ));
+        $(`#itemStartDate_\${stepCnt}`).datepicker();
+        $(`#itemEndDate_\${stepCnt}`).datepicker();
     }
 
     function rmStep(event) {
@@ -450,8 +528,10 @@
         // event = step_n
         let splitedEvent = event.split('_');
 
+        let indexNum = mileInfo.findIndex(i => i.itemIdx == splitedEvent[1]);
+
         //데이터 삭제
-        mileInfo.splice(splitedEvent[1], 1, );
+        mileInfo.splice(indexNum, 1, );
         //태그 삭제
         $("#" + event).remove();
 
@@ -462,24 +542,60 @@
         // event = step_n
         let splitedEvent = event.split('_');
 
+        let indexNum = mileInfo.findIndex(i => i.itemIdx == splitedEvent[1]);
+
 
         //단계명
         let stepValue = document.getElementById("itemValue_" + splitedEvent[1]).value;
         console.log(stepValue);
 
-        mileInfo[splitedEvent[1]].itemValue = stepValue;
+        mileInfo[indexNum].itemValue = stepValue;
+    }
+
+    function chgDateValue(event) {
+        // event = step_n
+        let splitedEvent = event.split('_');
+
+        let indexNum = mileInfo.findIndex(i => i.itemIdx == splitedEvent[1]);
+
+        //설정일자
+        let stepValue = document.getElementById(event).value;
+
+        let key = splitedEvent[0];
+        if(key == 'itemStartDate') {
+            mileInfo[indexNum].itemStartDate = stepValue;
+        } else {
+            mileInfo[indexNum].itemEndDate = stepValue;
+        }
+
+
+
+
+        console.log(stepValue);
+
+
 
     }
 
     function send(event) {
         event.preventDefault();
-        let obj = JSON.stringify({"allInfo" : allInfo, "prjCode" : <%= prjCode%>});
-        alert(obj);
+
+        let obj = JSON.stringify(mileInfo);
+        console.log(obj);
+        let startDate = document.getElementById("startdatepicker").value;
+        let endDate = document.getElementById("enddatepicker").value;
+        let prjCode = "<%= prjCode%>";
 
         $.ajax({
             url: "updateMile",
             type: 'get',
-            data: obj,
+            data: {
+                "mileInfo" : obj,
+                "prjCode" : prjCode,
+                "prjStartDate" : startDate,
+                "prjEndDate" : endDate
+
+            },
             dataType: "text",
             contentType: "application/json; charset=utf-8",
 
@@ -487,8 +603,7 @@
                 location.href = "/";
             },
             error: function(request,status,error) {
-                //alert("아이디 또는 비밀번호가 일치하지 않습니다.");
-                //location.reload();
+
             }
 
         });

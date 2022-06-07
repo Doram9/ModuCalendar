@@ -9,11 +9,13 @@ public interface IPrjMapper {
     //프로젝트 삭제
     int deletePrj(PrjInfoDTO pDTO) throws Exception;
 
-    //프로젝트 정보 수정
+    //프로젝트 정보 가져오기
+    PrjInfoDTO getPrjInfo(PrjInfoDTO pDTO) throws Exception;
 
     //마일스톤 생성
 
     //마일스톤 수정
+    int updatePrj(PrjInfoDTO pDTO) throws Exception;
 
     //마일스톤 삭제
 

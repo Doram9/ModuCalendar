@@ -103,6 +103,13 @@
                         location.href = "/";
                     } else if(result == "fail") {
                         alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+                        canvasReset();
+                        shuffle_color(color);
+                        shuffle(colorName, colorClass);
+                        mes.className = colorClass[0];
+                        mes.innerText = colorName[0] + "을 클릭하십시오";
+                        fill();
+                        capcha.style.display = 'block';
                     }
                 },
                 error: function(request,status,error) {
@@ -146,6 +153,12 @@
             [array_1[i], array_1[j]] = [array_1[j], array_1[i]];
         }
     }
+
+    //id 값 변화시 다시 중복확인하게끔 false로 변경
+    $('#inputPassword').keyup( function(){
+        capchaTF = false;
+
+    });
 
     function canvasReset() {
         ctx.clearRect(0, 0, CANVASSIZE, CANVASSIZE);
@@ -195,6 +208,7 @@
             mes.className = colorClass[0];
             mes.innerText = colorName[0] + "을 클릭하십시오";
             fill();
+
         }
     }
     canvas.addEventListener("click", handleFig);

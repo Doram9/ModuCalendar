@@ -4,7 +4,7 @@ package kopo.poly.dto;
 import lombok.Data;
 
 @Data
-public class PlayerInfo {
+public class PlayerInfoDTO {
     private String userId;
     private String userName;
     //팀원 역할(아무거나 기재가능)

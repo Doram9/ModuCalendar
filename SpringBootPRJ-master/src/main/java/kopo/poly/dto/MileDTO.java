@@ -6,7 +6,7 @@ import java.util.List;
 
 @Data
 public class MileDTO {
-    private List<String> itemValue;
-    private List<String> itemStartDate;
-    private List<String> itemEndDate;
+    private String itemValue;
+    private String itemStartDate;
+    private String itemEndDate;
 }
