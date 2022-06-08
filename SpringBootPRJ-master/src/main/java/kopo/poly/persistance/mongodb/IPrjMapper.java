@@ -1,5 +1,6 @@
 package kopo.poly.persistance.mongodb;
 
+import kopo.poly.dto.PlayerInfoDTO;
 import kopo.poly.dto.PrjInfoDTO;
 
 public interface IPrjMapper {
@@ -19,9 +20,8 @@ public interface IPrjMapper {
 
     //마일스톤 삭제
 
-    //프로젝트 게시판 글 생성
-    //프로젝트 게시판 글 수정
-    //프로젝트 게시판 글 삭제
+    //팀원정보 수정
+    int updatePlayerInfo(PrjInfoDTO jDTO, PlayerInfoDTO pDTO) throws Exception;
 
     //프로젝트 채팅로그
 }

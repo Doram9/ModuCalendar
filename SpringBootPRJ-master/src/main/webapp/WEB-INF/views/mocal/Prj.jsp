@@ -1,13 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 		 pageEncoding="UTF-8"%>
-<%@ page import="kopo.poly.dto.UserInfoDTO" %>
-<%@ page import="kopo.poly.dto.EventDTO" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <%@ page import="kopo.poly.util.EncryptUtil" %>
 <%@ page import="kopo.poly.util.CmmUtil" %>
-<%@ page import="kopo.poly.dto.PrjInfoDTO" %>
-<%@ page import="kopo.poly.dto.MileDTO" %>
+<%@ page import="kopo.poly.dto.*" %>
 <%
 	UserInfoDTO pDTO = (UserInfoDTO) request.getAttribute("UserInfoDTO");
 
@@ -30,6 +27,20 @@
 	List<MileDTO> mList = rDTO.getPrjMileInfo();
 	if(mList == null) {
 		mList = new ArrayList<>();
+	}
+	List<PlayerInfoDTO> plaList = rDTO.getPrjPlayer();
+	if(plaList == null) {
+		plaList = new ArrayList<>();
+	}
+
+	String userGrant = "";
+	for(PlayerInfoDTO plaDTO : plaList) {
+		String playerId = plaDTO.getUserId();
+		String playerGrant = plaDTO.getUserGrant();
+
+		if(pDTO.getUserId().equals(playerId)) {
+			userGrant = playerGrant;
+		}
 	}
 %>
 <!DOCTYPE html>
@@ -161,7 +172,7 @@
 			<div class="container-fluid px-4">
 				<div class="mt-4"></div>
 				<div class="row">
-					<div class="col-xl-12">
+					<div class="col-xl-9">
 						<div class="card mb-4">
 							<div class="card-header">
 								<i class="fas fa-chart-area me-1"></i>
@@ -174,60 +185,82 @@
 								<div class="row">
 
 									<div class="row mb-3" style="text-align: center">
-										<div class="col-3">
+										<div class="col-2">
 											프로젝트 시작일
 										</div>
 										<div class="col-3">
-											<input class="form-control" type="text" value="<%=rDTO.getPrjStartDate()%>" disabled>
+											<input class="form-control" id="prjStartDate" type="text" value="<%=rDTO.getPrjStartDate()%>" disabled>
 										</div>
-										<div class="col-3">
+										<div class="col-2">
 											프로젝트 종료일
 										</div>
 										<div class="col-3">
-											<input class="form-control" type="text" value="<%=rDTO.getPrjEndDate()%>" disabled>
+											<input class="form-control" id="prjEndDate" type="text" value="<%=rDTO.getPrjEndDate()%>" disabled>
 										</div>
 									</div>
-									<div class="col-6">
-										<div class="row mt-1 justify-content-around">
-											<div class="col-3 btn btn-primary" style="text-align: center">
-												항목명
-											</div>
-											<div class="col-3 btn btn-primary" style="text-align: center">
-												시작일
-											</div>
-											<div class="col-3 btn btn-primary" style="text-align: center">
-												종료일
+									<div class="row mb-1">
+										<div class="col-6">
+											<div class="row justify-content-around">
+												<div class="col-3 btn btn-primary" style="text-align: center">
+													항목명
+												</div>
+												<div class="col-3 btn btn-primary" style="text-align: center">
+													시작일
+												</div>
+												<div class="col-3 btn btn-primary" style="text-align: center">
+													종료일
+												</div>
 											</div>
 										</div>
-									</div>
-									<div class="col-6">
-										<div class="row"></div>
+										<div class="col-6">
+											<div class="row" id="m_period"></div>
+										</div>
 									</div>
 									<%
+										int j = 0;
+										int startMonth = Integer.parseInt(rDTO.getPrjStartDate().split("-")[1]);
+										int endMonth = Integer.parseInt(rDTO.getPrjEndDate().split("-")[1]);
 										for(MileDTO mDTO : mList) {
 											String itemValue = mDTO.getItemValue();
 											String itemStartDate = mDTO.getItemStartDate();
+											int itemStartMonth = Integer.parseInt(itemStartDate.split("-")[1]);
 											String itemEndDate = mDTO.getItemEndDate();
+											int itemEndMonth = Integer.parseInt(itemEndDate.split("-")[1]);
 									%>
-									<div class="row">
+									<div class="row mb-1">
 										<div class="col-6" id="MileItem">
-											<div class="row mt-1">
+											<div class="row">
 												<div class="col-4">
 													<input class="form-control" style="text-align: center" type="text" value="<%=itemValue%>" disabled />
 												</div>
 												<div class="col-4">
-													<input class="form-control" type="text" value="<%=itemStartDate%>" disabled />
+													<input class="form-control" style="text-align: center" type="text" value="<%=itemStartDate%>" disabled />
 												</div>
 												<div class="col-4">
-													<input class="form-control" type="text" value="<%=itemEndDate%>" disabled />
+													<input class="form-control" style="text-align: center" type="text" value="<%=itemEndDate%>" disabled />
 												</div>
 											</div>
 										</div>
-										<div class="col-6" id="MileStone">
-											asdfasd
+										<div class="col-6">
+											<div class="row" id="MileStone_<%= j%>" style="height: 100%">
+												<%
+													for(int k = startMonth; k <= endMonth; k++) {
+														if(k >= itemStartMonth && k <= itemEndMonth) {
+												%>
+															<button class="btn btn-warning col-1" disabled></button>
+												<%
+														} else {
+												%>
+															<button class="col-1 btn btn-outline-dark disabled"></button>
+												<%
+														}
+													}
+												%>
+											</div>
 										</div>
 									</div>
 									<%
+											j++;
 										}
 									%>
 								</div>
@@ -236,14 +269,61 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-xl-5">
+					<div class="col-xl-3">
 						<div class="card mb-4">
 							<div class="card-header">
 								<i class="fas fa-chart-bar me-1"></i>
 								팀 채팅
 							</div>
 							<div class="card-body">
-								dsfsadf
+								<button type="button" class="btn btn-primary">접속하기</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-xl-12">
+						<div class="card mb-4">
+							<div class="card-header">
+								<i class="fas fa-chart-bar me-1"></i>
+								팀원 정보
+							</div>
+							<div class="card-body">
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-2">이름</div>
+										<div class="col-2">직책</div>
+										<div class="col-5">역할</div>
+										<div class="col-3">비고</div>
+									</div>
+									<hr/>
+									<%
+										for(PlayerInfoDTO plaDTO : plaList) {
+											String playerName = plaDTO.getUserName();
+											String playerId = plaDTO.getUserId();
+											String playerGrant = plaDTO.getUserGrant();
+											String playerRole = plaDTO.getUserRole();
+
+									%>
+											<div class="row">
+												<div class="col-2"><%= playerName%></div>
+												<div class="col-2"><%= playerGrant%></div>
+												<div class="col-5"><%= playerRole%></div>
+												<%
+													if(userGrant.equals("master")) {
+														if(pDTO.getUserId().equals(playerId)) {
+												%>
+												<button class="col-1 btn btn-primary" data-bs-toggle="modal" data-bs-target="#playerInfo" onclick="showPlayerInfo('<%= playerId%>', '<%= playerName%>', '<%= playerGrant%>', '<%= playerRole%>')">수정</button>
+												<div class="col-1"></div>
+												<button class="col-1 btn btn-danger">강퇴</button>
+												<%
+														}
+													}
+												%>
+											</div>
+									<%
+										}
+									%>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -341,8 +421,7 @@
 </div>
 
 <!-- inputCode Modal -->
-<div class="modal fade" id="inputCode" data-bs-bac
-	 kdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+<div class="modal fade" id="inputCode" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
 	<div class="modal-dialog">
 		<form class="modal-content" onsubmit="inputCode(event)">
 			<div class="modal-header">
@@ -365,6 +444,43 @@
 	</div>
 </div>
 
+<!-- Player Modal -->
+<div class="modal fade" id="playerInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+	<div class="modal-dialog">
+		<form class="modal-content" onsubmit="chgPlayerInfo(event)">
+			<div class="modal-header">
+				<h5 class="modal-title">팀원 정보 수정하기</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+
+			<div class="modal-body">
+				<div class="mb-3">
+					<label for="pName" class="form-label">이름</label>
+					<input name="userName" class="form-control" id="pName" disabled />
+				</div>
+				<div class="mb-3">
+					<label for="pGrant" class="form-label">직책</label>
+					<select name="userGrant" class="form-select" aria-label="Default select example" id="pGrant">
+						<option value="master">Master(프로젝트 삭제 가능)</option>
+						<option value="senior">Senior(마일스톤 수정가능)</option>
+						<option value="junior">Junior(마일스톤 수정불가능)</option>
+					</select>
+				</div>
+				<div class="mb-3">
+					<label for="pRole" class="form-label">역할</label>
+					<input name="userRole" type="text" class="form-control" id="pRole" />
+				</div>
+				<input name="userId" type="text" id="pId" disabled hidden />
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+				<button type="submit" class="btn btn-success">수정</button>
+			</div>
+		</form>
+	</div>
+</div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="js/scripts.js"></script>
@@ -382,6 +498,34 @@
 <!-- monthpicker -->
 <script src="js/jquery.mtz.monthpicker.js"></script>
 
+<script>
+
+	        //기간이 총 몇달인지 계산
+			const startDate = document.getElementById("prjStartDate").value.split('-');
+	        let startY = startDate[0];
+
+
+	        let startM = Number(startDate[1]);
+
+
+			const endDate = document.getElementById("prjEndDate").value.split('-');
+
+	        let endY = endDate[0];
+
+
+	        let endM = Number(endDate[1]);
+
+	        //기간 = 년도가 같으면 끝달 - 시작달, 년도가 다르면 12 - (시작달 - 끝달)
+	        let periodM = (Number(startY) - Number(endY) == 0) ? Number(endM) - Number(startM) : 12 - (Number(startM) - Number(endM));
+
+	        //달 개수 만큼 div 생성, 텍스트에는 해당 월입력
+	        //periodM까지 반복 즉, 최소 1번은 반복
+	        for (let i = 0; i <= periodM; i++) {
+	            let mileM = new Date(Number(startY), Number(startM + i), 1).getMonth();
+	            $("#m_period").append($("<div class='col-1 btn btn-primary'>").text(mileM));
+	        }
+
+</script>
 
 <script>
 	function inputCode(event) {
@@ -475,7 +619,52 @@
 	}
 
 	function deleteMile() {
+		if("<%= userGrant%>" == "master") {
+			alert("master 또는 se")
+		}
 
+	}
+
+	function showPlayerInfo(pId, pName, pGrant, pRole) {
+		console.log(pId);
+		console.log(pName);
+		console.log(pGrant);
+		console.log(pRole);
+
+		document.getElementById("pName").value = pName;
+		document.getElementById("pRole").value = pRole;
+		document.getElementById("pId").value = pId;
+	}
+
+	function chgPlayerInfo(event) {
+		event.preventDefault;
+		let sPrjCode = "<%=rDTO.getPrjCode()%>";
+		let sUserId = document.getElementById("pId").value;
+		let sUserName = document.getElementById("pName").value;
+		let sUserRole = document.getElementById("pRole").value;
+		let sUserGrant = document.getElementById("pGrant").value;
+
+		$.ajax({
+			url: "chgPlayerInfo",
+			type: 'get',
+			data: {
+				prjCode : sPrjCode,
+				userId : sUserId,
+				userName : sUserName,
+				userGrant : sUserGrant,
+				userRole : sUserRole
+			},
+			contentType: "application/json; charset=utf-8",
+			dataType: "text",
+			success: function(data) {
+				event.preventDefault;
+				console.log(data);
+			},
+			error: function(error) {
+				event.preventDefault;
+			}
+
+		});
 	}
 </script>
 

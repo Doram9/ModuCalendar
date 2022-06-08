@@ -40,10 +40,6 @@ public class PrjController {
         pDTO.setPrjCode(prjCode);
 
         PrjInfoDTO rDTO = prjService.getPrjInfo(pDTO);
-        log.info("prjName : " + rDTO.getPrjTitle());
-        log.info("prjsDate : " + rDTO.getPrjStartDate());
-
-
 
         String userId = CmmUtil.nvl((String)session.getAttribute("userId"));
 
@@ -171,6 +167,37 @@ public class PrjController {
 
         int res = prjService.updateMile(pDTO);
 
+
+        return Integer.toString(res);
+    }
+
+    //팀원 정보 수정
+    @GetMapping(value = "chgPlayerInfo")
+    @ResponseBody
+    public String chgPlayerInfo(HttpServletRequest request) throws Exception {
+        log.info("controller.chgPlayerInfo start");
+
+        String prjCode = request.getParameter("prjCode");
+        log.info("prjCode : " + prjCode);
+        String userId = request.getParameter("userId");
+        log.info("userId : " + userId);
+        String userName = request.getParameter("userName");
+        log.info("userName : " + userName);
+        String userGrant = request.getParameter("userGrant");
+        log.info("userGrant : " + userGrant);
+        String userRole = request.getParameter("userRole");
+        log.info("userRole : " + userRole);
+
+        PrjInfoDTO jDTO = new PrjInfoDTO();
+        jDTO.setPrjCode(prjCode);
+
+        PlayerInfoDTO pDTO = new PlayerInfoDTO();
+        pDTO.setUserId(userId);
+        pDTO.setUserName(userName);
+        pDTO.setUserGrant(userGrant);
+        pDTO.setUserRole(userRole);
+
+        int res = prjService.updatePlayerInfo(jDTO, pDTO);
 
         return Integer.toString(res);
     }

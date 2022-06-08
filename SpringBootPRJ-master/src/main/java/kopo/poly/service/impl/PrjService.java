@@ -1,5 +1,6 @@
 package kopo.poly.service.impl;
 
+import kopo.poly.dto.PlayerInfoDTO;
 import kopo.poly.dto.PrjInfoDTO;
 import kopo.poly.persistance.mongodb.IEventMapper;
 import kopo.poly.persistance.mongodb.IPrjMapper;
@@ -32,5 +33,12 @@ public class PrjService implements IPrjService {
     public PrjInfoDTO getPrjInfo(PrjInfoDTO pDTO) throws Exception {
 
         return prjMapper.getPrjInfo(pDTO);
+    }
+
+    @Override
+    public int updatePlayerInfo(PrjInfoDTO jDTO, PlayerInfoDTO pDTO) throws Exception {
+
+
+        return prjMapper.updatePlayerInfo(jDTO, pDTO);
     }
 }

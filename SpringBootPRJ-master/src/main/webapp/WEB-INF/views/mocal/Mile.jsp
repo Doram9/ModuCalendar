@@ -203,48 +203,54 @@
                                     종료일
                                 </div>
                             </div>
-<%--                            <div class="col-7">--%>
-<%--                                <div class="row" id="m_period" style="text-align: center">--%>
-
-<%--                                </div>--%>
-<%--                            </div>--%>
                         </div>
 
                         <!-- object 추가 row -->
                         <div id="mileForm">
-                            <div class="row mt-2" id="item_0">
-                                        <div class="col-4">
-                                            <!-- 항목 obj 추가 row -->
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-xs btn-secondary" onclick="addStep('item_0')">+</button>
+                            <%
+                                int j = 0;
+                                for(MileDTO mDTO : mList) {
+                                    String itemValue = mDTO.getItemValue();
+                                    String itemStartDate = mDTO.getItemStartDate();
+                                    String itemEndDate = mDTO.getItemEndDate();
+                            %>
+                                <div class="row mt-2" id="item_<%=j%>">
+                                    <div class="col-4">
+                                        <!-- 항목 obj 추가 row -->
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-xs btn-secondary" onclick="addStep('item_<%=j%>')">+</button>
 
-                                                <input class="form-control" id="itemValue_0" type="text" placeholder="항목명" onchange="chgStepValue('item_0')" required>
-
+                                            <input class="form-control" id="itemValue_<%=j%>" type="text" placeholder="항목명" onchange="chgStepValue('item_<%=j%>')" value="<%=itemValue%>" required>
+                                            <%
+                                                if(j == 0) {
+                                            %>
                                                 <button type="button" class="btn btn-secondary" disabled>-</button>
-                                            </div>
-                                        </div>
-                                        <div class="col-2">
-                                            <input class="form-control" name="month" id="itemStartDate_0" onchange="chgDateValue('itemStartDate_0')" type="text" autocomplete="off" required>
-                                        </div>
-                                        <div class="col-1">
-                                            <p style="text-align: center">~</p>
-                                        </div>
-                                        <div class="col-2">
-                                            <input class="form-control" name="month" id="itemEndDate_0" onchange="chgDateValue('itemEndDate_0')" type="text" autocomplete="off" required>
-                                        </div>
+                                            <%
+                                                } else {
+                                            %>
+                                                <button type="button" class="btn btn-secondary" onclick="rmStep('item_<%=j%>')">-</button>
+                                            <%
+                                                }
+                                            %>
 
-                                <!-- 마일스톤 생성col -->
-<%--                                <div class="col-7">--%>
-<%--                                    <div class="row" id="stone_0">--%>
-<%--                                        <div class="col-1" style="background-color: #0a58ca">a</div>--%>
-<%--                                    </div>--%>
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <input class="form-control" name="month" id="itemStartDate_<%=j%>" onchange="chgDateValue('itemStartDate_<%=j%>')" type="text" value="<%=itemStartDate%>" autocomplete="off" required>
+                                    </div>
+                                    <div class="col-1">
+                                        <p style="text-align: center">~</p>
+                                    </div>
+                                    <div class="col-2">
+                                        <input class="form-control" name="month" id="itemEndDate_<%=j%>" onchange="chgDateValue('itemEndDate_<%=j%>')" type="text" value="<%=itemEndDate%>" autocomplete="off" required>
+                                    </div>
+                                </div>
+                            <%
+                                    j++;
+                                }
+                            %>
 
-
-<%--                                </div>--%>
-                            </div>
                         </div>
-
-
                     </div>
                 </form>
             </div>
@@ -424,9 +430,13 @@
     //         $("#m_period").empty();
     //         //기간이 총 몇달인지 계산
     //         let startY = $("#startdatepicker").datepicker('getDate').getFullYear();
+    //         console.log(startY);
     //         let startM = $("#startdatepicker").datepicker('getDate').getMonth();
+    //         console.log(startM);
     //         let endY = $("#enddatepicker").datepicker('getDate').getFullYear();
+    //         console.log(endY);
     //         let endM = $("#enddatepicker").datepicker('getDate').getMonth();
+    //         console.log(endM);
     //
     //         //기간 = 년도가 같으면 끝달 - 시작달, 년도가 다르면 12 - (시작달 - 끝달)
     //         let periodM = (Number(startY) - Number(endY) == 0) ? Number(endM) - Number(startM) : 12 - (Number(startM) - Number(endM));
@@ -437,7 +447,7 @@
     //         //periodM까지 반복 즉, 최소 1번은 반복
     //         for (let i = 0; i <= periodM; i++) {
     //             let mileM = new Date(Number(startY), Number(startM + i), 1).getMonth() + 1;
-    //             let attr = $("<div>")
+    //             console.log(mileM);
     //             $("#m_period").append($("<div class='col-1 btn-primary'>").text(mileM));
     //         }
     //     }
@@ -446,18 +456,40 @@
 
 <script>
     //마일스톤 정보
-    let mileInfo = [{
-        "itemIdx" : 0,
-        "itemValue" : "",
-        "itemStartDate" : "", //프로젝트 시작일
-        "itemEndDate" : "", //프로젝트 마감일
-    }];
+    let mileInfo = [
+        <%
+            int itemIdx = 0;
+            for(MileDTO mDTO : mList) {
+                String itemValue = mDTO.getItemValue();
+                String itemStartDate = mDTO.getItemStartDate();
+                String itemEndDate = mDTO.getItemEndDate();
+        %>
+                {
+                    "itemIdx" : <%= itemIdx%>,
+                    "itemValue" : "<%= itemValue%>",
+                    "itemStartDate" : "<%= itemStartDate%>", //프로젝트 시작일
+                    "itemEndDate" : "<%= itemEndDate%>", //프로젝트 마감일
+                },
+        <%
+                itemIdx++;
+            }
+        %>
 
+    ];
+
+    <%
+        for(int q = j; q >= 0; q--) {
+    %>
+        $("#itemStartDate_<%=q%>").datepicker();
+        $("#itemEndDate_<%=q%>").datepicker();
+    <%
+        }
+    %>
 
 
 
     //단계 생성 count 변수
-    let stepCnt = 0;
+    let stepCnt = Number(<%=j%>);
 
 
     function addStep(event) {
@@ -589,7 +621,7 @@
                 if(result == 1) {
                     alert("성공");
                 }
-                location.href = "/";
+                location.href = "/prj?code=<%= rDTO.getPrjCode()%>";
             },
             error: function(request,status,error) {
 
