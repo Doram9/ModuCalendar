@@ -9,6 +9,8 @@ public interface IPrjService {
 
     int updateMile(PrjInfoDTO pDTO) throws Exception;
 
+    int deleteMile(PrjInfoDTO pDTO) throws Exception;
+
     PrjInfoDTO getPrjInfo(PrjInfoDTO pDTO) throws Exception;
 
     int updatePlayerInfo(PrjInfoDTO jDTO, PlayerInfoDTO pDTO) throws Exception;

@@ -30,6 +30,11 @@ public class PrjService implements IPrjService {
     }
 
     @Override
+    public int deleteMile(PrjInfoDTO pDTO) throws Exception {
+        return prjMapper.deleteMile(pDTO);
+    }
+
+    @Override
     public PrjInfoDTO getPrjInfo(PrjInfoDTO pDTO) throws Exception {
 
         return prjMapper.getPrjInfo(pDTO);

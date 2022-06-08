@@ -19,6 +19,7 @@ public interface IPrjMapper {
     int updatePrj(PrjInfoDTO pDTO) throws Exception;
 
     //마일스톤 삭제
+    int deleteMile(PrjInfoDTO pDTO) throws Exception;
 
     //팀원정보 수정
     int updatePlayerInfo(PrjInfoDTO jDTO, PlayerInfoDTO pDTO) throws Exception;

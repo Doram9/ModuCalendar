@@ -77,8 +77,17 @@ public class PrjController {
         pDTO.setPrjStartDate(startPrjDate);
         pDTO.setPrjEndDate(endPrjDate);
         pDTO.setPrjRegDt(regDt);
+
+        MileDTO mDTO = new MileDTO();
+        mDTO.setItemValue(title);
+        mDTO.setItemStartDate(startPrjDate);
+        mDTO.setItemEndDate(endPrjDate);
         List<MileDTO> mList = new ArrayList<>();
+        mList.add(mDTO);
+        mDTO = null;
         pDTO.setPrjMileInfo(mList);
+        mList = null;
+
         PlayerInfoDTO lDTO = new PlayerInfoDTO();
         lDTO.setUserId(userId);
         lDTO.setUserName((String) session.getAttribute("userName"));
@@ -86,7 +95,9 @@ public class PrjController {
         lDTO.setUserGrant("master");
         List<PlayerInfoDTO> pList = new ArrayList<>();
         pList.add(lDTO);
+        lDTO = null;
         pDTO.setPrjPlayer(pList);
+        pList = null;
 
         int res = prjService.createPrj(pDTO, userId);
 
@@ -99,7 +110,7 @@ public class PrjController {
 
     //단체채팅 페이지
 
-    //마일스톤수정
+    //마일스톤수정페이지
     @GetMapping(value = "mile")
     public String updateMile(HttpServletRequest request, ModelMap model, HttpSession session) throws Exception {
         log.info("controller.updateMile start");
@@ -167,6 +178,37 @@ public class PrjController {
 
         int res = prjService.updateMile(pDTO);
 
+
+        return Integer.toString(res);
+    }
+
+    //마일스톤 삭제
+    @GetMapping(value = "deleteMile")
+    @ResponseBody
+    public String deleteMile(HttpServletRequest request) throws Exception {
+        log.info("controller.deleteMile start");
+
+        String prjCode = request.getParameter("prjCode");
+        log.info("prjCode : " + prjCode);
+        String prjStartDate = request.getParameter("prjStartDate");
+        log.info("prjStartDate : " + prjStartDate);
+        String prjEndDate = request.getParameter("prjEndDate");
+        log.info("prjEndDate : " + prjEndDate);
+        String prjTitle = request.getParameter("prjTitle");
+        log.info("prjTitle : " + prjTitle);
+
+        List<MileDTO> mList = new ArrayList<>();
+        MileDTO mDTO = new MileDTO();
+        mDTO.setItemValue(prjTitle);
+        mDTO.setItemStartDate(prjStartDate);
+        mDTO.setItemEndDate(prjEndDate);
+        mList.add(mDTO);
+
+        PrjInfoDTO pDTO = new PrjInfoDTO();
+        pDTO.setPrjCode(prjCode);
+        pDTO.setPrjMileInfo(mList);
+
+        int res = prjService.deleteMile(pDTO);
 
         return Integer.toString(res);
     }

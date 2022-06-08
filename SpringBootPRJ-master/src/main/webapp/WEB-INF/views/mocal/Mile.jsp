@@ -619,9 +619,12 @@
 
             success: function(result) {
                 if(result == 1) {
-                    alert("성공");
+                    location.href = "/prj?code=<%= rDTO.getPrjCode()%>";
+                } else {
+                    alert("에러");
+                    location.href = "/";
                 }
-                location.href = "/prj?code=<%= rDTO.getPrjCode()%>";
+
             },
             error: function(request,status,error) {
 

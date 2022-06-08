@@ -23,8 +23,6 @@ public class PrjMapper extends AbstractMongoDBComon implements IPrjMapper {
 
     @Override
     public int createPrj(PrjInfoDTO pDTO, String userId) throws Exception {
-        List<MileDTO> mList = new ArrayList<>();
-        pDTO.setPrjMileInfo(mList);
 
         String prjCode = pDTO.getPrjCode();
         String prjTitle = pDTO.getPrjTitle();
@@ -159,10 +157,40 @@ public class PrjMapper extends AbstractMongoDBComon implements IPrjMapper {
         updateQuery.append("prjEndDate", prjEndDate);
         updateQuery.append("prjMileInfo", dList);
 
+        mList = null;
+        dList = null;
+
         UpdateResult updateResults = col.updateMany(query, new Document("$set", updateQuery));
 
         int res = (int) updateResults.getMatchedCount();
         log.info("mapper.updatePrj end");
+        return res;
+    }
+
+    @Override
+    public int deleteMile(PrjInfoDTO pDTO) throws Exception {
+        log.info("mapper.deleteMile start");
+        String colNm = "Prj";
+        MongoCollection<Document> col = mongodb.getCollection(colNm);
+        String prjCode = pDTO.getPrjCode();
+
+        Document query = new Document();
+        query.append("prjCode", prjCode);
+
+        List<MileDTO> mList = pDTO.getPrjMileInfo();
+        MileDTO mDTO = mList.get(0);
+
+        Document updateQuery = new Document();
+
+        ObjectMapper mapper = new ObjectMapper();
+        Document dto = mapper.convertValue(mDTO, Document.class);
+
+        updateQuery.append("prjMileInfo", dto);
+
+        UpdateResult updateResults = col.updateOne(query, new Document("$set", updateQuery));
+
+        int res = (int) updateResults.getMatchedCount();
+        log.info("mapper.deleteMile end");
         return res;
     }
 
@@ -173,22 +201,18 @@ public class PrjMapper extends AbstractMongoDBComon implements IPrjMapper {
         MongoCollection<Document> col = mongodb.getCollection(colNm);
         String prjCode = jDTO.getPrjCode();
         String userId = pDTO.getUserId();
-        String userName = pDTO.getUserName();
-        String userRole = pDTO.getUserRole();
-        String userGrant = pDTO.getUserGrant();
 
         Document query = new Document();
         query.append("prjCode", prjCode);
-        query.append("prjPlayer", new Document("userId", userId));
+        query.append("prjPlayer", new Document("$elemMatch", new Document("userId", userId)));
 
-        Document dtoQuery = new Document();
-        dtoQuery.append("userId", userId);
-        dtoQuery.append("userName", userName);
-        dtoQuery.append("userRole", userRole);
-        dtoQuery.append("userGrant", userGrant);
 
         Document updateQuery = new Document();
-        updateQuery.append("prjPlayer", dtoQuery);
+
+        ObjectMapper mapper = new ObjectMapper();
+        Document dto = mapper.convertValue(pDTO, Document.class);
+
+        updateQuery.append("prjPlayer.$[]", dto);
 
 
         UpdateResult updateResults = col.updateOne(query, new Document("$set", updateQuery));

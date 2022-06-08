@@ -172,12 +172,12 @@
 			<div class="container-fluid px-4">
 				<div class="mt-4"></div>
 				<div class="row">
-					<div class="col-xl-9">
+					<div class="col-xl-8">
 						<div class="card mb-4">
 							<div class="card-header">
 								<i class="fas fa-chart-area me-1"></i>
 								프로젝트 마일스톤
-								<a class="btn btn-outline-success" href="mile?prjCode=<%=rDTO.getPrjCode()%>">수정</a>
+								<button class="btn btn-outline-success" onclick="updateMile()">수정</button>
 								<button class="btn btn-outline-danger" onclick="deleteMile()">삭제</button>
 
 							</div>
@@ -269,7 +269,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-xl-3">
+					<div class="col-xl-4">
 						<div class="card mb-4">
 							<div class="card-header">
 								<i class="fas fa-chart-bar me-1"></i>
@@ -314,6 +314,10 @@
 												%>
 												<button class="col-1 btn btn-primary" data-bs-toggle="modal" data-bs-target="#playerInfo" onclick="showPlayerInfo('<%= playerId%>', '<%= playerName%>', '<%= playerGrant%>', '<%= playerRole%>')">수정</button>
 												<div class="col-1"></div>
+
+												<%
+														} else {
+												%>
 												<button class="col-1 btn btn-danger">강퇴</button>
 												<%
 														}
@@ -447,7 +451,7 @@
 <!-- Player Modal -->
 <div class="modal fade" id="playerInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
 	<div class="modal-dialog">
-		<form class="modal-content" onsubmit="chgPlayerInfo(event)">
+		<form class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title">팀원 정보 수정하기</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -456,7 +460,7 @@
 			<div class="modal-body">
 				<div class="mb-3">
 					<label for="pName" class="form-label">이름</label>
-					<input name="userName" class="form-control" id="pName" disabled />
+					<input name="userName" class="form-control" id="pName" autocomplete="off" disabled />
 				</div>
 				<div class="mb-3">
 					<label for="pGrant" class="form-label">직책</label>
@@ -468,14 +472,14 @@
 				</div>
 				<div class="mb-3">
 					<label for="pRole" class="form-label">역할</label>
-					<input name="userRole" type="text" class="form-control" id="pRole" />
+					<input name="userRole" type="text" class="form-control" id="pRole" autocomplete="off" />
 				</div>
 				<input name="userId" type="text" id="pId" disabled hidden />
 			</div>
 
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-				<button type="submit" class="btn btn-success">수정</button>
+				<button type="button" class="btn btn-success" onclick="chgPlayerInfo()">수정</button>
 			</div>
 		</form>
 	</div>
@@ -617,10 +621,47 @@
 			location.href = "deleteUser";
 		}
 	}
-
+	function updateMile() {
+		if("<%= userGrant%>" == "junior") {
+			alert("master 또는 senior만 마일스톤 수정이 가능합니다.");
+		} else {
+			location.href="mile?prjCode=<%=rDTO.getPrjCode()%>";
+		}
+	}
 	function deleteMile() {
-		if("<%= userGrant%>" == "master") {
-			alert("master 또는 se")
+		if("<%= userGrant%>" == "junior") {
+			alert("master 또는 senior만 마일스톤 삭제가 가능합니다.");
+		} else {
+			if(confirm("저장된 마일스톤을 초기화 하시겠습니까?")) {
+				let prjCode = "<%= rDTO.getPrjCode()%>";
+				let prjTitle = "<%= rDTO.getPrjTitle()%>";
+				let prjStartDate = "<%= rDTO.getPrjStartDate()%>";
+				let prjEndDate = "<%= rDTO.getPrjEndDate()%>";
+				$.ajax({
+					url: "deleteMile",
+					type: 'get',
+					data: {
+						prjCode : prjCode,
+						prjTitle : prjTitle,
+						prjStartDate : prjStartDate,
+						prjEndDate : prjEndDate
+					},
+					contentType: "application/json; charset=utf-8",
+					dataType: "text",
+					success: function(data) {
+						if(data == 1) {
+							location.reload();
+						} else {
+							location.href = "/";
+						}
+
+					},
+					error: function(error) {
+					}
+
+				});
+				location.href="deleteMile?prjCode=<%=rDTO.getPrjCode()%>";
+			}
 		}
 
 	}
@@ -636,8 +677,7 @@
 		document.getElementById("pId").value = pId;
 	}
 
-	function chgPlayerInfo(event) {
-		event.preventDefault;
+	function chgPlayerInfo() {
 		let sPrjCode = "<%=rDTO.getPrjCode()%>";
 		let sUserId = document.getElementById("pId").value;
 		let sUserName = document.getElementById("pName").value;
@@ -657,11 +697,14 @@
 			contentType: "application/json; charset=utf-8",
 			dataType: "text",
 			success: function(data) {
-				event.preventDefault;
-				console.log(data);
+				if(data == 1) {
+					location.reload();
+				} else {
+					location.href = "/";
+				}
+
 			},
 			error: function(error) {
-				event.preventDefault;
 			}
 
 		});
