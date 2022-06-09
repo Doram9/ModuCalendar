@@ -190,7 +190,7 @@
                             <div class="card-header">
                                 <i class="fas fa-chart-area me-1"></i>
                                 만나기 좋은 날
-                                <button class="btn btn-link">결과 공유하기</button>
+                                <button class="btn btn-outline-warning" onclick="copyAppoCode()">약속방 코드 복사하기</button>
                             </div>
                             <div class="card-body">
                                 <div class="row justify-content-center">
@@ -278,7 +278,7 @@
                             }
                         %>
                         <div class="row mt-2 justify-content-center">
-                            <button class="btn btn-warning col-3 offset-1" onclick="kakaoInvite()" id="create-kakao-link-btn">초대 <i class="bi bi-person-plus"></i></button>
+                            <button class="btn btn-warning col-3 offset-1" onclick="kakaoInvite()" id="create-kakao-link-btn">카카오톡으로 초대하기 <i class="bi bi-person-plus"></i></button>
                         </div>
 
                     </div>
@@ -690,6 +690,15 @@
         });
     }
 
+    function copyAppoCode() {
+        let tempElem = document.createElement('textarea');
+        tempElem.value = '<%= aDTO.getAppoCode()%>';
+        document.body.appendChild(tempElem);
+        tempElem.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempElem);
+        alert("코드 복사 완료");
+    }
 </script>
 
 <script>

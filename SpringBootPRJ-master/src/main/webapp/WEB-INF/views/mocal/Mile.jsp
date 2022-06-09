@@ -165,10 +165,9 @@
                 <form class="card mb-4" onsubmit="send(event)">
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
-                        내 마일스톤
-
-                        <a type="button" class="btn btn-outline-danger" href="prj?code=<%= rDTO.getPrjCode()%>">취소</a>
+                        프로젝트(<%= rDTO.getPrjTitle()%>) 마일스톤
                         <button type="submit" class="btn btn-outline-success">저장</button>
+                        <a type="button" class="btn btn-outline-danger" href="prj?code=<%= rDTO.getPrjCode()%>">취소</a>
                     </div>
 
                     <!-- 마일스톤 container -->
@@ -236,13 +235,13 @@
                                         </div>
                                     </div>
                                     <div class="col-2">
-                                        <input class="form-control" name="month" id="itemStartDate_<%=j%>" onchange="chgDateValue('itemStartDate_<%=j%>')" type="text" value="<%=itemStartDate%>" autocomplete="off" required>
+                                        <input class="form-control" name="itemStartDate" id="itemStartDate_<%=j%>" onchange="chgDateValue('itemStartDate_<%=j%>')" type="text" value="<%=itemStartDate%>" autocomplete="off" required>
                                     </div>
                                     <div class="col-1">
                                         <p style="text-align: center">~</p>
                                     </div>
                                     <div class="col-2">
-                                        <input class="form-control" name="month" id="itemEndDate_<%=j%>" onchange="chgDateValue('itemEndDate_<%=j%>')" type="text" value="<%=itemEndDate%>" autocomplete="off" required>
+                                        <input class="form-control" name="itemEndDate" id="itemEndDate_<%=j%>" onchange="chgDateValue('itemEndDate_<%=j%>')" type="text" value="<%=itemEndDate%>" autocomplete="off" required>
                                     </div>
                                 </div>
                             <%
@@ -396,62 +395,75 @@
 
     });
 
-    $("#startdatepicker").datepicker();
-    $("#enddatepicker").datepicker();
-    $("#itemStartDate_0").datepicker();
-    $("#itemEndDate_0").datepicker();
-
 </script>
 
 <script>
+    let prjStartDate = "<%= rDTO.getPrjStartDate()%>";
+    let prjEndDate = "<%= rDTO.getPrjEndDate()%>";
+
     //시작일 선택시 종료일 제한걸기-선택일자로 부터 1년뒤 전달의 마지막날로
-    $("#startdatepicker").datepicker("option", "onClose", function(selectedDate) {
-        if(document.getElementById("startdatepicker").value != '') {
-
-            //allInfo.startDate = document.getElementById("startdatepicker").value;
-
-            //yyyy-mm-dd를 split으로 나누고 년,월에 하나씩 넣기, 일은 전달의 마지막 날을 넣기 때문에 0
-            let yyyymmdd = selectedDate.split('-');
-            let maxDate = new Date(Number(yyyymmdd[0]) + 1, Number(yyyymmdd[1]) - 1, 0);
-            $("#enddatepicker").datepicker("option", "minDate", selectedDate);
-            $("#enddatepicker").datepicker("option", "maxDate", maxDate);
-
-        }
-
+    //아이템(일정 항목) 리스트 전부다 최소 선택일자 제한을 프로젝트 시작일로 걸기
+    $("#startdatepicker").datepicker("option", "onClose", function() {
+        chgPrjStartDate();
     });
 
-    // //종료일 선택시 마일스톤 생성
-    // $("#enddatepicker").datepicker("option", "onClose", function(selectedDate) {
-    //     if(document.getElementById("enddatepicker").value != '' && document.getElementById("startdatepicker").value != '') {
-    //
-    //         //allInfo.endDate = document.getElementById("enddatepicker").value;
-    //
-    //         //#m_period 하위의 모든 태그 제거
-    //         $("#m_period").empty();
-    //         //기간이 총 몇달인지 계산
-    //         let startY = $("#startdatepicker").datepicker('getDate').getFullYear();
-    //         console.log(startY);
-    //         let startM = $("#startdatepicker").datepicker('getDate').getMonth();
-    //         console.log(startM);
-    //         let endY = $("#enddatepicker").datepicker('getDate').getFullYear();
-    //         console.log(endY);
-    //         let endM = $("#enddatepicker").datepicker('getDate').getMonth();
-    //         console.log(endM);
-    //
-    //         //기간 = 년도가 같으면 끝달 - 시작달, 년도가 다르면 12 - (시작달 - 끝달)
-    //         let periodM = (Number(startY) - Number(endY) == 0) ? Number(endM) - Number(startM) : 12 - (Number(startM) - Number(endM));
-    //
-    //         console.log(periodM);
-    //
-    //         //달 개수 만큼 div 생성, 텍스트에는 해당 월입력
-    //         //periodM까지 반복 즉, 최소 1번은 반복
-    //         for (let i = 0; i <= periodM; i++) {
-    //             let mileM = new Date(Number(startY), Number(startM + i), 1).getMonth() + 1;
-    //             console.log(mileM);
-    //             $("#m_period").append($("<div class='col-1 btn-primary'>").text(mileM));
-    //         }
-    //     }
-    // });
+    //종료일 선택시 항목 리스트 전부다 종료일자 최대 제한을 프로젝트 종료일로 걸기
+    $("#enddatepicker").datepicker("option", "onClose", function() {
+        chgPrjEndDate();
+    });
+
+    function chgPrjStartDate() {
+        prjStartDate = $("#startdatepicker").val();
+        if(document.getElementById("startdatepicker").value != '') {
+
+            setPrjEndDate();
+
+            setItemStartDate();
+
+            setItemEndDate();
+
+        }
+    }
+
+    function chgPrjEndDate() {
+        prjEndDate = $("#enddatepicker").val();
+        if(document.getElementById("enddatepicker").value != '') {
+            setItemStartDate();
+
+            setItemEndDate();
+        }
+    }
+
+    function setPrjEndDate() {
+        let yyyymmdd = prjStartDate.split('-');
+        let maxDate = new Date(Number(yyyymmdd[0]) + 1, Number(yyyymmdd[1]) - 1, 0);
+        $("#enddatepicker").datepicker("option", "minDate", prjStartDate);
+        $("#enddatepicker").datepicker("option", "maxDate", maxDate);
+    }
+
+    function setItemStartDate() {
+        let startDateByName = $("input[name=itemStartDate]").length;
+        for(let i = 0; i < startDateByName; i++) {
+            $("input[name=itemStartDate]").eq(i).datepicker("option", "minDate", prjStartDate);
+            $("input[name=itemStartDate]").eq(i).datepicker("option", "maxDate", prjEndDate);
+        }
+    }
+
+    function setItemEndDate() {
+        let endDateByName = $("input[name=itemEndDate]").length;
+        for(let i = 0; i < endDateByName; i++) {
+            let itemEndDateMinDate = $("input[name=itemStartDate]").eq(i).val();
+            $("input[name=itemEndDate]").eq(i).datepicker("option", "minDate", itemEndDateMinDate);
+            $("input[name=itemEndDate]").eq(i).datepicker("option", "maxDate", prjEndDate);
+        }
+    }
+
+    window.onload = function() {
+        $("#startdatepicker").datepicker();
+        $("#enddatepicker").datepicker();
+        chgPrjStartDate();
+        chgPrjEndDate();
+    };
 </script>
 
 <script>
@@ -541,7 +553,11 @@
         //yyyy-mm-dd를 split으로 나누고 년,월에 하나씩 넣기, 일은 전달의 마지막 날을 넣기 때문에 0
 
         $(`#itemStartDate_\${stepCnt}`).datepicker();
+        $(`#itemStartDate_\${stepCnt}`).datepicker("option", "minDate", prjStartDate);
+
+
         $(`#itemEndDate_\${stepCnt}`).datepicker();
+        $(`#itemEndDate_\${stepCnt}`).datepicker("option", "maxDate", prjEndDate);
     }
 
     function rmStep(event) {

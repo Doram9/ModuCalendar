@@ -88,7 +88,7 @@
 	<!-- Navbar Brand-->
 	<a class="navbar-brand ps-3" href="/">Modu Calendar</a>
 	<!-- Sidebar Toggle-->
-	<button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+	<button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" onclick="renderCal()" href="#!"><i class="fas fa-bars"></i></button>
 	<!-- 여백-->
 	<div class="ms-auto"></div>
 	<!-- Navbar-->
@@ -156,7 +156,7 @@
 			<div class="container-fluid px-4">
 				<div class="mt-4"></div>
 				<div class="row">
-					<div class="col-xl-5">
+					<div class="col-xl-7">
 						<div class="card mb-4">
 							<div class="card-header">
 								<i class="fas fa-chart-area me-1"></i>
@@ -167,12 +167,12 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-xl-7">
+					<div class="col-xl-5">
 						<div class="card mb-4">
 							<div class="card-header">
 								<i class="fas fa-chart-bar me-1"></i>
 								내 프로젝트
-								<button class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#appoCode">프로젝트 참가하기</button>
+								<button class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#inputPrjCode">프로젝트 참가하기</button>
 							</div>
 
 							<!--프로젝트 -->
@@ -378,6 +378,30 @@
 	</div>
 </div>
 
+<!-- inputPrjCode Modal -->
+<div class="modal fade" id="inputPrjCode" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+	<div class="modal-dialog">
+		<form class="modal-content" onsubmit="inputPrjCode(event)">
+			<div class="modal-header">
+				<h5 class="modal-title">프로젝트 참가하기</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+
+			<div class="modal-body">
+				<div class="mb-3">
+					<label for="exampleFormControlInput1" class="form-label">초대 코드</label>
+					<input type="text" name="code" class="form-control" id="invitePrjCode" autocomplete="off" required>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+				<button type="submit" class="btn btn-success">참가</button>
+			</div>
+		</form>
+	</div>
+</div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="js/scripts.js"></script>
@@ -498,7 +522,17 @@
 			}
 		}
 	});
-	calendar.render();
+	window.onload = function() {
+		calendar.render();
+	}
+
+	function renderCal() {
+		setTimeout(function() {
+			calendar.render();
+		}, 250);
+
+	}
+
 
 
 	//});
@@ -553,6 +587,34 @@
 					alert("해당하는 방이 존재하지 않습니다.");
 				}else if(data == 2) {
 					alert("이미 해당 방에 참가중입니다.");
+				}
+				location.href = '/';
+			},
+			error: function(error) {
+				location.href = '/';
+			}
+
+		});
+	}
+
+	function inputPrjCode(event) {
+		event.preventDefault();
+		let prjCode = document.getElementById('invitePrjCode').value;
+		let userName = "<%=pDTO.getUserName()%>";
+		$.ajax({
+			url: "invitePrj",
+			type: 'get',
+			data: {
+				"prjCode" : prjCode,
+				"userName" : userName,
+			},
+			contentType: "application/json; charset=utf-8",
+			dataType: "text",
+			success: function(data) {
+				if(data == 0) {
+					alert("해당하는 프로젝트가 존재하지 않습니다.");
+				}else if(data == 2) {
+					alert("이미 해당 프로젝트에 참가중입니다.");
 				}
 				location.href = '/';
 			},

@@ -104,11 +104,27 @@ public class PrjController {
 
         return "redirect:/";
     }
-    //초대코드입력 페이지
 
+    //프로젝트 삭제
+    @GetMapping(value = "deletePrj")
+    @ResponseBody
+    public String deletePrj(HttpServletRequest request, HttpSession session) throws Exception {
+        log.info("controller.deletePrj start");
 
+        String prjCode = request.getParameter("prjCode");
+        String prjTitle = request.getParameter("prjTitle");
+        log.info("prjCode : " + prjCode);
+        log.info("prjTitle : " + prjTitle);
+        PrjInfoDTO pDTO = new PrjInfoDTO();
+        pDTO.setPrjCode(prjCode);
+        pDTO.setPrjTitle(prjTitle);
 
-    //단체채팅 페이지
+        String userId = (String) session.getAttribute("userId");
+
+        int res = prjService.deletePrj(pDTO, userId);
+
+        return Integer.toString(res);
+    }
 
     //마일스톤수정페이지
     @GetMapping(value = "mile")
@@ -243,4 +259,56 @@ public class PrjController {
 
         return Integer.toString(res);
     }
+
+    //팀원 추방
+    @GetMapping(value = "deletePlayer")
+    @ResponseBody
+    public String deletePlayer(HttpServletRequest request) throws Exception {
+        log.info("controller.deletePlayer start");
+        String prjCode = request.getParameter("prjCode");
+        String userId = request.getParameter("userId");
+
+        PrjInfoDTO pDTO = new PrjInfoDTO();
+        pDTO.setPrjCode(prjCode);
+        UserInfoDTO uDTO = new UserInfoDTO();
+        uDTO.setUserId(userId);
+
+        int res = prjService.deletePlayer(pDTO, uDTO);
+
+        return Integer.toString(res);
+    }
+
+    //프로젝트 나가기
+    @GetMapping(value = "getoutPlayer")
+    @ResponseBody
+    public String getoutPlayer(HttpServletRequest request) throws Exception {
+        log.info("controller.getoutPlayer start");
+
+        return "";
+    }
+
+    //팀원 추가(프로젝트 참가)
+    @GetMapping(value = "invitePrj")
+    @ResponseBody
+    public String invitePrj(HttpServletRequest request, HttpSession session) throws Exception {
+        log.info("controller.invitePrj start");
+        String prjCode = request.getParameter("prjCode");
+        String userId = (String) session.getAttribute("userId");
+        String userName = request.getParameter("userName");
+
+        PrjInfoDTO pDTO = new PrjInfoDTO();
+        pDTO.setPrjCode(prjCode);
+
+        PlayerInfoDTO iDTO = new PlayerInfoDTO();
+        iDTO.setUserId(userId);
+        iDTO.setUserName(userName);
+        iDTO.setUserRole("");
+        iDTO.setUserGrant("junior");
+
+        int res = prjService.invitePlayer(pDTO, iDTO);
+
+        return Integer.toString(res);
+    }
+
+
 }

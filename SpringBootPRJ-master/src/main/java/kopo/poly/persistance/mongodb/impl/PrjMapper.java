@@ -3,6 +3,7 @@ package kopo.poly.persistance.mongodb.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import kopo.poly.dto.*;
 import kopo.poly.persistance.mongodb.AbstractMongoDBComon;
@@ -23,7 +24,7 @@ public class PrjMapper extends AbstractMongoDBComon implements IPrjMapper {
 
     @Override
     public int createPrj(PrjInfoDTO pDTO, String userId) throws Exception {
-
+        log.info("mapper.createPrj start");
         String prjCode = pDTO.getPrjCode();
         String prjTitle = pDTO.getPrjTitle();
 
@@ -54,13 +55,44 @@ public class PrjMapper extends AbstractMongoDBComon implements IPrjMapper {
     }
 
     @Override
-    public int deletePrj(PrjInfoDTO pDTO) throws Exception {
-        return 0;
+    public int deletePrj(PrjInfoDTO pDTO, String userId) throws Exception {
+        log.info("mapper.deletePrj start");
+        String prjCode = pDTO.getPrjCode();
+        String prjTitle = pDTO.getPrjTitle();
+
+        String colNm = "Prj";
+
+        MongoCollection<Document> col = mongodb.getCollection(colNm);
+
+        Document query = new Document();
+        query.append("prjCode", prjCode);
+
+        DeleteResult rs = col.deleteOne(query);
+
+
+
+        String UcolNm = "User";
+
+        MongoCollection<Document> Ucol = mongodb.getCollection(UcolNm);
+
+        Document Uquery = new Document();
+        query.append("userId", userId);
+
+        Document updateQuery = new Document();
+        String savecode = prjTitle + "*_*" + prjCode;
+        log.info(savecode);
+        updateQuery.append("prjList", savecode);
+
+        UpdateResult res = Ucol.updateOne(Uquery, new Document("$pull", updateQuery));
+
+        int ress = (int) rs.getDeletedCount();
+
+        return ress;
     }
 
     @Override
     public PrjInfoDTO getPrjInfo(PrjInfoDTO pDTO) throws Exception {
-
+        log.info("mapper.getPrjInfo start");
         String colNm = "Prj";
         MongoCollection<Document> col = mongodb.getCollection(colNm);
 
@@ -130,6 +162,93 @@ public class PrjMapper extends AbstractMongoDBComon implements IPrjMapper {
     }
 
     @Override
+    public int invitePlayer(PrjInfoDTO pDTO, PlayerInfoDTO iDTO) throws Exception {
+        log.info("mapper.invitePlayer start");
+        String colNm = "Prj";
+        MongoCollection<Document> col = mongodb.getCollection(colNm);
+        String uColNm = "User";
+        MongoCollection<Document> ucol = mongodb.getCollection(uColNm);
+
+        String prjCode = pDTO.getPrjCode();
+        log.info("prjCode : " + prjCode);
+        String userId = iDTO.getUserId();
+        log.info("userId : " + userId);
+
+        Document Pquery = new Document();
+        Pquery.append("prjCode", prjCode);
+
+        FindIterable<Document> rs = col.find(Pquery);
+
+        //참가하려는 프로젝트가 존재하면
+        if(rs != null) {
+            log.info("프로젝트 존재");
+            PrjInfoDTO rDTO = new PrjInfoDTO();
+            for(Document doc : rs) {
+                if (doc == null) {
+                    doc = new Document();
+                }
+                rDTO.setPrjTitle(CmmUtil.nvl(doc.getString("prjTitle")));
+                List<Document> pList = doc.getList("prjPlayer", Document.class);
+
+                for(Document pdoc : pList) {
+                    if(userId.equals(pdoc.getString("userId"))) {
+                        log.info("이미 프로젝트에 참가중");
+                        return 2;
+                    }
+                }
+            }
+
+            Document inputQuery = new Document();
+            inputQuery.append("prjCode", prjCode);
+
+            ObjectMapper mapper = new ObjectMapper();
+            Document dto = mapper.convertValue(iDTO, Document.class);
+            Document inputValueQuery = new Document();
+            inputValueQuery.append("prjPlayer", dto);
+
+            UpdateResult rrss = col.updateOne(inputQuery, new Document("$push", inputValueQuery));
+            log.info("프로젝트 팀원 추가 결과 : " + rrss);
+
+            String prjTitle = rDTO.getPrjTitle();
+
+            Document Uquery = new Document();
+            Uquery.append("userId", userId);
+
+            Document updateQuery = new Document();
+            updateQuery.append("prjList", prjTitle + "*_*" + prjCode);
+
+            UpdateResult res = ucol.updateOne(Uquery, new Document("$push", updateQuery));
+            int urs = (int) res.getMatchedCount();
+            log.info("urs : " + urs);
+            return urs;
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public int deletePlayer(PrjInfoDTO pDTO, UserInfoDTO uDTO) throws Exception {
+        log.info("mapper.deletePlayer start");
+        String colNm = "Prj";
+        MongoCollection<Document> col = mongodb.getCollection(colNm);
+
+        String prjCode = pDTO.getPrjCode();
+        String userId = uDTO.getUserId();
+
+        Document query = new Document();
+        query.append("prjCode", prjCode);
+
+        Document uQuery = new Document();
+        uQuery.append("prjPlayer", new Document("userId", userId));
+
+        UpdateResult rs = col.updateMany(query, new Document("$pull", uQuery));
+
+        int res = (int) rs.getMatchedCount();
+        log.info("res : " + res);
+        return res;
+    }
+
+    @Override
     public int updatePrj(PrjInfoDTO pDTO) throws Exception {
         log.info("mapper.updatePrj start");
         String colNm = "Prj";
@@ -178,14 +297,18 @@ public class PrjMapper extends AbstractMongoDBComon implements IPrjMapper {
         query.append("prjCode", prjCode);
 
         List<MileDTO> mList = pDTO.getPrjMileInfo();
-        MileDTO mDTO = mList.get(0);
+        List<Document> dList = new ArrayList<>();
+        for(MileDTO mDTO : mList) {
+            Document dtoQuery = new Document();
+            dtoQuery.append("itemValue", mDTO.getItemValue());
+            dtoQuery.append("itemStartDate", mDTO.getItemStartDate());
+            dtoQuery.append("itemEndDate", mDTO.getItemEndDate());
+
+            dList.add(dtoQuery);
+        }
 
         Document updateQuery = new Document();
-
-        ObjectMapper mapper = new ObjectMapper();
-        Document dto = mapper.convertValue(mDTO, Document.class);
-
-        updateQuery.append("prjMileInfo", dto);
+        updateQuery.append("prjMileInfo", dList);
 
         UpdateResult updateResults = col.updateOne(query, new Document("$set", updateQuery));
 
@@ -204,15 +327,14 @@ public class PrjMapper extends AbstractMongoDBComon implements IPrjMapper {
 
         Document query = new Document();
         query.append("prjCode", prjCode);
-        query.append("prjPlayer", new Document("$elemMatch", new Document("userId", userId)));
-
+        query.append("prjPlayer.userId", userId);
 
         Document updateQuery = new Document();
 
         ObjectMapper mapper = new ObjectMapper();
         Document dto = mapper.convertValue(pDTO, Document.class);
 
-        updateQuery.append("prjPlayer.$[]", dto);
+        updateQuery.append("prjPlayer.$", dto);
 
 
         UpdateResult updateResults = col.updateOne(query, new Document("$set", updateQuery));
@@ -222,4 +344,5 @@ public class PrjMapper extends AbstractMongoDBComon implements IPrjMapper {
         log.info("mapper.updatePlayerInfo end");
         return res;
     }
+
 }

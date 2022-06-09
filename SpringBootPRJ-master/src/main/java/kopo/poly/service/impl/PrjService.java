@@ -2,6 +2,7 @@ package kopo.poly.service.impl;
 
 import kopo.poly.dto.PlayerInfoDTO;
 import kopo.poly.dto.PrjInfoDTO;
+import kopo.poly.dto.UserInfoDTO;
 import kopo.poly.persistance.mongodb.IEventMapper;
 import kopo.poly.persistance.mongodb.IPrjMapper;
 import kopo.poly.service.IPrjService;
@@ -20,6 +21,11 @@ public class PrjService implements IPrjService {
 
         int res = prjMapper.createPrj(pDTO, userId);
         return res;
+    }
+
+    @Override
+    public int deletePrj(PrjInfoDTO pDTO, String userId) throws Exception {
+        return prjMapper.deletePrj(pDTO, userId);
     }
 
     @Override
@@ -45,5 +51,15 @@ public class PrjService implements IPrjService {
 
 
         return prjMapper.updatePlayerInfo(jDTO, pDTO);
+    }
+
+    @Override
+    public int deletePlayer(PrjInfoDTO pDTO, UserInfoDTO uDTO) throws Exception {
+        return prjMapper.deletePlayer(pDTO, uDTO);
+    }
+
+    @Override
+    public int invitePlayer(PrjInfoDTO pDTO, PlayerInfoDTO iDTO) throws Exception {
+        return prjMapper.invitePlayer(pDTO, iDTO);
     }
 }

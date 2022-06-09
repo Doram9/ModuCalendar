@@ -96,7 +96,6 @@
 			color: red;
 		}
 	</style>
-
 </head>
 
 <body class="sb-nav-fixed">
@@ -172,11 +171,101 @@
 			<div class="container-fluid px-4">
 				<div class="mt-4"></div>
 				<div class="row">
-					<div class="col-xl-8">
+					<div class="col-xl-7">
 						<div class="card mb-4">
 							<div class="card-header">
-								<i class="fas fa-chart-area me-1"></i>
-								프로젝트 마일스톤
+								<i class="fas fa-chart-bar me-1"></i>
+								프로젝트 정보
+								<%
+									if(userGrant.equals("master")) {
+								%>
+								<button class="btn btn-warning btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deletePrj">프로젝트 삭제</button>
+								<%
+									} else {
+								%>
+								<button class="btn btn-warning btn-outline-danger" onclick="getoutPrj()">프로젝트 나가기</button>
+								<%
+									}
+								%>
+							</div>
+							<div class="card-body" style="overflow:scroll; height: 300px;">
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-4">프로젝트 명 :</div>
+										<div class="col-4"><%=rDTO.getPrjTitle()%></div>
+									</div>
+									<div class="row">
+										<div class="col-4">프로젝트 개설일 :</div>
+										<div class="col-4"><%=rDTO.getPrjRegDt()%></div>
+									</div>
+									<div class="row">
+										<div class="col-4">프로젝트 코드 :</div>
+										<button class="btn btn-info col-4" onclick="copyPrjCode()">프로젝트코드 복사하기</button>
+									</div>
+
+									<div class="row mt-3"><h5>팀원정보</h5></div>
+									<hr/>
+									<div class="row">
+										<div class="col-2">이름</div>
+										<div class="col-2">직책</div>
+										<div class="col-5">역할</div>
+										<div class="col-3">비고</div>
+									</div>
+									<hr/>
+									<%
+										for(PlayerInfoDTO plaDTO : plaList) {
+											String playerName = plaDTO.getUserName();
+											String playerId = plaDTO.getUserId();
+											String playerGrant = plaDTO.getUserGrant();
+											String playerRole = plaDTO.getUserRole();
+
+									%>
+									<div class="row">
+										<div class="col-2"><%= playerName%></div>
+										<div class="col-2"><%= playerGrant%></div>
+										<div class="col-5"><%= playerRole%></div>
+										<%
+											if(userGrant.equals("master")) {
+
+										%>
+										<button class="col-1 btn btn-primary" data-bs-toggle="modal" data-bs-target="#playerInfo" onclick="showPlayerInfo('<%= playerId%>', '<%= playerName%>', '<%= playerGrant%>', '<%= playerRole%>')">수정</button>
+										<div class="col-1"></div>
+
+										<%
+												if(!pDTO.getUserId().equals(playerId)) {
+
+										%>
+										<button class="col-1 btn btn-danger" onclick="deletePlayer('<%=playerId%>')">강퇴</button>
+										<%
+												}
+											}
+										%>
+									</div>
+									<hr/>
+									<%
+										}
+									%>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-5">
+						<div class="card mb-4">
+							<div class="card-header">
+								<i class="fas fa-chart-bar me-1"></i>
+								팀 채팅
+								<button type="button" class="btn btn-outline-primary">접속하기</button>
+							</div>
+							<div class="card-body" style="overflow:scroll; height: 300px;">
+
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-12">
+						<div class="card mb-4">
+							<div class="card-header">
+								<i class="fas fa-table me-1"></i>
+								프로젝트(<%= rDTO.getPrjTitle()%>) 마일스톤
 								<button class="btn btn-outline-success" onclick="updateMile()">수정</button>
 								<button class="btn btn-outline-danger" onclick="deleteMile()">삭제</button>
 
@@ -266,68 +355,6 @@
 								</div>
 
 
-							</div>
-						</div>
-					</div>
-					<div class="col-xl-4">
-						<div class="card mb-4">
-							<div class="card-header">
-								<i class="fas fa-chart-bar me-1"></i>
-								팀 채팅
-							</div>
-							<div class="card-body">
-								<button type="button" class="btn btn-primary">접속하기</button>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-xl-12">
-						<div class="card mb-4">
-							<div class="card-header">
-								<i class="fas fa-chart-bar me-1"></i>
-								팀원 정보
-							</div>
-							<div class="card-body">
-								<div class="container-fluid">
-									<div class="row">
-										<div class="col-2">이름</div>
-										<div class="col-2">직책</div>
-										<div class="col-5">역할</div>
-										<div class="col-3">비고</div>
-									</div>
-									<hr/>
-									<%
-										for(PlayerInfoDTO plaDTO : plaList) {
-											String playerName = plaDTO.getUserName();
-											String playerId = plaDTO.getUserId();
-											String playerGrant = plaDTO.getUserGrant();
-											String playerRole = plaDTO.getUserRole();
-
-									%>
-											<div class="row">
-												<div class="col-2"><%= playerName%></div>
-												<div class="col-2"><%= playerGrant%></div>
-												<div class="col-5"><%= playerRole%></div>
-												<%
-													if(userGrant.equals("master")) {
-														if(pDTO.getUserId().equals(playerId)) {
-												%>
-												<button class="col-1 btn btn-primary" data-bs-toggle="modal" data-bs-target="#playerInfo" onclick="showPlayerInfo('<%= playerId%>', '<%= playerName%>', '<%= playerGrant%>', '<%= playerRole%>')">수정</button>
-												<div class="col-1"></div>
-
-												<%
-														} else {
-												%>
-												<button class="col-1 btn btn-danger">강퇴</button>
-												<%
-														}
-													}
-												%>
-											</div>
-									<%
-										}
-									%>
-								</div>
 							</div>
 						</div>
 					</div>
@@ -448,6 +475,34 @@
 	</div>
 </div>
 
+<!-- deletePrj Modal -->
+<div class="modal fade" id="deletePrj" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+	<div class="modal-dialog">
+		<form class="modal-content" onsubmit="deletePrj(event)">
+			<div class="modal-header">
+				<h5 class="modal-title" >프로젝트 삭제하기</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+
+			<div class="modal-body">
+				<div class="alert alert-danger" role="alert">
+					<p>경고! 삭제하면 복구할 수 없습니다.</p>
+					<p>정말 삭제하시겠습니까?</p>
+				</div>
+				<div class="mb-3">
+					<label for="exampleFormControlInput1" class="form-label">정말로 삭제하시려면 아래에 프로젝트 명을 입력해주세요.</label>
+					<input type="text" name="code" class="form-control" autocomplete="off" placeholder="<%= rDTO.getPrjTitle()%>" id="prjTitleForDelete" required>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+				<button type="submit" class="btn btn-danger" id="deletePrjButton" disabled>삭제</button>
+			</div>
+		</form>
+	</div>
+</div>
+
 <!-- Player Modal -->
 <div class="modal fade" id="playerInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
 	<div class="modal-dialog">
@@ -526,6 +581,9 @@
 	        //periodM까지 반복 즉, 최소 1번은 반복
 	        for (let i = 0; i <= periodM; i++) {
 	            let mileM = new Date(Number(startY), Number(startM + i), 1).getMonth();
+				if(mileM == 0) {
+					mileM = 12;
+				}
 	            $("#m_period").append($("<div class='col-1 btn btn-primary'>").text(mileM));
 	        }
 
@@ -660,7 +718,6 @@
 					}
 
 				});
-				location.href="deleteMile?prjCode=<%=rDTO.getPrjCode()%>";
 			}
 		}
 
@@ -708,6 +765,105 @@
 			}
 
 		});
+	}
+
+	$("#prjTitleForDelete").on("propertychange change paste input", function() {
+		if(document.getElementById("prjTitleForDelete").value == "<%= rDTO.getPrjTitle()%>") {
+			document.getElementById("deletePrjButton").disabled = false;
+		} else {
+			document.getElementById("deletePrjButton").disabled = true;
+		}
+	})
+
+	function deletePrj(event) {
+		event.preventDefault;
+		let sPrjCode = "<%=rDTO.getPrjCode()%>";
+		let sPrjTitle = "<%= rDTO.getPrjTitle()%>";
+		$.ajax({
+			url: "deletePrj",
+			type: 'get',
+			data: {
+				"prjCode": sPrjCode,
+				"prjTitle": sPrjTitle
+			},
+			contentType: "application/json; charset=utf-8",
+			dataType: "text",
+			success: function(data) {
+				if(data != 1) {
+					alert("에러");
+				}
+				location.href = '/';
+			},
+			error: function(error) {
+				location.href = '/';
+			}
+
+		});
+	}
+
+	function deletePlayer(userId) {
+		if(confirm("해당 유저를 프로젝트에서 추방하시겠습니까?")) {
+			let sPrjCode = "<%=rDTO.getPrjCode()%>";
+
+			$.ajax({
+				url: "deletePlayer",
+				type: 'get',
+				data: {
+					"userId": userId,
+					"prjCode": sPrjCode
+				},
+				contentType: "application/json; charset=utf-8",
+				dataType: "text",
+				success: function(data) {
+					if(data != 1) {
+						alert("에러");
+					}
+					location.reload();
+				},
+				error: function(error) {
+					location.href = '/';
+				}
+
+			});
+		}
+	}
+
+	function copyPrjCode() {
+		let tempElem = document.createElement('textarea');
+		tempElem.value = '<%= rDTO.getPrjCode()%>';
+		document.body.appendChild(tempElem);
+		tempElem.select();
+		document.execCommand("copy");
+		document.body.removeChild(tempElem);
+		alert("코드 복사 완료");
+	}
+
+	function getoutPrj() {
+		if(confirm("프로젝트를 나가시겠습니까?")) {
+			let sPrjCode = "<%=rDTO.getPrjCode()%>";
+			let prjTitle = "<%=rDTO.getPrjTitle()%>";
+
+			$.ajax({
+				url: "getoutPlayer",
+				type: 'get',
+				data: {
+					"prjCode": sPrjCode,
+					"prjTitle": prjTitle
+				},
+				contentType: "application/json; charset=utf-8",
+				dataType: "text",
+				success: function(data) {
+					if(data != 1) {
+						alert("에러");
+					}
+					location.reload();
+				},
+				error: function(error) {
+					location.href = '/';
+				}
+
+			});
+		}
 	}
 </script>
 
