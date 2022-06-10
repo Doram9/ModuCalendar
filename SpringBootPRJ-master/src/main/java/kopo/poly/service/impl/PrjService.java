@@ -62,4 +62,9 @@ public class PrjService implements IPrjService {
     public int invitePlayer(PrjInfoDTO pDTO, PlayerInfoDTO iDTO) throws Exception {
         return prjMapper.invitePlayer(pDTO, iDTO);
     }
+
+    @Override
+    public int getoutPlayer(PrjInfoDTO pDTO, UserInfoDTO uDTO) throws Exception {
+        return prjMapper.getoutPlayer(pDTO, uDTO);
+    }
 }

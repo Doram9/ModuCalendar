@@ -21,4 +21,6 @@ public interface IPrjService {
     int deletePlayer(PrjInfoDTO pDTO, UserInfoDTO uDTO) throws Exception;
 
     int invitePlayer(PrjInfoDTO pDTO, PlayerInfoDTO iDTO) throws Exception;
+
+    int getoutPlayer(PrjInfoDTO pDTO, UserInfoDTO uDTO) throws Exception;
 }

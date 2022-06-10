@@ -345,4 +345,29 @@ public class PrjMapper extends AbstractMongoDBComon implements IPrjMapper {
         return res;
     }
 
+    @Override
+    public int getoutPlayer(PrjInfoDTO pDTO, UserInfoDTO uDTO) throws Exception {
+        log.info("mapper.updatePlayerInfo start");
+        String userId = uDTO.getUserId();
+        String prjCode = pDTO.getPrjCode();
+        String prjTitle = pDTO.getPrjTitle();
+
+        String colNm = "User";
+
+        MongoCollection<Document> col = mongodb.getCollection(colNm);
+
+        Document query = new Document();
+        query.append("userId", userId);
+
+        String savecode = prjTitle + "*_*" + prjCode;
+        Document updateQuery = new Document();
+        updateQuery.append("prjList", savecode);
+
+        UpdateResult rs = col.updateOne(query, new Document("$pull", updateQuery));
+
+        int res = (int) rs.getMatchedCount();
+
+        return res;
+    }
+
 }

@@ -19,6 +19,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -99,11 +100,35 @@ public class UserController {
         return "/mocal/Password";
     }
 
+    @GetMapping(value = "sendEmail")
+    public String sendEmail(HttpServletRequest request, ModelMap model) throws Exception {
+        log.info("controller.sendEmail start");
+
+        String userEmail = request.getParameter("email");
+        log.info(userEmail);
+
+        String subTitle = "모두캘린더 비밀번호 변경";
+        String body = "http://localhost:11000/resetPw?resetCode=" + EncryptUtil.encAES128CBC(userEmail);
+//        Map<String, Object> result = MailUtil.sendEmail(userEmail, subTitle, body);
+//
+//        String msg = "";
+//        int res = (int) result.get("resultCode");
+//        if(res == 200) {
+//            msg = "비밀번호 재설정 메일을 발송하였습니다. 이메일을 확인해주세요.";
+//        } else {
+//            msg = "메일 발송에 실패하였습니다.";
+//        }
+//
+//        model.addAttribute("msg", msg);
+
+        return "/mocal/Msg";
+    }
+
     //비밀번호 재설정 페이지
     @GetMapping(value = "resetPw")
     public String resetPw(HttpServletRequest request, ModelMap model) throws Exception {
-        String code = request.getParameter("code");
         log.info("controller.resetPw start");
+        String code = request.getParameter("code");
 
         model.addAttribute("resetCode", code);
         return "/mocal/resetPassword";
@@ -120,6 +145,35 @@ public class UserController {
         model.addAttribute("UserInfoDTO", pDTO);
 
         return "index";
+    }
+
+    //회원탈퇴
+    @GetMapping(value = "deleteUser")
+    public String deleteUser(HttpSession session, ModelMap model) throws Exception {
+
+        log.info("controller.deleteUser start");
+
+        String userId = CmmUtil.nvl((String)session.getAttribute("userId"));
+        log.info(userId);
+        UserInfoDTO rDTO = userSevice.getUserInfo(userId);
+
+        UserInfoDTO pDTO = new UserInfoDTO();
+        pDTO.setUserId(userId);
+        pDTO.setAppoList(rDTO.getAppoList());
+        pDTO.setPrjList(rDTO.getPrjList());
+
+        String msg = "";
+
+        int res = userSevice.deleteUser(pDTO);
+        if(res == 1) {
+            session.invalidate();
+            msg = "정상적으로 회원탈퇴가 진행되었습니다. 이용해주셔서 감사합니다.";
+        } else {
+            msg = "회원탈퇴 과정에서 에러가 발생했습니다.";
+        }
+        model.addAttribute("msg", msg);
+
+        return "/mocal/Msg";
     }
 
 }

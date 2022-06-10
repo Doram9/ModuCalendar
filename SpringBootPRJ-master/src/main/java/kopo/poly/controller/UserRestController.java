@@ -8,6 +8,7 @@ import kopo.poly.util.EncryptUtil;
 import kopo.poly.util.MailUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.jasper.tagplugins.jstl.core.Url;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -94,13 +95,13 @@ public class UserRestController {
 
         log.info("controller.doResetPw start");
 
-        String resetCode = CmmUtil.nvl(request.getParameter("resetCode"));
+        String resetCode = EncryptUtil.decAES128CBC(CmmUtil.nvl(request.getParameter("resetCode")));
         log.info("resetCode : " + resetCode);
         String resetPw = CmmUtil.nvl(request.getParameter("resetPw"));
         log.info("resetPw : " + resetPw);
 
         UserInfoDTO pDTO = new UserInfoDTO();
-        pDTO.setUserId(resetCode);
+        pDTO.setUserEmail(resetCode);
         pDTO.setUserPw(EncryptUtil.encHashSHA256(resetPw));
 
         int res = userSevice.resetPw(pDTO);
@@ -112,32 +113,5 @@ public class UserRestController {
         return Integer.toString(res);
     }
 
-    //회원탈퇴
-    @GetMapping(value = "deleteUser")
-    public String deleteUser(HttpServletRequest request, HttpSession session) throws Exception {
-
-        log.info("controller.deleteUser start");
-
-        String userId = CmmUtil.nvl((String)session.getAttribute("userId"));
-        log.info(userId);
-        UserInfoDTO rDTO = userSevice.getUserInfo(userId);
-
-        UserInfoDTO pDTO = new UserInfoDTO();
-        pDTO.setUserId(userId);
-        pDTO.setAppoList(rDTO.getAppoList());
-        pDTO.setPrjList(rDTO.getPrjList());
-
-        String msg = "";
-
-        int res = userSevice.deleteUser(pDTO);
-        if(res == 1) {
-            session.invalidate();
-            msg = "정상적으로 회원탈퇴가 진행되었습니다. 이용해주셔서 감사합니다.";
-        } else {
-            msg = "회원탈퇴 과정에서 에러가 발생했습니다.";
-        }
-
-        return msg;
-    }
 
 }

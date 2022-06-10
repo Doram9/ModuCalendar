@@ -52,7 +52,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 	<meta name="description" content="" />
 	<meta name="author" content="" />
-	<title>Dashboard - SB Admin</title>
+	<title>Modu Calendar_prj</title>
 	<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
 	<link href="css/styles.css" rel="stylesheet" />
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -856,7 +856,7 @@
 					if(data != 1) {
 						alert("에러");
 					}
-					location.reload();
+					location.href = '/';
 				},
 				error: function(error) {
 					location.href = '/';
@@ -865,6 +865,37 @@
 			});
 		}
 	}
+
+	window.onload = function() {
+		let userExist = "<%= userGrant%>";
+		if(userExist == "") {
+			alert("프로젝트에서 추방되었습니다.");
+			let sPrjCode = "<%=rDTO.getPrjCode()%>";
+			let prjTitle = "<%=rDTO.getPrjTitle()%>";
+
+			$.ajax({
+				url: "getoutPlayer",
+				type: 'get',
+				data: {
+					"prjCode": sPrjCode,
+					"prjTitle": prjTitle
+				},
+				contentType: "application/json; charset=utf-8",
+				dataType: "text",
+				success: function(data) {
+					if(data != 1) {
+						alert("에러");
+					}
+					location.href = '/';
+				},
+				error: function(error) {
+					location.href = '/';
+				}
+
+			});
+		}
+	}
+
 </script>
 
 </body>

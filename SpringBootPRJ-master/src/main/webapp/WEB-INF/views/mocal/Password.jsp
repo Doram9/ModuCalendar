@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Tables - SB Admin</title>
+    <title>Modu Calendar_password</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
     <link href="css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
@@ -89,7 +89,7 @@
                 if (result == 1) {
                     alert("해당하는 이메일로 가입된 계정이 없습니다.");
                 } else {
-                    form.submit();
+                    location.href = "/sendEmail?email=" + inputEmail;
                 }
             },
             error: function(error) {

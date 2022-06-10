@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Tables - SB Admin</title>
+    <title>Modu Calendar_login</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
     <link href="css/styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -175,11 +175,17 @@
             ctx.fillRect(x,y, figsize, figsize);
         }
     }
-    shuffle(colorName, colorClass);
-    mes.className = colorClass[0];
-    mes.innerText = colorName[0] + "을 클릭하십시오";
-    shuffle_color(color);
-    fill();
+    window.onload = function() {
+        setInterval(function() {
+            canvasReset();
+            shuffle(colorName, colorClass);
+            mes.className = colorClass[0];
+            mes.innerText = colorName[0] + "을 클릭하십시오";
+            shuffle_color(color);
+            fill();
+        }, 300);
+    }
+
 
 
     function handleFig(event) {

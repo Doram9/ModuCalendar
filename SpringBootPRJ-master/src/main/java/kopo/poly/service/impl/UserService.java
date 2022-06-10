@@ -1,6 +1,8 @@
 package kopo.poly.service.impl;
 
+import kopo.poly.dto.PrjInfoDTO;
 import kopo.poly.dto.UserInfoDTO;
+import kopo.poly.persistance.mongodb.IPrjMapper;
 import kopo.poly.persistance.mongodb.IUserMapper;
 import kopo.poly.service.IUserService;
 import kopo.poly.util.EncryptUtil;
@@ -10,6 +12,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 @Service("UserService")
@@ -18,6 +21,9 @@ public class UserService implements IUserService {
 
     @Resource(name="UserMapper")
     private IUserMapper userMapper;
+
+    @Resource(name="PrjMapper")
+    private IPrjMapper prjMapper;
 
     //로그인
     @Override
@@ -74,16 +80,16 @@ public class UserService implements IUserService {
     @Async
     public int findPw(String email) throws Exception {
 
-        log.info("email : " + email);
+//        log.info("email : " + email);
+//
+//        String title = "모두의 캘린더 비밀번호 변경";
+//        String body = "https://localhost:11000/reset";
+//
+//        Map<String, Object> rMap = MailUtil.sendEmail(email, title, body);
+//
+//        int res = (int) rMap.get("resultCode");
 
-        String title = "모두의 캘린더 비밀번호 변경";
-        String body = "";
-
-        Map<String, Object> rMap = MailUtil.sendEmail(email, title, body);
-
-        int res = (int) rMap.get("resultCode");
-
-        return res;
+        return 0;
     }
 
     @Override
@@ -96,10 +102,19 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public int deleteUser(UserInfoDTO pDTO) throws Exception {
-
+    public int deleteUser(UserInfoDTO uDTO) throws Exception {
         log.info("service.deleteUser start");
-        int res = userMapper.deleteUser(pDTO);
+
+        List<String> prjList = uDTO.getPrjList();
+
+        for(String prjTitleCode : prjList) {
+            String prjCode = prjTitleCode.split("\\*_\\*")[1];
+            PrjInfoDTO pDTO = new PrjInfoDTO();
+            pDTO.setPrjCode(prjCode);
+            prjMapper.deletePlayer(pDTO, uDTO);
+        }
+
+        int res = userMapper.deleteUser(uDTO);
         return res;
     }
 }

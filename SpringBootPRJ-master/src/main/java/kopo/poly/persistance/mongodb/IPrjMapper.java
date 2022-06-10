@@ -32,4 +32,7 @@ public interface IPrjMapper {
     int updatePlayerInfo(PrjInfoDTO jDTO, PlayerInfoDTO pDTO) throws Exception;
 
     //프로젝트 채팅로그
+
+    //프로젝트 나가기
+    int getoutPlayer(PrjInfoDTO pDTO, UserInfoDTO uDTO) throws Exception;
 }

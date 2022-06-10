@@ -189,10 +189,10 @@ public class UserMapper extends AbstractMongoDBComon implements IUserMapper {
 
         log.info("mapper.resetPw start");
 
-        String userId = pDTO.getUserId();
+        String userEmail = pDTO.getUserEmail();
         String userPw = pDTO.getUserPw();
 
-        log.info("userId : " + userId);
+        log.info("userEmail : " + userEmail);
         log.info("userPw : " + userPw);
 
         String colNm = "User";
@@ -200,7 +200,7 @@ public class UserMapper extends AbstractMongoDBComon implements IUserMapper {
         MongoCollection<Document> col = mongodb.getCollection(colNm);
 
         Document query = new Document();
-        query.append("userId", userId);
+        query.append("userEmail", userEmail);
 
         Document updateQuery = new Document();
 
@@ -290,10 +290,8 @@ public class UserMapper extends AbstractMongoDBComon implements IUserMapper {
 
             }
         }
-
-        //사용자가 속해있는 프로젝트 방에 사용자 정보 제거
-
-
+        
+        //userDB에서 사용자 정보 제거
         String colNm = "User";
 
         MongoCollection<Document> col = mongodb.getCollection(colNm);

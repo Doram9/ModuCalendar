@@ -281,10 +281,26 @@ public class PrjController {
     //프로젝트 나가기
     @GetMapping(value = "getoutPlayer")
     @ResponseBody
-    public String getoutPlayer(HttpServletRequest request) throws Exception {
+    public String getoutPlayer(HttpServletRequest request, HttpSession session) throws Exception {
         log.info("controller.getoutPlayer start");
 
-        return "";
+        String prjCode = request.getParameter("prjCode");
+        String prjTitle = request.getParameter("prjTitle");
+        String userId = (String) session.getAttribute("userId");
+
+        UserInfoDTO uDTO = new UserInfoDTO();
+        PrjInfoDTO pDTO = new PrjInfoDTO();
+
+        pDTO.setPrjCode(prjCode);
+        pDTO.setPrjTitle(prjTitle);
+        uDTO.setUserId(userId);
+
+        int res = 0;
+        int rs = prjService.deletePlayer(pDTO, uDTO);
+        if(rs == 1) {
+            res = prjService.getoutPlayer(pDTO, uDTO);
+        }
+        return Integer.toString(res);
     }
 
     //팀원 추가(프로젝트 참가)
