@@ -25,4 +25,4 @@ hs_err_pid*
 
 *.properties
 
-src/**/MailUtil.java
+/src/main/java/kopo/poly/util/MailUtil.java
