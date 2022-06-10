@@ -176,14 +176,12 @@
         }
     }
     window.onload = function() {
-        setInterval(function() {
             canvasReset();
             shuffle(colorName, colorClass);
             mes.className = colorClass[0];
             mes.innerText = colorName[0] + "을 클릭하십시오";
             shuffle_color(color);
             fill();
-        }, 300);
     }
 
 

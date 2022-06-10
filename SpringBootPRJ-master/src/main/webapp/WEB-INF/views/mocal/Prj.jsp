@@ -769,11 +769,11 @@
 
 	$("#prjTitleForDelete").on("propertychange change paste input", function() {
 		if(document.getElementById("prjTitleForDelete").value == "<%= rDTO.getPrjTitle()%>") {
-			document.getElementById("deletePrjButton").disabled = false;
+			document.getElementById("deletePrjButton").disabled = false;d
 		} else {
 			document.getElementById("deletePrjButton").disabled = true;
 		}
-	})
+	});
 
 	function deletePrj(event) {
 		event.preventDefault;

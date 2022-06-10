@@ -40,11 +40,6 @@ public class UserRestController {
         } else {
             log.info("로그인성공");
             session.setAttribute("userId", pDTO.getUserId());
-            session.setAttribute("userName", pDTO.getUserName());
-            session.setAttribute("regDt", pDTO.getRegDt());
-            session.setAttribute("userEmail", pDTO.getUserEmail());
-            session.setAttribute("appoList", pDTO.getAppoList());
-            session.setAttribute("prjList", pDTO.getPrjList());
 
             return "success";
         }
@@ -73,29 +68,13 @@ public class UserRestController {
         return "" + res;
     }
 
-    /**
-     * 이메일 발송
-     */
-    //비밀번호찾기 정보
-    @PostMapping(value = "doFindPw")
-    public String findPwByEmail(HttpServletRequest request) throws Exception {
-
-        log.info("controller.findPwByEmail start");
-
-        String email = CmmUtil.nvl(request.getParameter("email"));
-
-        //int res = userSevice.findPw(email);
-
-        return "비밀번호 재설정 링크를 발송했습니다. 메일을 확인해주세요.";
-    }
-
     //비밀번호 재설정
     @GetMapping(value = "doResetPw")
     public String doResetPw(HttpServletRequest request, HttpSession session) throws Exception {
 
         log.info("controller.doResetPw start");
-
-        String resetCode = EncryptUtil.decAES128CBC(CmmUtil.nvl(request.getParameter("resetCode")));
+        log.info("resetCode : " + CmmUtil.nvl(request.getParameter("resetCode")));
+        String resetCode = EncryptUtil.decAES128CBC(request.getParameter("resetCode"));
         log.info("resetCode : " + resetCode);
         String resetPw = CmmUtil.nvl(request.getParameter("resetPw"));
         log.info("resetPw : " + resetPw);

@@ -8,15 +8,14 @@ import org.apache.commons.mail.HtmlEmail;
 @Slf4j
 public class MailUtil {
 
-    public int sendAuthEmail(String email, String auth, String url){
+    public static int sendAuthEmail(String email, String title, String body){
 
-        log.info(this.getClass().getName()+ "메일 전송 시작");
+        log.info("메일 전송 시작");
 
 
         HtmlEmail email1 = new HtmlEmail();
         email1.setHostName("smtp.naver.com");
-        //email1.setSmtpPort(465);
-        email1.setSmtpPort(587);
+        email1.setSmtpPort(465);
         String pass = "ejkimk";
         String word = "9004";
         email1.setAuthentication("dodo0207k@naver.com", pass + word);
@@ -26,32 +25,24 @@ public class MailUtil {
 
         int res = 0;
 
-
-        String subject = "제목";
-        String text = "인증번호는 "+ auth+ "입니다.<br/>";
-
-//        String url = "http://localhost:8443/EmailAuthProc";
-
-        String code = "?auth="+auth+"&email="+email;
         try{
-            email1.setFrom("wnnahd112@naver.com", "관리자?", "utf-8");
+            email1.setFrom("dodo0207k@naver.com", "ModuCalendar", "utf-8");
             email1.addTo(email, "이름", "utf-8");
-            email1.setSubject("제목");
+            email1.setSubject(title);
 
             StringBuffer msg = new StringBuffer();
 
-            msg.append("<p>I'm FreeFund manager.</p>");
-            msg.append("<p>you can certify</p>");
-            msg.append("<a href='" + url + code + "'>plz click this link</a>");
+            msg.append("<a href='" + body + "'>Modu Calendar -resetPassword-</a>");
 
 
             email1.setHtmlMsg(msg.toString());
             email1.send();
+            res = 1;
         } catch (EmailException e) {
             e.printStackTrace();
         }
 
-        log.info(this.getClass().getName()+ "메일 전송 완료");
+        log.info("메일 전송 완료");
         return  res;
     }
 }

@@ -72,6 +72,9 @@
 
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script>
+    let resetCode = "<%=resetCode%>";
+    resetCode = resetCode.replaceAll(" ", "\+");
+    console.log(resetCode);
     function doResetPw() {
         let pw1 = document.getElementById('inputPassword').value;
         let pw2 = document.getElementById('inputPasswordConfirm').value;
@@ -82,7 +85,7 @@
             alert("비밀번호가 입력되지 않았습니다.");
             return 0;
         }
-        let resetCode = "<%=resetCode%>";
+
         $.ajax({
             url: "doResetPw",
             type: 'get',

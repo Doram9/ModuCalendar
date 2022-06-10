@@ -75,23 +75,6 @@ public class UserService implements IUserService {
         return res;
     }
 
-    //비밀번호 찾기 메일발송
-    @Override
-    @Async
-    public int findPw(String email) throws Exception {
-
-//        log.info("email : " + email);
-//
-//        String title = "모두의 캘린더 비밀번호 변경";
-//        String body = "https://localhost:11000/reset";
-//
-//        Map<String, Object> rMap = MailUtil.sendEmail(email, title, body);
-//
-//        int res = (int) rMap.get("resultCode");
-
-        return 0;
-    }
-
     @Override
     public int resetPw(UserInfoDTO pDTO) throws Exception {
         log.info("service.resetPw start");
@@ -116,5 +99,15 @@ public class UserService implements IUserService {
 
         int res = userMapper.deleteUser(uDTO);
         return res;
+    }
+
+    @Override
+    @Async
+    public void sendMail(String userEmail) throws Exception {
+        String subTitle = "모두캘린더 비밀번호 변경";
+        String body = "http://localhost:11000/resetPw?resetCode=" + EncryptUtil.encAES128CBC(userEmail);
+        log.info("send mail body : " + body);
+        int res = MailUtil.sendAuthEmail(userEmail, subTitle, body);
+        log.info("res : " + res);
     }
 }

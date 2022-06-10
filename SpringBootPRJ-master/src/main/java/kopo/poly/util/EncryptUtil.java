@@ -35,7 +35,7 @@ public class EncryptUtil {
     final static byte[] ivBytes = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,	0x00, 0x00, 0x00, 0x00 };
 
     //AES128-CBC 암호화 알고리즘에 사용되는 키 (16자리 문자만 가능함)
-    final static String key = "ModuCalendar1234"; //16글자(영문자 1글자당 1바이트임)
+    final static String key = "ModuCalendarabcd"; //16글자(영문자 1글자당 1바이트임)
 
 
     /**

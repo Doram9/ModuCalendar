@@ -35,6 +35,9 @@ public class UserController {
     public String loginPage() throws Exception {
         log.info("controller.title start");
 
+        String decCode = EncryptUtil.decAES128CBC("2BN6dCntkL81rxX3hewe+daoXvgu0+iCcFwy0Osymx4=");
+        log.info(decCode);
+
         return "/mocal/Login";
     }
 
@@ -81,18 +84,7 @@ public class UserController {
         int res = userSevice.regUser(pDTO);
         return "redirect:/login";
     }
-//
-//    //회원가입 정보
-//
-//    //아이디찾기 페이지
-//    @GetMapping(value = "findId")
-//    public String findIdPage() throws Exception {
-//        log.info("controller.title start");
-//        return "findId";
-//    }
-//
-//    //아이디찾기 정보
-//
+
     //비밀번호찾기 페이지
     @GetMapping(value = "findPw")
     public String findPw() throws Exception {
@@ -107,19 +99,11 @@ public class UserController {
         String userEmail = request.getParameter("email");
         log.info(userEmail);
 
-        String subTitle = "모두캘린더 비밀번호 변경";
-        String body = "http://localhost:11000/resetPw?resetCode=" + EncryptUtil.encAES128CBC(userEmail);
-//        Map<String, Object> result = MailUtil.sendEmail(userEmail, subTitle, body);
-//
-//        String msg = "";
-//        int res = (int) result.get("resultCode");
-//        if(res == 200) {
-//            msg = "비밀번호 재설정 메일을 발송하였습니다. 이메일을 확인해주세요.";
-//        } else {
-//            msg = "메일 발송에 실패하였습니다.";
-//        }
-//
-//        model.addAttribute("msg", msg);
+        userSevice.sendMail(userEmail);
+
+        String msg = "비밀번호 재설정 메일을 발송하였습니다. 이메일을 확인해주세요.";
+
+        model.addAttribute("msg", msg);
 
         return "/mocal/Msg";
     }
@@ -128,7 +112,7 @@ public class UserController {
     @GetMapping(value = "resetPw")
     public String resetPw(HttpServletRequest request, ModelMap model) throws Exception {
         log.info("controller.resetPw start");
-        String code = request.getParameter("code");
+        String code = request.getParameter("resetCode");
 
         model.addAttribute("resetCode", code);
         return "/mocal/resetPassword";

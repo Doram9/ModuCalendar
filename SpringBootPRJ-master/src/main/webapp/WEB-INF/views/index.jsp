@@ -227,7 +227,7 @@
 					<p name="userPw" class="form-control" id="userPw">**********</p>
 				</div>
 				<div class="mb-3 row justify-content-end">
-					<button class="btn btn-sm btn-warning btn-outline-danger col-6" onclick="deleteUser()">회원탈퇴하기</button>
+					<button class="btn btn-sm btn-warning btn-outline-danger col-6" data-bs-toggle="modal" data-bs-target="#deleteUser">회원탈퇴하기</button>
 				</div>
 			</div>
 		</div>
@@ -399,6 +399,34 @@
 				<button type="submit" class="btn btn-success">참가</button>
 			</div>
 		</form>
+	</div>
+</div>
+
+<!-- deleteUser Modal -->
+<div class="modal fade" id="deleteUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content" onsubmit="deletePrj(event)">
+			<div class="modal-header">
+				<h5 class="modal-title" >회원 탈퇴하기</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+
+			<div class="modal-body">
+				<div class="alert alert-danger" role="alert">
+					<p>경고! 탈퇴하면 다시 돌이킬 수 없습니다.</p>
+					<p>정말 탈퇴하시겠습니까?</p>
+				</div>
+				<div class="mb-3">
+					<label for="exampleFormControlInput1" class="form-label">정말로 삭제하시려면 아래에 유저명을 입력해주세요.</label>
+					<input type="text" name="code" class="form-control" autocomplete="off" placeholder="<%= pDTO.getUserName()%>" id="prjTitleForDelete" required>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+				<button type="button" class="btn btn-danger" onclick="deleteUser()" id="deletePrjButton" disabled>삭제</button>
+			</div>
+		</div>
 	</div>
 </div>
 
@@ -702,10 +730,16 @@
 	}
 
 	function deleteUser() {
-		if(confirm("정말로 회원을 탈퇴하시겠습니까? (주의! 되돌릴 수 없습니다.)")){
 			location.href = "deleteUser";
-		}
 	}
+
+	$("#prjTitleForDelete").on("propertychange change paste input", function() {
+		if(document.getElementById("prjTitleForDelete").value == "<%= pDTO.getUserName()%>") {
+			document.getElementById("deletePrjButton").disabled = false;
+		} else {
+			document.getElementById("deletePrjButton").disabled = true;
+		}
+	});
 </script>
 
 </body>
