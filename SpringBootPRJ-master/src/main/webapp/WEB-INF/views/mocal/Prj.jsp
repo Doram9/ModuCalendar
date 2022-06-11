@@ -254,10 +254,14 @@
 							<div class="card-header">
 								<i class="fas fa-chart-bar me-1"></i>
 								팀 채팅
-								<button type="button" class="btn btn-outline-primary">접속하기</button>
 							</div>
 							<div class="card-body" style="overflow:scroll; height: 300px;">
-
+								<div id="msgArea">
+								</div>
+							</div>
+							<div class="card-footer">
+								<input type="text" id="msg" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
+								<button class="btn btn-outline-secondary" type="button" id="button-send">전송</button>
 							</div>
 						</div>
 					</div>
@@ -896,6 +900,90 @@
 		}
 	}
 
+</script>
+<script>
+	$(document).ready(function(){
+
+		const username = "<%= pDTO.getUserName()%>";
+
+		$("#disconn").on("click", (e) => {
+			disconnect();
+		})
+
+		$("#button-send").on("click", (e) => {
+			send();
+		});
+
+		// const websocket = new WebSocket("ws://localhost:11000/chat");
+		const websocket = new WebSocket("ws://localhost:11000/ws/chat");
+
+		websocket.onmessage = onMessage;
+		websocket.onopen = onOpen;
+		websocket.onclose = onClose;
+
+		function send(){
+
+			let msg = document.getElementById("msg");
+
+			console.log(username + ":" + msg.value);
+			websocket.send(username + ":" + msg.value);
+			msg.value = '';
+		}
+
+		//채팅창에서 나갔을 때
+		function onClose(evt) {
+			var str = username + ": 님이 방을 나가셨습니다.";
+			websocket.send(str);
+		}
+
+		//채팅창에 들어왔을 때
+		function onOpen(evt) {
+			var str = username + ": 님이 입장하셨습니다.";
+			websocket.send(str);
+		}
+
+		function onMessage(msg) {
+			var data = msg.data;
+			var sessionId = null;
+			//데이터를 보낸 사람
+			var message = null;
+			var arr = data.split(":");
+
+			for(var i=0; i<arr.length; i++){
+				console.log('arr[' + i + ']: ' + arr[i]);
+			}
+
+			var cur_session = username;
+
+			//현재 세션에 로그인 한 사람
+			console.log("cur_session : " + cur_session);
+			sessionId = arr[0];
+			message = arr[1];
+
+			console.log("sessionID : " + sessionId);
+			console.log("cur_session : " + cur_session);
+
+			//로그인 한 클라이언트와 타 클라이언트를 분류하기 위함
+			if(sessionId == cur_session){
+				$("#msgArea").append($(
+						`<div class="input-group mb-3">
+							<div type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">\${message}</div>
+							<div class="input-group-text" id="basic-addon3">\${sessionId}</div>
+						</div>
+						`
+				));
+			}
+			else{
+				$("#msgArea").append($(
+						`<div class="input-group mb-3">
+							<div class="input-group-text" id="basic-addon3">\${sessionId}</div>
+							<div type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">\${message}</div>
+						</div>
+						`
+				));
+			}
+		}
+	})
 </script>
 
 </body>
