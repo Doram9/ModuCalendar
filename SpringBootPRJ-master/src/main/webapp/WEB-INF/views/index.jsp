@@ -247,7 +247,6 @@
 				<div class="mb-3">
 					<label for="exampleFormControlInput1" class="form-label">제목</label>
 					<input type="text" name="title" class="form-control" autocomplete="off" id="exampleFormControlInput1" placeholder="~~에 만나요" required>
-
 				</div>
 				<p>만나는 년, 월 <input type="text" name="month" autocomplete="off" id="monthpicker" required></p>
 				<p>투표 기한</p>
@@ -280,6 +279,8 @@
 					<option value="경남">경남</option>
 					<option value="제주">제주</option>
 				</select>
+				<input type="text" class="form-control" name="userName" value="<%=pDTO.getUserName()%>" hidden />
+
 			</div>
 
 
@@ -312,6 +313,7 @@
 				<label for="enddatepicker" class="form-label">종료날짜</label>
 				<input type="text" name="endDate" autocomplete="off" id="prjenddatepicker">
 				<br />
+				<input type="text" name="userName" value="<%=pDTO.getUserName()%>" hidden>
 			</div>
 
 
@@ -416,9 +418,10 @@
 					<p>경고! 탈퇴하면 다시 돌이킬 수 없습니다.</p>
 					<p>정말 탈퇴하시겠습니까?</p>
 				</div>
-				<div class="mb-3">
-					<label for="exampleFormControlInput1" class="form-label">정말로 삭제하시려면 아래에 유저명을 입력해주세요.</label>
-					<input type="text" name="code" class="form-control" autocomplete="off" placeholder="<%= pDTO.getUserName()%>" id="prjTitleForDelete" required>
+				<label class="form-label">정말로 삭제하시려면 아래에 유저명을 입력해주세요.</label>
+				<div class="form-floating mb-3">
+					<input type="text" name="code" class="form-control" autocomplete="off" placeholder="<%= pDTO.getUserName()%>" id="userNameForDelete" required>
+					<label for="userNameForDelete"><%= pDTO.getUserName()%></label>
 				</div>
 			</div>
 
@@ -624,6 +627,9 @@
 
 		});
 	}
+</script>
+
+<script>
 
 	function inputPrjCode(event) {
 		event.preventDefault();
@@ -733,8 +739,8 @@
 			location.href = "deleteUser";
 	}
 
-	$("#prjTitleForDelete").on("propertychange change paste input", function() {
-		if(document.getElementById("prjTitleForDelete").value == "<%= pDTO.getUserName()%>") {
+	$("#userNameForDelete").on("propertychange change paste input", function() {
+		if(document.getElementById("userNameForDelete").value == "<%= pDTO.getUserName()%>") {
 			document.getElementById("deletePrjButton").disabled = false;
 		} else {
 			document.getElementById("deletePrjButton").disabled = true;

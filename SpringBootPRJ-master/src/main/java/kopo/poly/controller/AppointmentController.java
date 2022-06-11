@@ -84,7 +84,7 @@ public class AppointmentController {
         log.info("controller.createAppo start");
 
         String userId = CmmUtil.nvl((String)session.getAttribute("userId"));
-        String userName = CmmUtil.nvl((String)session.getAttribute("userName"));;
+        String userName = request.getParameter("userName");
 
         String title = request.getParameter("title");
         String region = request.getParameter("region");

@@ -346,12 +346,38 @@
                     <option value="경남">경남</option>
                     <option value="제주">제주</option>
                 </select>
+                <input type="text" class="form-control" name="userName" value="<%=pDTO.getUserName()%>" hidden />
+
             </div>
 
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
                 <button type="submit" class="btn btn-warning">생성</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- inputCode Modal -->
+<div class="modal fade" id="inputCode" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content" onsubmit="inputCode(event)">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel2">초대 코드 입력하기</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">초대 코드</label>
+                    <input type="text" name="code" class="form-control" autocomplete="off" id="inviteCode" required>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                <button type="submit" class="btn btn-outline-dark btn-warning">참가</button>
             </div>
         </form>
     </div>
@@ -373,7 +399,8 @@
 <!-- 데이트피커용 j쿼리 -->
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
+<!-- monthpicker -->
+<script src="js/jquery.mtz.monthpicker.js"></script>
 
 
 
@@ -464,6 +491,54 @@
         chgPrjStartDate();
         chgPrjEndDate();
     };
+</script>
+
+<script>
+
+
+    let now = new Date();
+    let options = {
+        pattern: 'yyyy-mm',
+        selectedYear : now.getFullYear(),
+        startYear: now.getFullYear(),
+        finalYear: now.getFullYear() + 5,
+        monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+        openOnFocus: true,
+        disableMonths: []
+    };
+
+    $("#monthpicker").monthpicker(options);
+
+
+</script>
+
+<script>
+    function inputCode(event) {
+        event.preventDefault();
+        let appoCode = document.getElementById('inviteCode').value;
+
+        $.ajax({
+            url: "inviteAppo",
+            type: 'get',
+            data: {
+                "appoCode": appoCode,
+            },
+            contentType: "application/json; charset=utf-8",
+            dataType: "text",
+            success: function(data) {
+                if(data == 0) {
+                    alert("해당하는 방이 존재하지 않습니다.");
+                }else if(data == 2) {
+                    alert("이미 해당 방에 참가중입니다.");
+                }
+                location.href = '/';
+            },
+            error: function(error) {
+                location.href = '/';
+            }
+
+        });
+    }
 </script>
 
 <script>

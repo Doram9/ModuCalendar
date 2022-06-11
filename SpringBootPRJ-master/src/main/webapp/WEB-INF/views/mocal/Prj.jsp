@@ -171,101 +171,7 @@
 			<div class="container-fluid px-4">
 				<div class="mt-4"></div>
 				<div class="row">
-					<div class="col-xl-7">
-						<div class="card mb-4">
-							<div class="card-header">
-								<i class="fas fa-chart-bar me-1"></i>
-								프로젝트 정보
-								<%
-									if(userGrant.equals("master")) {
-								%>
-								<button class="btn btn-warning btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deletePrj">프로젝트 삭제</button>
-								<%
-									} else {
-								%>
-								<button class="btn btn-warning btn-outline-danger" onclick="getoutPrj()">프로젝트 나가기</button>
-								<%
-									}
-								%>
-							</div>
-							<div class="card-body" style="overflow:scroll; height: 300px;">
-								<div class="container-fluid">
-									<div class="row">
-										<div class="col-4">프로젝트 명 :</div>
-										<div class="col-4"><%=rDTO.getPrjTitle()%></div>
-									</div>
-									<div class="row">
-										<div class="col-4">프로젝트 개설일 :</div>
-										<div class="col-4"><%=rDTO.getPrjRegDt()%></div>
-									</div>
-									<div class="row">
-										<div class="col-4">프로젝트 코드 :</div>
-										<button class="btn btn-info col-4" onclick="copyPrjCode()">프로젝트코드 복사하기</button>
-									</div>
-
-									<div class="row mt-3"><h5>팀원정보</h5></div>
-									<hr/>
-									<div class="row">
-										<div class="col-2">이름</div>
-										<div class="col-2">직책</div>
-										<div class="col-5">역할</div>
-										<div class="col-3">비고</div>
-									</div>
-									<hr/>
-									<%
-										for(PlayerInfoDTO plaDTO : plaList) {
-											String playerName = plaDTO.getUserName();
-											String playerId = plaDTO.getUserId();
-											String playerGrant = plaDTO.getUserGrant();
-											String playerRole = plaDTO.getUserRole();
-
-									%>
-									<div class="row">
-										<div class="col-2"><%= playerName%></div>
-										<div class="col-2"><%= playerGrant%></div>
-										<div class="col-5"><%= playerRole%></div>
-										<%
-											if(userGrant.equals("master")) {
-
-										%>
-										<button class="col-1 btn btn-primary" data-bs-toggle="modal" data-bs-target="#playerInfo" onclick="showPlayerInfo('<%= playerId%>', '<%= playerName%>', '<%= playerGrant%>', '<%= playerRole%>')">수정</button>
-										<div class="col-1"></div>
-
-										<%
-												if(!pDTO.getUserId().equals(playerId)) {
-
-										%>
-										<button class="col-1 btn btn-danger" onclick="deletePlayer('<%=playerId%>')">강퇴</button>
-										<%
-												}
-											}
-										%>
-									</div>
-									<hr/>
-									<%
-										}
-									%>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-xl-5">
-						<div class="card mb-4">
-							<div class="card-header">
-								<i class="fas fa-chart-bar me-1"></i>
-								팀 채팅
-							</div>
-							<div class="card-body" style="overflow:scroll; height: 300px;">
-								<div id="msgArea">
-								</div>
-							</div>
-							<div class="card-footer">
-								<input type="text" id="msg" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
-								<button class="btn btn-outline-secondary" type="button" id="button-send">전송</button>
-							</div>
-						</div>
-					</div>
-					<div class="col-xl-12">
+					<div class="col-xl-8">
 						<div class="card mb-4">
 							<div class="card-header">
 								<i class="fas fa-table me-1"></i>
@@ -276,7 +182,6 @@
 							</div>
 							<div class="card-body">
 								<div class="row">
-
 									<div class="row mb-3" style="text-align: center">
 										<div class="col-2">
 											프로젝트 시작일
@@ -340,11 +245,11 @@
 													for(int k = startMonth; k <= endMonth; k++) {
 														if(k >= itemStartMonth && k <= itemEndMonth) {
 												%>
-															<button class="btn btn-warning col-1" disabled></button>
+												<button class="btn btn-warning col-1" disabled></button>
 												<%
-														} else {
+												} else {
 												%>
-															<button class="col-1 btn btn-outline-dark disabled"></button>
+												<button class="col-1 btn btn-outline-dark disabled"></button>
 												<%
 														}
 													}
@@ -358,6 +263,104 @@
 									%>
 								</div>
 
+
+							</div>
+						</div>
+
+						<div class="card mb-4">
+							<div class="card-header">
+								<i class="fas fa-chart-bar me-1"></i>
+								프로젝트 정보
+								<%
+									if(userGrant.equals("master")) {
+								%>
+								<button class="btn btn-warning btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deletePrj">프로젝트 삭제</button>
+								<%
+								} else {
+								%>
+								<button class="btn btn-warning btn-outline-danger" onclick="getoutPrj()">프로젝트 나가기</button>
+								<%
+									}
+								%>
+							</div>
+							<div class="card-body">
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-4">프로젝트 명 :</div>
+										<div class="col-4"><%=rDTO.getPrjTitle()%></div>
+									</div>
+									<div class="row">
+										<div class="col-4">프로젝트 개설일 :</div>
+										<div class="col-4"><%=rDTO.getPrjRegDt()%></div>
+									</div>
+									<div class="row">
+										<div class="col-4">프로젝트 코드 :</div>
+										<button class="btn btn-info col-4" onclick="copyPrjCode()">프로젝트코드 복사하기</button>
+									</div>
+
+									<div class="row mt-3"><h5>팀원정보</h5></div>
+									<hr/>
+									<div class="row">
+										<div class="col-2">이름</div>
+										<div class="col-2">직책</div>
+										<div class="col-5">역할</div>
+										<div class="col-3">비고</div>
+									</div>
+									<hr/>
+									<%
+										for(PlayerInfoDTO plaDTO : plaList) {
+											String playerName = plaDTO.getUserName();
+											String playerId = plaDTO.getUserId();
+											String playerGrant = plaDTO.getUserGrant();
+											String playerRole = plaDTO.getUserRole();
+
+									%>
+									<div class="row">
+										<div class="col-2"><%= playerName%></div>
+										<div class="col-2"><%= playerGrant%></div>
+										<div class="col-5"><%= playerRole%></div>
+										<%
+											if(userGrant.equals("master")) {
+
+										%>
+										<button class="col-1 btn btn-primary" data-bs-toggle="modal" data-bs-target="#playerInfo" onclick="showPlayerInfo('<%= playerId%>', '<%= playerName%>', '<%= playerGrant%>', '<%= playerRole%>')">수정</button>
+										<div class="col-1"></div>
+
+										<%
+											if(!pDTO.getUserId().equals(playerId)) {
+
+										%>
+										<button class="col-1 btn btn-danger" onclick="deletePlayer('<%=playerId%>')">강퇴</button>
+										<%
+												}
+											}
+										%>
+									</div>
+									<hr/>
+									<%
+										}
+									%>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-3" id="scroll" style="position:absolute;right:0;top:0;">
+						<div class="card mb-4">
+							<div class="card-header">
+								<i class="fas fa-chart-bar me-1"></i>
+								팀 채팅
+								<button type="button" class="btn btn-primary" id="inChat" onclick="onOpen()">접속하기</button>
+								<button type="button" class="btn btn-secondary" id="outChat" onclick="onClose()">접속끊기</button>
+							</div>
+							<div class="card-body" style="overflow:scroll; height: 500px;">
+								<div id="msgArea">
+								</div>
+							</div>
+							<div class="card-footer">
+								<div class="input-group">
+									<input type="text" id="msg" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
+									<button class="btn btn-outline-secondary input-group-text" type="button" id="button-send" disabled>전송</button>
+								</div>
 
 							</div>
 						</div>
@@ -444,6 +447,8 @@
 					<option value="경남">경남</option>
 					<option value="제주">제주</option>
 				</select>
+				<input type="text" class="form-control" name="userName" value="<%=pDTO.getUserName()%>" hidden />
+
 			</div>
 
 
@@ -493,9 +498,10 @@
 					<p>경고! 삭제하면 복구할 수 없습니다.</p>
 					<p>정말 삭제하시겠습니까?</p>
 				</div>
-				<div class="mb-3">
-					<label for="exampleFormControlInput1" class="form-label">정말로 삭제하시려면 아래에 프로젝트 명을 입력해주세요.</label>
+				<label class="form-label">정말로 삭제하시려면 아래에 프로젝트 명을 입력해주세요.</label>
+				<div class="form-floating mb-3">
 					<input type="text" name="code" class="form-control" autocomplete="off" placeholder="<%= rDTO.getPrjTitle()%>" id="prjTitleForDelete" required>
+					<label for="prjTitleForDelete"><%= rDTO.getPrjTitle()%></label>
 				</div>
 			</div>
 
@@ -521,10 +527,9 @@
 					<label for="pName" class="form-label">이름</label>
 					<input name="userName" class="form-control" id="pName" autocomplete="off" disabled />
 				</div>
-				<div class="mb-3">
+				<div class="mb-3" id="setGrant">
 					<label for="pGrant" class="form-label">직책</label>
 					<select name="userGrant" class="form-select" aria-label="Default select example" id="pGrant">
-						<option value="master">Master(프로젝트 삭제 가능)</option>
 						<option value="senior">Senior(마일스톤 수정가능)</option>
 						<option value="junior">Junior(마일스톤 수정불가능)</option>
 					</select>
@@ -557,6 +562,10 @@
 <!-- 데이트피커용 j쿼리 -->
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<!-- SockJS -->
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 
 <!-- monthpicker -->
 <script src="js/jquery.mtz.monthpicker.js"></script>
@@ -732,6 +741,15 @@
 		console.log(pName);
 		console.log(pGrant);
 		console.log(pRole);
+		if(pGrant == "master") {
+			document.getElementById("setGrant").style.display = 'none';
+		} else if(pGrant == "senior") {
+			document.getElementById("setGrant").style.display = '';
+			document.getElementById("pGrant").value = "senior";
+		} else {
+			document.getElementById("setGrant").style.display = '';
+			document.getElementById("pGrant").value = "junior";
+		}
 
 		document.getElementById("pName").value = pName;
 		document.getElementById("pRole").value = pRole;
@@ -902,88 +920,88 @@
 
 </script>
 <script>
-	$(document).ready(function(){
+	window.onload = function () {
+		document.getElementById("outChat").style.display = 'none';
+		document.getElementById("msg").disabled = 'true';
+	}
 
+		const userId = "<%= pDTO.getUserId()%>";
 		const username = "<%= pDTO.getUserName()%>";
-
-		$("#disconn").on("click", (e) => {
-			disconnect();
-		})
+		const prjCode = "<%= rDTO.getPrjCode()%>";
 
 		$("#button-send").on("click", (e) => {
 			send();
 		});
 
-		// const websocket = new WebSocket("ws://localhost:11000/chat");
-		const websocket = new WebSocket("ws://localhost:11000/ws/chat");
+		let sockJs;
+		let stomp;
+		//채팅창에서 나갔을 때
+		function onClose() {
+			document.getElementById("inChat").style.display = '';
+			document.getElementById("outChat").style.display = 'none';
+			$("#msg").attr("disabled", true);
+			$("#button-send").attr("disabled", true);
+			stomp.disconnect();
+		}
 
-		websocket.onmessage = onMessage;
-		websocket.onopen = onOpen;
-		websocket.onclose = onClose;
+		// 채팅창에 들어왔을 때
+		function onOpen() {
+			document.getElementById("inChat").style.display = 'none';
+			document.getElementById("outChat").style.display = '';
+			$("#msg").attr("disabled", false);
+			$("#button-send").attr("disabled", false);
 
-		function send(){
+			sockJs = new SockJS("/stomp/chat");
 
+			//1. SockJS를 내부에 들고있는 stomp를 내어줌
+			stomp = Stomp.over(sockJs);
+
+			//2. connection이 맺어지면 실행
+			stomp.connect({}, function () {
+				console.log("STOMP Connection")
+
+				//4. subscribe(path, callback)으로 메세지를 받을 수 있음
+				stomp.subscribe("/sub/chat/room/" + prjCode, function (chat) {
+					let content = JSON.parse(chat.body);
+
+					let writer = content.userName;
+					let message = content.message;
+					if (writer === username) {
+						$("#msgArea").append($(
+								`<div class="input-group mb-3">
+							<div type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">\${message}</div>
+							<div class="input-group-text" id="basic-addon3">\${writer}</div>
+						</div>
+						`
+						));
+					} else {
+						$("#msgArea").append($(
+								`<div class="input-group mb-3">
+							<div class="input-group-text" id="basic-addon3">\${writer}</div>
+							<div type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">\${message}</div>
+						</div>
+						`
+						));
+					}
+				});
+			});
+		}
+
+	function send(){
+		if(document.getElementById("msg").value != '') {
 			let msg = document.getElementById("msg");
 
-			console.log(username + ":" + msg.value);
-			websocket.send(username + ":" + msg.value);
+			//3. send(path, header, message)로 메세지를 보낼 수 있음
+			stomp.send('/pub/chat/message', {}, JSON.stringify({"prjCode": prjCode, "userId": userId, "userName": username, "message": msg.value}));
+
 			msg.value = '';
 		}
+	}
+	$(window).scroll(function(){
+		let position = $(document).scrollTop();
+		$("#scroll").css('top',  position );
+	});
 
-		//채팅창에서 나갔을 때
-		function onClose(evt) {
-			var str = username + ": 님이 방을 나가셨습니다.";
-			websocket.send(str);
-		}
-
-		//채팅창에 들어왔을 때
-		function onOpen(evt) {
-			var str = username + ": 님이 입장하셨습니다.";
-			websocket.send(str);
-		}
-
-		function onMessage(msg) {
-			var data = msg.data;
-			var sessionId = null;
-			//데이터를 보낸 사람
-			var message = null;
-			var arr = data.split(":");
-
-			for(var i=0; i<arr.length; i++){
-				console.log('arr[' + i + ']: ' + arr[i]);
-			}
-
-			var cur_session = username;
-
-			//현재 세션에 로그인 한 사람
-			console.log("cur_session : " + cur_session);
-			sessionId = arr[0];
-			message = arr[1];
-
-			console.log("sessionID : " + sessionId);
-			console.log("cur_session : " + cur_session);
-
-			//로그인 한 클라이언트와 타 클라이언트를 분류하기 위함
-			if(sessionId == cur_session){
-				$("#msgArea").append($(
-						`<div class="input-group mb-3">
-							<div type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">\${message}</div>
-							<div class="input-group-text" id="basic-addon3">\${sessionId}</div>
-						</div>
-						`
-				));
-			}
-			else{
-				$("#msgArea").append($(
-						`<div class="input-group mb-3">
-							<div class="input-group-text" id="basic-addon3">\${sessionId}</div>
-							<div type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">\${message}</div>
-						</div>
-						`
-				));
-			}
-		}
-	})
 </script>
 
 </body>

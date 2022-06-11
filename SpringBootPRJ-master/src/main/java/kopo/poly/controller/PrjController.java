@@ -60,7 +60,8 @@ public class PrjController {
     public String createPrj(HttpServletRequest request, HttpSession session) throws Exception {
         log.info("controller.createPrj start");
         String userId = (String) session.getAttribute("userId");
-
+        log.info("userId : " + userId);
+        String userName = CmmUtil.nvl(request.getParameter("userName"));
         String title = CmmUtil.nvl(request.getParameter("title"));
         log.info("title : " + title);
         String startPrjDate = CmmUtil.nvl(request.getParameter("startDate"));
@@ -90,7 +91,7 @@ public class PrjController {
 
         PlayerInfoDTO lDTO = new PlayerInfoDTO();
         lDTO.setUserId(userId);
-        lDTO.setUserName((String) session.getAttribute("userName"));
+        lDTO.setUserName(userName);
         lDTO.setUserRole("팀장");
         lDTO.setUserGrant("master");
         List<PlayerInfoDTO> pList = new ArrayList<>();

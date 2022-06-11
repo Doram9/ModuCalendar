@@ -246,7 +246,9 @@
                                     <span class="col h4" id="d-day-sec">00</span>
                                     <span class="col h4">초</span>
                                 </div>
-
+                                <div class="spinner-border text-primary" role="status" id="load">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
                                 <button type="button" id="voteBtn" data-bs-toggle="modal" data-bs-target="#voteModal" hidden>
                                 </button>
                             </div>
@@ -376,6 +378,8 @@
                     <option value="경남">경남</option>
                     <option value="제주">제주</option>
                 </select>
+                <input type="text" class="form-control" name="userName" value="<%=pDTO.getUserName()%>" hidden />
+
             </div>
 
 
@@ -589,6 +593,7 @@
 </script>
 
 <script>
+
     <%
                 String dl = deadline.replace(".", ",");
                 %>
@@ -620,6 +625,7 @@
             var hours = Math.floor((distDt % _day) / _hour);
             var minutes = Math.floor((distDt % _hour) / _minute);
             var seconds = Math.floor((distDt % _minute) / _second);
+            $("#load").hide();
             document.getElementById("d-day-day").textContent = days;
             document.getElementById("d-day-hour").textContent = hours;
             document.getElementById("d-day-min").textContent = minutes;
@@ -628,6 +634,7 @@
         timer = setInterval(showRemaining, 1000);
     }
     countDownTimer();
+
 
 </script>
 
