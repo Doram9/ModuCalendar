@@ -60,40 +60,14 @@
 	<script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 
 	<style>
-		.calendar * {
-			border: solid 1px black;
-		}
 
-		#kakaoLogin {
-			border: 0;
-			outline: 0;
-		}
 
-		/* 월화수목금 */
-		.fc-scrollgrid-sync-inner .fc-col-header-cell-cushion {
-			color: black;
-		}
-
-		.fc-daygrid-day-frame .fc-daygrid-day-top .fc-daygrid-day-number {
-			color: black;
-		}
-
-		/* 토요일 */
-		.fc-day-sat .fc-scrollgrid-sync-inner .fc-col-header-cell-cushion {
-			color: blue;
-		}
-
-		.fc-day-sat .fc-daygrid-day-frame .fc-daygrid-day-top .fc-daygrid-day-number {
-			color: blue;
-		}
-
-		/* 일요일 */
-		.fc-day-sun .fc-scrollgrid-sync-inner .fc-col-header-cell-cushion {
-			color: red;
-		}
-
-		.fc-day-sun .fc-daygrid-day-frame .fc-daygrid-day-top .fc-daygrid-day-number {
-			color: red;
+		@media (min-width: 1200px) {
+			#scroll {
+				position:absolute;
+				right:0;
+				top:0;
+			}
 		}
 	</style>
 </head>
@@ -344,7 +318,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-xl-3" id="scroll" style="position:absolute;right:0;top:0;">
+					<div class="col-xl-3" id="scroll">
 						<div class="card mb-4">
 							<div class="card-header">
 								<i class="fas fa-chart-bar me-1"></i>

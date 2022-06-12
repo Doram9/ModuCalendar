@@ -38,15 +38,15 @@
             String thidate = CmmUtil.nvl(aDTO.getThidate());
             String appoTitle = CmmUtil.nvl(aDTO.getTitle());
 
-            if (firdate == "") {
-                firdate = "아직 만나기 적당한 날짜가 없습니다.";
-            }
-            if (secdate == "") {
-                secdate = "아직 만나기 적당한 날짜가 없습니다.";
-            }
-            if (thidate == "") {
-                thidate = "아직 만나기 적당한 날짜가 없습니다.";
-            }
+//            if (firdate == "") {
+//                firdate = "아직 만나기 적당한 날짜가 없습니다.";
+//            }
+//            if (secdate == "") {
+//                secdate = "아직 만나기 적당한 날짜가 없습니다.";
+//            }
+//            if (thidate == "") {
+//                thidate = "아직 만나기 적당한 날짜가 없습니다.";
+//            }
 
             if (userlist == null) {
                 userlist = new ArrayList<>();
@@ -192,37 +192,86 @@
                                 만나기 좋은 날
                                 <button class="btn btn-outline-warning" onclick="copyAppoCode()">약속방 코드 복사하기</button>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body" style="text-align: center;">
                                 <div class="row justify-content-center">
-
                                     <div class="card text-dark bg-warning mb-3" style="max-width: 18rem;">
-                                        <div class="card-header">1st</div>
+                                        <div class="card-header">
+                                            1st
+                                        </div>
                                         <div class="card-body">
                                             <h5 class="card-title"><%=firdate%></h5>
-                                            <p class="card-text"></p>
+                                            <%
+                                                if(firdate != "") {
+                                            %>
+                                            <button class="btn btn-warning" onclick="addEventFromAppo('<%=firdate%>')">내 캘린더에 추가하기</button>
+                                            <%
+                                                }
+                                            %>
+
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row justify-content-center">
-                                    <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+                                    <div class="card text-dark bg-light mb-3" style="max-width: 18rem;">
                                         <div class="card-header">2nd</div>
                                         <div class="card-body">
                                             <h5 class="card-title"><%=secdate%></h5>
-                                            <p class="card-text"></p>
+                                            <%
+                                                if(secdate != "") {
+                                            %>
+                                            <button class="btn btn-light" onclick="addEventFromAppo('<%=secdate%>')">내 캘린더에 추가하기</button>
+                                            <%
+                                                }
+                                            %>
                                         </div>
                                     </div>
 
                                     <div class="col-1"></div><!-- 공백 -->
-                                    <div class="card text-dark bg-light mb-3" style="max-width: 18rem;">
+                                    <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
                                         <div class="card-header">3rd</div>
                                         <div class="card-body">
                                             <h5 class="card-title"><%=thidate%></h5>
-                                            <p class="card-text"></p>
+                                            <%
+                                                if(thidate != "") {
+                                            %>
+                                            <button class="btn btn-secondary" onclick="addEventFromAppo('<%=thidate%>')">내 캘린더에 추가하기</button>
+                                            <%
+                                                }
+                                            %>
                                         </div>
                                     </div>
                                 </div>
 
 
+
+                            </div>
+                        </div>
+
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                참여자 명단
+                            </div>
+                            <div class="card-body row">
+                                <%
+                                    for (VoteInfoDTO vDTO : userlist) {
+                                        String username = vDTO.getUsername();
+                                        boolean votetf = vDTO.isVotetf();
+                                        String checktag = "";
+                                        if (votetf) {
+                                            checktag = "<i class=\"bi bi-check2-circle\" style=\"color: red\"></i>";
+                                        }
+
+                                %>
+                                <div class="col-2">
+                                    <div class="p-2 border bg-light rounded-pill"><%=username%><%=checktag%></div>
+                                </div>
+                                <%
+                                    }
+                                %>
+                                <div class="row mt-2 justify-content-center">
+                                    <button class="btn btn-warning col-3 offset-1" onclick="kakaoInvite()" id="create-kakao-link-btn">카카오톡으로 초대하기 <i class="bi bi-person-plus"></i></button>
+                                </div>
 
                             </div>
                         </div>
@@ -257,34 +306,6 @@
                     </div>
                 </div>
 
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <i class="fas fa-table me-1"></i>
-                        참여자 명단
-                    </div>
-                    <div class="card-body row">
-                        <%
-                            for (VoteInfoDTO vDTO : userlist) {
-                                String username = vDTO.getUsername();
-                                boolean votetf = vDTO.isVotetf();
-                                String checktag = "";
-                                if (votetf) {
-                                    checktag = "<i class=\"bi bi-check2-circle\" style=\"color: red\"></i>";
-                                }
-
-                        %>
-                            <div class="col-2">
-                                <div class="p-2 border bg-light rounded-pill"><%=username%><%=checktag%></div>
-                            </div>
-                        <%
-                            }
-                        %>
-                        <div class="row mt-2 justify-content-center">
-                            <button class="btn btn-warning col-3 offset-1" onclick="kakaoInvite()" id="create-kakao-link-btn">카카오톡으로 초대하기 <i class="bi bi-person-plus"></i></button>
-                        </div>
-
-                    </div>
-                </div>
             </div>
         </main>
         <footer class="py-4 bg-light mt-auto">
@@ -639,6 +660,37 @@
 </script>
 
 <script>
+    function addEventFromAppo(date) {
+
+        if(confirm("내 캘린더에 " + date + " 일자로 약속 일정을 추가하시겠습니까?")){
+
+            $.ajax({
+                url: "addEventFromAppo",
+                type: 'get',
+                data: {
+                    "date": date,
+                    "title" : "<%= aDTO.getTitle()%>",
+                    "eventId": "<%= aDTO.getAppoCode()%>"
+                },
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                success: function(data) {
+                    if(data != 1) {
+                        alert("해당하는 방이 존재하지않습니다.");
+                        location.href = '/';
+                    } else {
+                        alert(data + "개의 일정을 추가했습니다.");
+                    }
+
+                },
+                error: function(error) {
+                    location.href = '/';
+                }
+
+            });
+        }
+    }
+
     function deleteAppo(title, code) {
 
         if(confirm("방을 나가시겠습니까?")){

@@ -121,7 +121,7 @@
 							String title = parse[0];
 							String code = parse[1];
 					%>
-						<div class="nav-link collapsed">
+						<div class="nav-link collapsed" draggable="true" name="appo">
 							<div class="sb-nav-link-icon">
 								<i class="fas fa-table"></i>
 							</div>
@@ -162,7 +162,7 @@
 								<i class="fas fa-chart-area me-1"></i>
 								내 일정
 							</div>
-							<div class="card-body">
+							<div class="card-body" id="drop">
 								<div id="calendar" class="mt-2"></div> <!-- 캘린더 -->
 							</div>
 						</div>
@@ -188,11 +188,9 @@
 										String code = parse[1];
 
 								%>
-								<div class="card">
-									<a class="card-body btn btn-primary" href="prj?code=<%= code%>">
-										<p class="card-text"><%= title%></p>
-									</a>
-								</div>
+									<button class="card-body btn btn-primary" draggable="true" ondragstart="event.dataTransfer.setData('data', this.id)" onclick="intoPrj('<%=code%>')" id="<%=code%>">
+											<%= title%>
+									</button>
 								<%
 									}
 								%>
@@ -630,6 +628,9 @@
 </script>
 
 <script>
+	function intoPrj(code) {
+		location.href = "prj?code=" + code;
+	}
 
 	function inputPrjCode(event) {
 		event.preventDefault();
@@ -746,6 +747,37 @@
 			document.getElementById("deletePrjButton").disabled = true;
 		}
 	});
+</script>
+
+<script>
+
+
+	document.getElementById('drop').ondragover = function(e) {
+		e.preventDefault(); // 필수 이 부분이 없으면 ondrop 이벤트가 발생하지 않습니다.
+	};
+	document.getElementById('drop').ondrop = function(e) {
+		let prjCodeForEvent = e.dataTransfer.getData('data');
+		if(confirm("해당 프로젝트의 일정을 내 일정에 추가할까요?")) {
+			$.ajax({
+				url: "putMileToCal",
+				type: 'get',
+				data: {
+					"prjCode": prjCodeForEvent
+				},
+				contentType: "application/json; charset=utf-8",
+				dataType: "text",
+				success: function(data) {
+					alert(data + "개의 일정을 추가하였습니다.");
+					location.href = '/';
+				},
+				error: function(error) {
+					location.href = '/';
+				}
+
+			});
+		}
+
+	};
 </script>
 
 </body>

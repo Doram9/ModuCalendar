@@ -15,7 +15,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
 
         // 로그인 체크를 해야하는 URL에 대해 정의
-        String[] loginCheckURI = {"/", "/index", "/appo", "/mile", "/createAppo", "/delAppo", "/inviteAppo", "/voteDate", "/addEvent", "/deleteEvent", "/prj", "/createPrj", "deletePrj", "/mile", "/updateMile", "/deleteMile", "/chgPlayerInfo", "/deletePlayer", "/getoutPlayer", "/invitePrj", "/deleteUser"};
+        String[] loginCheckURI = {"/", "/index", "/appo", "/mile", "/createAppo", "/delAppo", "/inviteAppo", "/voteDate", "/addEvent", "/deleteEvent", "addEventFromAppo", "putMileToCal", "/prj", "/createPrj", "deletePrj", "/mile", "/updateMile", "/deleteMile", "/chgPlayerInfo", "/deletePlayer", "/getoutPlayer", "/invitePrj", "/deleteUser"};
         registry.addInterceptor(new LoginInterceptor()).addPathPatterns(Arrays.asList(loginCheckURI));
 
     }

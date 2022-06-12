@@ -68,4 +68,22 @@ public class DateUtil {
 
     }
 
+    public static String addDateYMD(String theDay,int addNum) throws Exception {
+
+        SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+
+        Calendar cal = Calendar.getInstance();
+
+        int year = Integer.parseInt(theDay.split("-")[0]);
+        int month = Integer.parseInt(theDay.split("-")[1]);
+        int day = Integer.parseInt(theDay.split("-")[2]);
+
+        cal.set(year, month-1, day);
+
+        cal.add(Calendar.DATE, addNum);
+
+        return date.format(cal.getTime());
+
+    }
+
 }
