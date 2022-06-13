@@ -112,9 +112,10 @@ public class UserController {
     @GetMapping(value = "resetPw")
     public String resetPw(HttpServletRequest request, ModelMap model) throws Exception {
         log.info("controller.resetPw start");
-        String code = request.getParameter("resetCode");
+        String resetCode = request.getParameter("resetCode");
+        log.info("resetCode : " + resetCode);
 
-        model.addAttribute("resetCode", code);
+        model.addAttribute("resetCode", resetCode);
         return "/mocal/resetPassword";
     }
 

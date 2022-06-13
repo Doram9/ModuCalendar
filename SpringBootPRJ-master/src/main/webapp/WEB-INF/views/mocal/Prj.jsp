@@ -66,7 +66,7 @@
 			#scroll {
 				position:absolute;
 				right:0;
-				top:0;
+				top:10px;
 			}
 		}
 	</style>
@@ -154,7 +154,7 @@
 								<button class="btn btn-outline-danger" onclick="deleteMile()">삭제</button>
 
 							</div>
-							<div class="card-body">
+							<div class="card-body" style="overflow:scroll; height: 400px;">
 								<div class="row">
 									<div class="row mb-3" style="text-align: center">
 										<div class="col-2">
@@ -257,7 +257,7 @@
 									}
 								%>
 							</div>
-							<div class="card-body">
+							<div class="card-body" style="overflow:scroll; height: 300px;">
 								<div class="container-fluid">
 									<div class="row">
 										<div class="col-4">프로젝트 명 :</div>
@@ -915,6 +915,7 @@
 			document.getElementById("outChat").style.display = 'none';
 			$("#msg").attr("disabled", true);
 			$("#button-send").attr("disabled", true);
+			stomp.send('/pub/chat/exit', {}, JSON.stringify({"prjCode": prjCode, "userId": userId, "userName": username}));
 			stomp.disconnect();
 		}
 
@@ -933,16 +934,18 @@
 			//2. connection이 맺어지면 실행
 			stomp.connect({}, function () {
 				console.log("STOMP Connection")
-
+				stomp.send('/pub/chat/enter', {}, JSON.stringify({"prjCode": prjCode, "userId": userId, "userName": username}));
 				//4. subscribe(path, callback)으로 메세지를 받을 수 있음
 				stomp.subscribe("/sub/chat/room/" + prjCode, function (chat) {
 					let content = JSON.parse(chat.body);
-
 					let writer = content.userName;
 					let message = content.message;
+					let time = content.sendTime;
 					if (writer === username) {
 						$("#msgArea").append($(
-								`<div class="input-group mb-3">
+								`
+						<div>\${time}</div>
+						<div class="input-group mb-3">
 							<div type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">\${message}</div>
 							<div class="input-group-text" id="basic-addon3">\${writer}</div>
 						</div>
@@ -950,7 +953,9 @@
 						));
 					} else {
 						$("#msgArea").append($(
-								`<div class="input-group mb-3">
+								`
+						<div>\${time}</div>
+						<div class="input-group mb-3">
 							<div class="input-group-text" id="basic-addon3">\${writer}</div>
 							<div type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">\${message}</div>
 						</div>
@@ -964,7 +969,6 @@
 	function send(){
 		if(document.getElementById("msg").value != '') {
 			let msg = document.getElementById("msg");
-
 			//3. send(path, header, message)로 메세지를 보낼 수 있음
 			stomp.send('/pub/chat/message', {}, JSON.stringify({"prjCode": prjCode, "userId": userId, "userName": username, "message": msg.value}));
 
@@ -973,7 +977,7 @@
 	}
 	$(window).scroll(function(){
 		let position = $(document).scrollTop();
-		$("#scroll").css('top',  position );
+		$("#scroll").css('top',  position + 10);
 	});
 
 </script>

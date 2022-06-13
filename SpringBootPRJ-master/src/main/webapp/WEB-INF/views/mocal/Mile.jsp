@@ -629,9 +629,10 @@
 
         $(`#itemStartDate_\${stepCnt}`).datepicker();
         $(`#itemStartDate_\${stepCnt}`).datepicker("option", "minDate", prjStartDate);
-
+        $(`#itemStartDate_\${stepCnt}`).datepicker("option", "maxDate", prjEndDate);
 
         $(`#itemEndDate_\${stepCnt}`).datepicker();
+        $(`#itemEndDate_\${stepCnt}`).datepicker("option", "minDate", prjStartDate);
         $(`#itemEndDate_\${stepCnt}`).datepicker("option", "maxDate", prjEndDate);
     }
 

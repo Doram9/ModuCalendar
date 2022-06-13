@@ -733,7 +733,7 @@
 
 <script>
 	function chgPw() {
-		location.href = "resetPw?code=<%=CmmUtil.nvl(pDTO.getUserId())%>";
+		location.href = "resetPw?resetCode=<%=EncryptUtil.encAES128CBC(pDTO.getUserEmail())%>";
 	}
 
 	function deleteUser() {
