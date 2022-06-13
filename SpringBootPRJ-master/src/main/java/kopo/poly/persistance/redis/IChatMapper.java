@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface IChatMapper {
 
-    int addMessage(ChatMessageDTO cDTO) throws Exception;
+    void addMessage(ChatMessageDTO cDTO) throws Exception;
 
-    List<ChatMessageDTO> getMessageList(String prjCode) throws Exception;
+    void saveMessageList(String prjCode) throws Exception;
 
 }

@@ -53,14 +53,14 @@ public class StompChatController {
         message.setMessage(message.getUserName() + "님이 채팅방에 참여하였습니다.");
         message.setSendTime(DateUtil.getDateTimeHMS());
         //redis에 채팅로그 저장
-        int res = chatService.addMessage(message);
+        chatService.addMessage(message);
     }
 
     @MessageMapping(value = "/chat/exit")
     public void exit(ChatMessageDTO message) throws Exception {
         //redis에 채팅로그 저장
         message.setMessage(message.getUserName() + "님이 채팅방에서 나갔습니다.");
-        int res = chatService.addMessage(message);
+        chatService.addMessage(message);
 
         String prjCode = message.getPrjCode();
         Set<String> userList = PrjChatList.get(prjCode);
@@ -78,7 +78,7 @@ public class StompChatController {
         log.info("발신아이디 : " + message.getUserId());
         message.setSendTime(DateUtil.getDateTimeHMS());
         //redis에 채팅로그 저장
-        int res = chatService.addMessage(message);
+        chatService.addMessage(message);
 
         template.convertAndSend("/sub/chat/room/" + message.getPrjCode(), message);
     }

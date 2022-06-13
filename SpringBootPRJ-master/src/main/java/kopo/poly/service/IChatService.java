@@ -4,7 +4,7 @@ import kopo.poly.dto.ChatMessageDTO;
 
 public interface IChatService {
 
-    int addMessage(ChatMessageDTO cDTO) throws Exception;
+    void addMessage(ChatMessageDTO cDTO) throws Exception;
 
-    int saveMessage(ChatMessageDTO cDTO) throws Exception;
+    void saveMessage(ChatMessageDTO cDTO) throws Exception;
 }

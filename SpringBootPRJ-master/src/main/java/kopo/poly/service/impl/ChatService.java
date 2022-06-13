@@ -20,25 +20,20 @@ public class ChatService implements IChatService {
     IChatMapper chatMapper;
 
     @Override
-    public int addMessage(ChatMessageDTO cDTO) throws Exception {
+    public void addMessage(ChatMessageDTO cDTO) throws Exception {
         log.info("service.addMessage start");
 
-        return chatMapper.addMessage(cDTO);
+        chatMapper.addMessage(cDTO);
     }
 
     @Override
-    public int saveMessage(ChatMessageDTO cDTO) throws Exception {
+    public void saveMessage(ChatMessageDTO cDTO) throws Exception {
         log.info("service.saveMessage start");
 
         //redis db에 prjCode가 redisKey 인 List<String> 데이터를 가져오기
         String prjCode = cDTO.getPrjCode();
         log.info("saveMessage.redisKey : " + prjCode);
-        List<ChatMessageDTO> chatLog = chatMapper.getMessageList(prjCode);
+        chatMapper.saveMessageList(prjCode);
 
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonStr = mapper.writeValueAsString(chatLog);
-        log.info(jsonStr);
-        //파일에 덮어쓰기
-        return 0;
     }
 }
