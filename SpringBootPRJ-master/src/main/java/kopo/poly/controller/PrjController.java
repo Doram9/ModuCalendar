@@ -2,6 +2,7 @@ package kopo.poly.controller;
 
 
 import kopo.poly.dto.*;
+import kopo.poly.service.IChatService;
 import kopo.poly.service.IPrjService;
 import kopo.poly.service.IUserService;
 import kopo.poly.util.CmmUtil;
@@ -29,28 +30,40 @@ public class PrjController {
     private IUserService userSevice;
     @Resource(name = "PrjService")
     private IPrjService prjService;
+    @Resource(name = "ChatService")
+    private IChatService chatService;
 
     //팀프로젝트방 페이지
     @GetMapping(value = "prj")
     public String prjPage(HttpServletRequest request, ModelMap model, HttpSession session) throws Exception {
         log.info("controller.prjPage start");
         String prjCode = request.getParameter("code");
+        String prjTitle = request.getParameter("title");
         log.info("prjCode : "  + prjCode);
         PrjInfoDTO pDTO = new PrjInfoDTO();
         pDTO.setPrjCode(prjCode);
+        pDTO.setPrjTitle(prjTitle);
 
         PrjInfoDTO rDTO = prjService.getPrjInfo(pDTO);
 
         String userId = CmmUtil.nvl((String)session.getAttribute("userId"));
 
+        List<ChatMessageDTO> chatList = prjService.getMessageList(prjCode);
 
         if(rDTO == null) {
-            return "/";
+            UserInfoDTO userDTO = new UserInfoDTO();
+            userDTO.setUserId(userId);
+            prjService.getoutPlayer(pDTO, userDTO);
+
+            String msg = "해당하는 프로젝트가 존재하지 않습니다.";
+            model.addAttribute("msg", msg);
+            return "/mocal/Msg";
         } else {
             UserInfoDTO uDTO = userSevice.getUserInfo(userId);
 
             model.addAttribute("UserInfoDTO", uDTO);
             model.addAttribute("PrjInfoDTO", rDTO);
+            model.addAttribute("chatList", chatList);
 
             return "/mocal/Prj";
         }
@@ -325,6 +338,20 @@ public class PrjController {
         int res = prjService.invitePlayer(pDTO, iDTO);
 
         return Integer.toString(res);
+    }
+
+    @GetMapping(value = "getChatLogInRedis")
+    @ResponseBody
+    public List<ChatMessageDTO> getChatLogInRedis(HttpServletRequest request) throws Exception {
+        log.info("controller.getChatLogInRedis start");
+        String prjCode = request.getParameter("prjCode");
+
+        List<ChatMessageDTO> chatList = chatService.getChatLog(prjCode);
+
+        if(chatList == null) {
+            chatList = new ArrayList<>();
+        }
+        return chatList;
     }
 
 

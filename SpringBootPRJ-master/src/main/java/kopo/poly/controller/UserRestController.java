@@ -40,6 +40,9 @@ public class UserRestController {
         } else {
             log.info("로그인성공");
             session.setAttribute("userId", pDTO.getUserId());
+            String userName = pDTO.getUserName();
+            log.info("userName : " + userName);
+            session.setAttribute("userName", userName);
 
             return "success";
         }

@@ -142,7 +142,9 @@ public class AppointmentController {
         log.info("controller.inviteAppo start");
 
         String userId = CmmUtil.nvl((String)session.getAttribute("userId"));
+        log.info("userId : " + userId);
         String userName = CmmUtil.nvl((String)session.getAttribute("userName"));
+        log.info("userName : " + userName);
 
         String appoCode = CmmUtil.nvl(request.getParameter("appoCode"));
 
@@ -180,5 +182,19 @@ public class AppointmentController {
         int res = appoService.voteAppo(pMap);
 
         return Integer.toString(res);
+    }
+
+    //카카오 초대 페이지
+    @GetMapping(value = "inviteByKakao")
+    public String inviteByKakao(HttpServletRequest request, ModelMap model) throws Exception {
+        log.info(this.getClass().getName() + "inviteByKakao Start!");
+
+        String roomcode = request.getParameter("roomcode");
+        String title = request.getParameter("title");
+
+        model.addAttribute("roomcode" , roomcode);
+        model.addAttribute("title" , title);
+
+        return "/mocal/KakaoInvite";
     }
 }

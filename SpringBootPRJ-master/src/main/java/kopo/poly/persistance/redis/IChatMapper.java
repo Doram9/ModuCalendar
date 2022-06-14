@@ -12,4 +12,6 @@ public interface IChatMapper {
 
     void saveMessageList(String prjCode) throws Exception;
 
+    List<ChatMessageDTO> getChatLog(String prjCode) throws Exception;
+
 }

@@ -78,6 +78,10 @@
     function doResetPw() {
         let pw1 = document.getElementById('inputPassword').value;
         let pw2 = document.getElementById('inputPasswordConfirm').value;
+        if(pw1.length < 9) {
+            event.preventDefault();
+            alert("비밀번호가 너무 짧습니다. 9글자 이상 작성해주세요.");
+        }
         if(pw1 != pw2) {
             alert("비밀번호와 비밀번호확인이 일치하지않습니다.");
             return 0;

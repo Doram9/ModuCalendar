@@ -346,7 +346,7 @@
                     <p name="userPw" class="form-control" id="userPw">**********</p>
                 </div>
                 <div class="mb-3 row justify-content-end">
-                    <button class="btn btn-sm btn-warning btn-outline-danger col-6" onclick="deleteUser()">회원탈퇴하기</button>
+                    <button class="btn btn-sm btn-warning btn-outline-danger col-6" data-bs-toggle="modal" data-bs-target="#deleteUser">회원탈퇴하기</button>
                 </div>
             </div>
         </div>
@@ -467,7 +467,34 @@
         </form>
     </div>
 </div>
+<!-- deleteUser Modal -->
+<div class="modal fade" id="deleteUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" onsubmit="deletePrj()">
+            <div class="modal-header">
+                <h5 class="modal-title" >회원 탈퇴하기</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
 
+            <div class="modal-body">
+                <div class="alert alert-danger" role="alert">
+                    <p>경고! 탈퇴하면 다시 돌이킬 수 없습니다.</p>
+                    <p>정말 탈퇴하시겠습니까?</p>
+                </div>
+                <label class="form-label">정말로 삭제하시려면 아래에 유저명을 입력해주세요.</label>
+                <div class="form-floating mb-3">
+                    <input type="text" name="code" class="form-control" autocomplete="off" placeholder="<%= pDTO.getUserName()%>" id="userNameForDelete" required>
+                    <label for="userNameForDelete"><%= pDTO.getUserName()%></label>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                <button type="button" class="btn btn-danger" onclick="deleteUser()" id="deleteUserBtn" disabled>삭제</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="js/scripts.js"></script>
@@ -488,7 +515,7 @@
 
 <script>
     Kakao.init('8fcf17bb04b908af3af02d2234b9f1dc');
-    let data = 'invite?roomcode=<%= code %>&title=<%= appoTitle %>';
+    let data = 'inviteByKakao?roomcode=<%= code %>&title=<%= appoTitle %>';
     function kakaoInvite() {
         Kakao.Link.sendCustom({
             templateId: 70212,
@@ -632,6 +659,7 @@
             var distDt = _vDate - now;
             if (distDt < 0) { //기한 종료되면
                 clearInterval(timer);
+                $("#load").hide();
                 voteBtn.textContent = "투표마감";
                 voteBtn.className = "btn btn-outline-secondary col-10";
                 voteBtn.disabled = true;
@@ -765,10 +793,16 @@
         location.href = "resetPw?code=<%=CmmUtil.nvl(pDTO.getUserId())%>";
     }
 
-    function deleteUser() {
-        if(confirm("정말로 회원을 탈퇴하시겠습니까? (주의! 되돌릴 수 없습니다.)")){
-            location.href = "deleteUser";
+    $("#userNameForDelete").on("propertychange change paste input", function() {
+        if(document.getElementById("userNameForDelete").value == "<%= pDTO.getUserName()%>") {
+            document.getElementById("deleteUserBtn").disabled = false;
+        } else {
+            document.getElementById("deleteUserBtn").disabled = true;
         }
+    });
+
+    function deleteUser() {
+        location.href = "deleteUser";
     }
 </script>
 

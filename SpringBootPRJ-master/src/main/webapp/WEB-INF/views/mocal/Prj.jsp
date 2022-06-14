@@ -42,6 +42,11 @@
 			userGrant = playerGrant;
 		}
 	}
+
+	List<ChatMessageDTO> chatList = (List<ChatMessageDTO>) request.getAttribute("chatList");
+	if(chatList == null) {
+		chatList = new ArrayList<>();
+	}
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -326,8 +331,29 @@
 								<button type="button" class="btn btn-primary" id="inChat" onclick="onOpen()">접속하기</button>
 								<button type="button" class="btn btn-secondary" id="outChat" onclick="onClose()">접속끊기</button>
 							</div>
-							<div class="card-body" style="overflow:scroll; height: 500px;">
+							<div class="card-body" id="chatDiv" style="overflow:scroll; height: 500px;">
 								<div id="msgArea">
+									<%
+										for(ChatMessageDTO cDTO : chatList) {
+											if(cDTO.getUserId().equals(pDTO.getUserId())) {
+									%>
+									<div><%=cDTO.getSendTime()%></div>
+									<div class="input-group mb-3">
+										<div type="text" class="form-control" aria-describedby="basic-addon3"><%=cDTO.getMessage()%></div>
+										<div class="input-group-text"><%=cDTO.getUserName()%></div>
+									</div>
+										<%
+											} else {
+										%>
+									<div><%=cDTO.getSendTime()%></div>
+									<div class="input-group mb-3">
+										<div class="input-group-text"><%=cDTO.getUserName()%></div>
+										<div type="text" class="form-control" aria-describedby="basic-addon3"><%=cDTO.getMessage()%></div>
+									</div>
+									<%
+											}
+										}
+									%>
 								</div>
 							</div>
 							<div class="card-footer">
@@ -368,7 +394,7 @@
 					<p name="userPw" class="form-control" id="userPw">**********</p>
 				</div>
 				<div class="mb-3 row justify-content-end">
-					<button class="btn btn-sm btn-warning btn-outline-danger col-6" onclick="deleteUser()">회원탈퇴하기</button>
+					<button class="btn btn-sm btn-warning btn-outline-danger col-6" data-bs-toggle="modal" data-bs-target="#deleteUser">회원탈퇴하기</button>
 				</div>
 			</div>
 		</div>
@@ -523,6 +549,35 @@
 	</div>
 </div>
 
+<!-- deleteUser Modal -->
+<div class="modal fade" id="deleteUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content" onsubmit="deletePrj(event)">
+			<div class="modal-header">
+				<h5 class="modal-title" >회원 탈퇴하기</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+
+			<div class="modal-body">
+				<div class="alert alert-danger" role="alert">
+					<p>경고! 탈퇴하면 다시 돌이킬 수 없습니다.</p>
+					<p>정말 탈퇴하시겠습니까?</p>
+				</div>
+				<label class="form-label">정말로 삭제하시려면 아래에 유저명을 입력해주세요.</label>
+				<div class="form-floating mb-3">
+					<input type="text" name="code" class="form-control" autocomplete="off" placeholder="<%= pDTO.getUserName()%>" id="userNameForDelete" required>
+					<label for="userNameForDelete"><%= pDTO.getUserName()%></label>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+				<button type="button" class="btn btn-danger" onclick="deleteUser()" id="deleteUserBtn" disabled>삭제</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="js/scripts.js"></script>
@@ -661,10 +716,15 @@
 		location.href = "resetPw?code=<%=CmmUtil.nvl(pDTO.getUserId())%>";
 	}
 
-	function deleteUser() {
-		if(confirm("정말로 회원을 탈퇴하시겠습니까? (주의! 되돌릴 수 없습니다.)")){
-			location.href = "deleteUser";
+	$("#userNameForDelete").on("propertychange change paste input", function() {
+		if(document.getElementById("userNameForDelete").value == "<%= pDTO.getUserName()%>") {
+			document.getElementById("deleteUserBtn").disabled = false;
+		} else {
+			document.getElementById("deleteUserBtn").disabled = true;
 		}
+	});
+	function deleteUser() {
+		location.href = "deleteUser";
 	}
 	function updateMile() {
 		if("<%= userGrant%>" == "junior") {
@@ -765,7 +825,7 @@
 
 	$("#prjTitleForDelete").on("propertychange change paste input", function() {
 		if(document.getElementById("prjTitleForDelete").value == "<%= rDTO.getPrjTitle()%>") {
-			document.getElementById("deletePrjButton").disabled = false;d
+			document.getElementById("deletePrjButton").disabled = false;
 		} else {
 			document.getElementById("deletePrjButton").disabled = true;
 		}
@@ -897,6 +957,8 @@
 	window.onload = function () {
 		document.getElementById("outChat").style.display = 'none';
 		document.getElementById("msg").disabled = 'true';
+		let chatDiv = document.getElementById("chatDiv");
+		chatDiv.scrollTop = chatDiv.scrollHeight;
 	}
 
 		const userId = "<%= pDTO.getUserId()%>";
@@ -926,6 +988,51 @@
 			$("#msg").attr("disabled", false);
 			$("#button-send").attr("disabled", false);
 
+			$.ajax({
+				url: "getChatLogInRedis",
+				type: 'get',
+				data: {
+					"prjCode": prjCode
+				},
+				contentType: "application/json; charset=utf-8",
+				dataType: "JSON",
+				success: function(data) {
+					for(let i = 0; i < data.length; i++) {
+						let chatOne = data[i];
+						let chatUserId = chatOne.userId;
+						let writer = chatOne.userName;
+						let message = chatOne.message;
+						let time = chatOne.sendTime;
+						if (chatUserId === userId) {
+							$("#msgArea").append($(
+									`
+						<div>\${time}</div>
+						<div class="input-group mb-3">
+							<div type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">\${message}</div>
+							<div class="input-group-text" id="basic-addon3">\${writer}</div>
+						</div>
+						`
+							));
+						} else {
+							$("#msgArea").append($(
+									`
+						<div>\${time}</div>
+						<div class="input-group mb-3">
+							<div class="input-group-text" id="basic-addon3">\${writer}</div>
+							<div type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">\${message}</div>
+						</div>
+						`
+							));
+						}
+					}
+					let chatDiv = document.getElementById("chatDiv");
+					chatDiv.scrollTop = chatDiv.scrollHeight;
+				},
+				error: function(error) {
+
+				}
+			});
+
 			sockJs = new SockJS("/stomp/chat");
 
 			//1. SockJS를 내부에 들고있는 stomp를 내어줌
@@ -938,10 +1045,11 @@
 				//4. subscribe(path, callback)으로 메세지를 받을 수 있음
 				stomp.subscribe("/sub/chat/room/" + prjCode, function (chat) {
 					let content = JSON.parse(chat.body);
+					let chatUserId = content.userId;
 					let writer = content.userName;
 					let message = content.message;
 					let time = content.sendTime;
-					if (writer === username) {
+					if (chatUserId === userId) {
 						$("#msgArea").append($(
 								`
 						<div>\${time}</div>

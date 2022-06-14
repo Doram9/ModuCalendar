@@ -52,7 +52,7 @@ public class ChatMapper extends AbstractMongoDBComon implements IChatMapper {
 
     @Override
     public void saveMessageList(String prjCode) throws Exception {
-        log.info("mapper.getMessageList start");
+        log.info("mapper.saveMessageList start");
         log.info("redisKey : " + prjCode);
         redisDB.setKeySerializer(new StringRedisSerializer());
         redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(ChatMessageDTO.class));
@@ -98,5 +98,22 @@ public class ChatMapper extends AbstractMongoDBComon implements IChatMapper {
         }
 
 
+    }
+
+    @Override
+    public List<ChatMessageDTO> getChatLog(String prjCode) throws Exception {
+        log.info("mapper.getChatLog start");
+        log.info("redisKey : " + prjCode);
+
+        redisDB.setKeySerializer(new StringRedisSerializer());
+        redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(ChatMessageDTO.class));
+
+        if(redisDB.hasKey(prjCode)) {
+            List<ChatMessageDTO> rList = (List) redisDB.opsForList().range(prjCode, 0, -1);
+
+            return rList;
+        } else {
+            return null;
+        }
     }
 }

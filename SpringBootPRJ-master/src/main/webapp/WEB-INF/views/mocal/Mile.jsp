@@ -6,6 +6,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="kopo.poly.dto.PrjInfoDTO" %>
 <%@ page import="kopo.poly.dto.MileDTO" %>
+<%@ page import="kopo.poly.util.EncryptUtil" %>
 <%
     UserInfoDTO pDTO = (UserInfoDTO) request.getAttribute("UserInfoDTO");
 
@@ -101,11 +102,9 @@
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#!">내정보</a></li>
-                <li>
-                    <hr class="dropdown-divider" />
-                </li>
-                <li><a class="dropdown-item" href="#!">로그인</a></li>
+                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#userInfo">내정보</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li><a class="dropdown-item" href="logout">로그아웃</a></li>
             </ul>
         </li>
     </ul>
@@ -293,7 +292,7 @@
                     <p name="userPw" class="form-control" id="userPw">**********</p>
                 </div>
                 <div class="mb-3 row justify-content-end">
-                    <button class="btn btn-sm btn-warning btn-outline-danger col-6" onclick="deleteUser()">회원탈퇴하기</button>
+                    <button class="btn btn-sm btn-warning btn-outline-danger col-6" data-bs-toggle="modal" data-bs-target="#deleteUser">회원탈퇴하기</button>
                 </div>
             </div>
         </div>
@@ -380,6 +379,35 @@
                 <button type="submit" class="btn btn-outline-dark btn-warning">참가</button>
             </div>
         </form>
+    </div>
+</div>
+
+<!-- deleteUser Modal -->
+<div class="modal fade" id="deleteUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" onsubmit="deletePrj(event)">
+            <div class="modal-header">
+                <h5 class="modal-title" >회원 탈퇴하기</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="alert alert-danger" role="alert">
+                    <p>경고! 탈퇴하면 다시 돌이킬 수 없습니다.</p>
+                    <p>정말 탈퇴하시겠습니까?</p>
+                </div>
+                <label class="form-label">정말로 삭제하시려면 아래에 유저명을 입력해주세요.</label>
+                <div class="form-floating mb-3">
+                    <input type="text" name="code" class="form-control" autocomplete="off" placeholder="<%= pDTO.getUserName()%>" id="userNameForDelete" required>
+                    <label for="userNameForDelete"><%= pDTO.getUserName()%></label>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                <button type="button" class="btn btn-danger" onclick="deleteUser()" id="deleteUserBtn" disabled>삭제</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -539,6 +567,54 @@
 
         });
     }
+</script>
+
+<script>
+    function deleteAppo(title, code) {
+
+        if(confirm("방을 나가시겠습니까?")){
+
+            $.ajax({
+                url: "delAppo",
+                type: 'get',
+                data: {
+                    "title": title,
+                    "code": code
+                },
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                success: function(data) {
+                    if(data != 1) {
+                        alert("해당하는 방이 존재하지않습니다.");
+                    }
+                    location.href = '/';
+                },
+                error: function(error) {
+                    location.href = '/';
+                }
+
+            });
+        }
+    }
+
+</script>
+
+<script>
+    function chgPw() {
+        location.href = "resetPw?resetCode=<%=EncryptUtil.encAES128CBC(pDTO.getUserEmail())%>";
+    }
+
+    function deleteUser() {
+        location.href = "deleteUser";
+    }
+
+    $("#userNameForDelete").on("propertychange change paste input", function() {
+        if(document.getElementById("userNameForDelete").value == "<%= pDTO.getUserName()%>") {
+            document.getElementById("deleteUserBtn").disabled = false;
+        } else {
+            document.getElementById("deleteUserBtn").disabled = true;
+        }
+    });
 </script>
 
 <script>

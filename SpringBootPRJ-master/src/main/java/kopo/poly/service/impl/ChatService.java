@@ -36,4 +36,11 @@ public class ChatService implements IChatService {
         chatMapper.saveMessageList(prjCode);
 
     }
+
+    @Override
+    public List<ChatMessageDTO> getChatLog(String prjCode) throws Exception {
+
+        return chatMapper.getChatLog(prjCode);
+    }
+
 }
