@@ -23,6 +23,8 @@
 http://3.37.211.223:11000
 
 ## 설명  
+![image](https://user-images.githubusercontent.com/76899162/177331729-c4b48e8d-680f-47a6-abbb-116f9211fbc3.png)
+![image](https://user-images.githubusercontent.com/76899162/177332249-f489c487-b7db-44cb-a2f1-7f787cc11b4b.png)
 
 - FullCalendar 를 활용한 사용자 개인 캘린더 구현
 - 미세먼지 공공데이터를 활용한 날짜, 지역별 미세먼지 정보 제공
