@@ -16,7 +16,12 @@
 - AWS EC2 - 서버 인프라
 
 ## 프로그램 구조도
-  
+
+![image](https://user-images.githubusercontent.com/76899162/177330143-13be7c27-0e3c-4480-a94d-110c4f40e1bb.png)
+
+## URL
+https://3.37.211.223:11000
+
 ## 설명  
 
 - FullCalendar 를 활용한 사용자 개인 캘린더 구현
