@@ -20,7 +20,7 @@
 ![image](https://user-images.githubusercontent.com/76899162/177330143-13be7c27-0e3c-4480-a94d-110c4f40e1bb.png)
 
 ## URL
-https://3.37.211.223:11000
+http://3.37.211.223:11000
 
 ## 설명  
 
