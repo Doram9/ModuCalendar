@@ -69,7 +69,9 @@ public class PrjMapper extends AbstractMongoDBComon implements IPrjMapper {
 
         DeleteResult rs = col.deleteOne(query);
 
-
+        String colName = "Chat";
+        MongoCollection<Document> cal = mongodb.getCollection(colName);
+        DeleteResult rss = cal.deleteOne(query);
 
         String UcolNm = "User";
 
@@ -104,16 +106,12 @@ public class PrjMapper extends AbstractMongoDBComon implements IPrjMapper {
         Document projection = new Document();
         projection.append("_id", 0);
 
-        FindIterable<Document> rs = col.find(query).projection(projection);
+        Document doc = col.find(query).projection(projection).first();
 
-        if(rs != null) {
+        if(doc != null) {
             log.info("프로젝트 데이터 존재");
             PrjInfoDTO rDTO = new PrjInfoDTO();
 
-            for(Document doc : rs) {
-                if(doc == null) {
-                    doc = new Document();
-                }
                 rDTO.setPrjCode(CmmUtil.nvl(doc.getString("prjCode")));
                 rDTO.setPrjStartDate(CmmUtil.nvl(doc.getString("prjStartDate")));
                 rDTO.setPrjEndDate(CmmUtil.nvl(doc.getString("prjEndDate")));
@@ -151,7 +149,6 @@ public class PrjMapper extends AbstractMongoDBComon implements IPrjMapper {
                 rDTO.setPrjMileInfo(tList);
                 pList = null;
                 tList = null;
-            }
             log.info("mapper.getPrjInfo end");
             return rDTO;
         } else {
@@ -368,6 +365,48 @@ public class PrjMapper extends AbstractMongoDBComon implements IPrjMapper {
         int res = (int) rs.getMatchedCount();
 
         return res;
+    }
+
+    @Override
+    public List<ChatMessageDTO> getMessageList(String prjCode) throws Exception {
+        log.info("mapper.getMessageList start");
+
+        String colNm = "Chat";
+
+        MongoCollection<Document> col = mongodb.getCollection(colNm);
+
+        Document query = new Document();
+        query.append("prjCode", prjCode);
+
+        Document projection = new Document();
+        projection.append("_id", 0);
+        FindIterable<Document> rs = col.find(query).projection(projection);
+
+        if(rs != null) {
+            log.info("채팅 로그 존재");
+            PrjInfoDTO rDTO = new PrjInfoDTO();
+            List<ChatMessageDTO> rChatList = new ArrayList<>();
+            for(Document doc : rs) {
+                if(doc == null) {
+                    doc = new Document();
+                }
+                List<Document> cList = doc.getList("chatLog", Document.class);
+                for(Document ddc : cList) {
+                    ChatMessageDTO cDTO = new ChatMessageDTO();
+                    cDTO.setUserId(ddc.getString("userId"));
+                    cDTO.setUserName(ddc.getString("userName"));
+                    cDTO.setMessage(ddc.getString("message"));
+                    cDTO.setSendTime(ddc.getString("sendTime"));
+                    rChatList.add(cDTO);
+                    cDTO = null;
+                }
+            }
+            log.info("mapper.getMessageList end");
+            return rChatList;
+        } else {
+            log.info("채팅 로그 없음");
+            return null;
+        }
     }
 
 }

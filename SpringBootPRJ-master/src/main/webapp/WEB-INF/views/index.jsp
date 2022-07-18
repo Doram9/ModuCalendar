@@ -188,7 +188,7 @@
 										String code = parse[1];
 
 								%>
-									<button class="card-body btn btn-primary" draggable="true" ondragstart="event.dataTransfer.setData('data', this.id)" onclick="intoPrj('<%=code%>')" id="<%=code%>">
+									<button class="card-body btn btn-primary" draggable="true" ondragstart="event.dataTransfer.setData('data', this.id)" onclick="intoPrj('<%=code%>', '<%=title%>')" id="<%=code%>">
 											<%= title%>
 									</button>
 								<%
@@ -425,7 +425,7 @@
 
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-				<button type="button" class="btn btn-danger" onclick="deleteUser()" id="deletePrjButton" disabled>삭제</button>
+				<button type="button" class="btn btn-danger" onclick="deleteUser()" id="deleteUserBtn" disabled>삭제</button>
 			</div>
 		</div>
 	</div>
@@ -628,8 +628,8 @@
 </script>
 
 <script>
-	function intoPrj(code) {
-		location.href = "prj?code=" + code;
+	function intoPrj(code, title) {
+		location.href = "prj?code=" + code + "&title=" + title;
 	}
 
 	function inputPrjCode(event) {
@@ -742,9 +742,9 @@
 
 	$("#userNameForDelete").on("propertychange change paste input", function() {
 		if(document.getElementById("userNameForDelete").value == "<%= pDTO.getUserName()%>") {
-			document.getElementById("deletePrjButton").disabled = false;
+			document.getElementById("deleteUserBtn").disabled = false;
 		} else {
-			document.getElementById("deletePrjButton").disabled = true;
+			document.getElementById("deleteUserBtn").disabled = true;
 		}
 	});
 </script>

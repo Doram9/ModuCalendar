@@ -263,6 +263,7 @@ public class AppoMapper extends AbstractMongoDBComon implements IAppoMapper {
         String userId = (String) pMap.get("userId");
         String appoCode = (String) pMap.get("appoCode");
         String userName = (String) pMap.get("userName");
+        log.info("userName : " + userName);
 
         int res = 0;
 

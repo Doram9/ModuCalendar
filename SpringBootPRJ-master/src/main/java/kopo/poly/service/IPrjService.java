@@ -1,8 +1,11 @@
 package kopo.poly.service;
 
+import kopo.poly.dto.ChatMessageDTO;
 import kopo.poly.dto.PlayerInfoDTO;
 import kopo.poly.dto.PrjInfoDTO;
 import kopo.poly.dto.UserInfoDTO;
+
+import java.util.List;
 
 public interface IPrjService {
 
@@ -23,4 +26,6 @@ public interface IPrjService {
     int invitePlayer(PrjInfoDTO pDTO, PlayerInfoDTO iDTO) throws Exception;
 
     int getoutPlayer(PrjInfoDTO pDTO, UserInfoDTO uDTO) throws Exception;
+
+    List<ChatMessageDTO> getMessageList(String prjCode) throws Exception;
 }

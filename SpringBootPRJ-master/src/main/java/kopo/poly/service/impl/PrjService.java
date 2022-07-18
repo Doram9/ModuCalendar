@@ -1,5 +1,6 @@
 package kopo.poly.service.impl;
 
+import kopo.poly.dto.ChatMessageDTO;
 import kopo.poly.dto.PlayerInfoDTO;
 import kopo.poly.dto.PrjInfoDTO;
 import kopo.poly.dto.UserInfoDTO;
@@ -9,6 +10,7 @@ import kopo.poly.service.IPrjService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service("PrjService")
 public class PrjService implements IPrjService {
@@ -66,5 +68,10 @@ public class PrjService implements IPrjService {
     @Override
     public int getoutPlayer(PrjInfoDTO pDTO, UserInfoDTO uDTO) throws Exception {
         return prjMapper.getoutPlayer(pDTO, uDTO);
+    }
+
+    @Override
+    public List<ChatMessageDTO> getMessageList(String prjCode) throws Exception {
+        return prjMapper.getMessageList(prjCode);
     }
 }

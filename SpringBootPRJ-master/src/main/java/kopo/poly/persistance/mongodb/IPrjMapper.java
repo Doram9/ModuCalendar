@@ -1,8 +1,11 @@
 package kopo.poly.persistance.mongodb;
 
+import kopo.poly.dto.ChatMessageDTO;
 import kopo.poly.dto.PlayerInfoDTO;
 import kopo.poly.dto.PrjInfoDTO;
 import kopo.poly.dto.UserInfoDTO;
+
+import java.util.List;
 
 public interface IPrjMapper {
 
@@ -32,6 +35,8 @@ public interface IPrjMapper {
     int updatePlayerInfo(PrjInfoDTO jDTO, PlayerInfoDTO pDTO) throws Exception;
 
     //프로젝트 채팅로그
+    List<ChatMessageDTO> getMessageList(String prjCode) throws Exception;
+
 
     //프로젝트 나가기
     int getoutPlayer(PrjInfoDTO pDTO, UserInfoDTO uDTO) throws Exception;
