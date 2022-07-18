@@ -105,7 +105,7 @@ public class UserService implements IUserService {
     @Async
     public void sendMail(String userEmail) throws Exception {
         String subTitle = "모두캘린더 비밀번호 변경";
-        String body = "http://localhost:11000/resetPw?resetCode=" + EncryptUtil.encAES128CBC(userEmail);
+        String body = "http://3.37.211.223:11000/resetPw?resetCode=" + EncryptUtil.encAES128CBC(userEmail);
         log.info("send mail body : " + body);
         int res = MailUtil.sendAuthEmail(userEmail, subTitle, body);
         log.info("res : " + res);

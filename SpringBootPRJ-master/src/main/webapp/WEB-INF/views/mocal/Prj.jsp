@@ -504,8 +504,19 @@
 				<div class="mb-3" id="setGrant">
 					<label for="pGrant" class="form-label">직책</label>
 					<select name="userGrant" class="form-select" aria-label="Default select example" id="pGrant">
+						<%
+							if(userGrant.equals("master")) {
+
+						%>
+						<option value="master">Master</option>
+						<%
+							} else {
+						%>
 						<option value="senior">Senior(마일스톤 수정가능)</option>
 						<option value="junior">Junior(마일스톤 수정불가능)</option>
+						<%
+							}
+						%>
 					</select>
 				</div>
 				<div class="mb-3">
