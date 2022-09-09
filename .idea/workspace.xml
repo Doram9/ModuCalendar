@@ -61,6 +61,15 @@
     "spring.configuration.checksum": "734c2fbd0b4ee6ee97f6f9b97dbad0e9"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="MoiraApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="moira" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.moira.MoiraApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
