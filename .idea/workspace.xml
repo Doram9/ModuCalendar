@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5516b63c-5307-4618-9186-894a5cde9a21" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/moira/src/main/java/com/example/moira/conf/SpringSecurityConfig.java" afterDir="false" />
+    <list default="true" id="5516b63c-5307-4618-9186-894a5cde9a21" name="Changes" comment="Security config 설정">
+      <change afterPath="$PROJECT_DIR$/moira/src/main/java/com/example/moira/controller/TestController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -54,6 +54,10 @@
     "Repository.Attach.Annotations": "false",
     "Repository.Attach.JavaDocs": "false",
     "Repository.Attach.Sources": "false",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
@@ -89,7 +93,7 @@
       <workItem from="1662709552083" duration="2842000" />
       <workItem from="1662712425469" duration="1368000" />
       <workItem from="1662714526606" duration="486000" />
-      <workItem from="1662715043469" duration="2148000" />
+      <workItem from="1662715043469" duration="2719000" />
     </task>
     <task id="LOCAL-00001" summary="[#1] feature - create new Springboot module">
       <created>1662711096230</created>
@@ -126,7 +130,14 @@
       <option name="project" value="LOCAL" />
       <updated>1662715868458</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Security config 설정">
+      <created>1662717323951</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1662717323951</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -160,6 +171,7 @@
     <MESSAGE value="[#1] feature - Setting maven &amp; Remark pom.xml" />
     <MESSAGE value="maven setting" />
     <MESSAGE value="etc files commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="etc files commit" />
+    <MESSAGE value="Security config 설정" />
+    <option name="LAST_COMMIT_MESSAGE" value="Security config 설정" />
   </component>
 </project>
