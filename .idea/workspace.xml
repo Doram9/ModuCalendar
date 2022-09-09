@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5516b63c-5307-4618-9186-894a5cde9a21" name="Changes" comment="[#1] feature - Setting maven &amp; Remark pom.xml" />
+    <list default="true" id="5516b63c-5307-4618-9186-894a5cde9a21" name="Changes" comment="[#1] feature - Setting maven &amp; Remark pom.xml">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/moira/moira.iml" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -52,18 +57,10 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2"
+    "project.structure.side.proportion": "0.2",
+    "spring.configuration.checksum": "734c2fbd0b4ee6ee97f6f9b97dbad0e9"
   }
 }]]></component>
-  <component name="RunManager">
-    <configuration name="MoiraApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="moira" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.moira.MoiraApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -74,6 +71,8 @@
       <updated>1662709549558</updated>
       <workItem from="1662709552083" duration="2842000" />
       <workItem from="1662712425469" duration="1368000" />
+      <workItem from="1662714526606" duration="486000" />
+      <workItem from="1662715043469" duration="736000" />
     </task>
     <task id="LOCAL-00001" summary="[#1] feature - create new Springboot module">
       <created>1662711096230</created>
