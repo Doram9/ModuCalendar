@@ -17,11 +17,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-        String password = passwordEncoder().encode("1111");
-
-        auth.inMemoryAuthentication().withUser("user") .password("password").roles("USER");
-        auth.inMemoryAuthentication().withUser("user") .password("password").roles("MANAGER");
-        auth.inMemoryAuthentication().withUser("user") .password("password").roles("ADMIN");
+//        String password = passwordEncoder().encode("1111");
+//
+//        auth.inMemoryAuthentication().withUser("user") .password("password").roles("USER");
+//        auth.inMemoryAuthentication().withUser("user") .password("password").roles("MANAGER");
+//        auth.inMemoryAuthentication().withUser("user") .password("password").roles("ADMIN");
     }
 
     @Bean
@@ -38,12 +38,17 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
          */
         http
             .authorizeRequests()
-                .antMatchers("/").permitAll()
+                .antMatchers("/h2-console/*").permitAll()
                 .antMatchers("/user").hasRole("USER")
                 .antMatchers("admin").hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()
         .and()
             .formLogin();
+
+        //H2-console 진입을 위해 csrf 비활성화
+        http.csrf().disable();
+        //H2-console 진입을 위해 frameOptions 비활성화
+        http.headers().frameOptions().disable();
     }
 }

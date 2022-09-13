@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5516b63c-5307-4618-9186-894a5cde9a21" name="Changes" comment="xml files commit">
+    <list default="true" id="5516b63c-5307-4618-9186-894a5cde9a21" name="Changes" comment="[#5] refactor : update git ignore">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/moira/src/main/java/com/example/moira/entity/TestUser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/moira/src/main/java/com/example/moira/conf/SpringSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/moira/src/main/java/com/example/moira/conf/SpringSecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/moira/src/main/java/com/example/moira/controller/TestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/moira/src/main/java/com/example/moira/controller/TestController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,7 +96,7 @@
       <workItem from="1662712425469" duration="1368000" />
       <workItem from="1662714526606" duration="486000" />
       <workItem from="1662715043469" duration="2719000" />
-      <workItem from="1662797696077" duration="1761000" />
+      <workItem from="1662797696077" duration="4679000" />
     </task>
     <task id="LOCAL-00001" summary="[#1] feature - create new Springboot module">
       <created>1662711096230</created>
@@ -139,7 +140,21 @@
       <option name="project" value="LOCAL" />
       <updated>1662717323951</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="[#5] feature : inMemory User 생성 및 권한 부여">
+      <created>1663077269221</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1663077269221</updated>
+    </task>
+    <task id="LOCAL-00008" summary="[#5] refactor : update git ignore">
+      <created>1663078697953</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1663078697954</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -156,7 +171,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="#3_feature" />
+                        <option value="feature/#5" />
                       </list>
                     </value>
                   </entry>
@@ -174,6 +189,8 @@
     <MESSAGE value="maven setting" />
     <MESSAGE value="etc files commit" />
     <MESSAGE value="Security config 설정" />
-    <option name="LAST_COMMIT_MESSAGE" value="Security config 설정" />
+    <MESSAGE value="[#5] feature : inMemory User 생성 및 권한 부여" />
+    <MESSAGE value="[#5] refactor : update git ignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="[#5] refactor : update git ignore" />
   </component>
 </project>
