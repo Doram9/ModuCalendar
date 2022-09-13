@@ -26,5 +26,6 @@ hs_err_pid*
 
 
 *.properties
+*.yml
 
 /src/main/java/kopo/poly/util/MailUtil.java
