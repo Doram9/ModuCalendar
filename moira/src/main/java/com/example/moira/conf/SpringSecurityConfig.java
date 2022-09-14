@@ -12,43 +12,48 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration //Classfile을 설정파일로 사용하게 해주는 어노테이션
 @EnableWebSecurity //스프링시큐리티 활성화
-public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
+public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//
 //        String password = passwordEncoder().encode("1111");
 //
 //        auth.inMemoryAuthentication().withUser("user") .password("password").roles("USER");
 //        auth.inMemoryAuthentication().withUser("user") .password("password").roles("MANAGER");
 //        auth.inMemoryAuthentication().withUser("user") .password("password").roles("ADMIN");
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
-
+//    }
+//
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+//    }
+//
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
+        http
+            .authorizeRequests()
+            .anyRequest()
+            .permitAll()
+            ;
 
         /**
          * 어느 요청이건 인증로직 처리
          */
-        http
-            .authorizeRequests()
-                .antMatchers("/h2-console/*").permitAll()
-                .antMatchers("/user").hasRole("USER")
-                .antMatchers("admin").hasRole("ADMIN")
-                .anyRequest()
-                .authenticated()
-        .and()
-            .formLogin();
-
-        //H2-console 진입을 위해 csrf 비활성화
-        http.csrf().disable();
-        //H2-console 진입을 위해 frameOptions 비활성화
-        http.headers().frameOptions().disable();
+//        http
+//            .authorizeRequests()
+//                .antMatchers("/h2-console/*").permitAll()
+//                .antMatchers("/user").hasRole("USER")
+//                .antMatchers("admin").hasRole("ADMIN")
+//                .anyRequest()
+//                .authenticated()
+//        .and()
+//            .formLogin();
+//
+//        //H2-console 진입을 위해 csrf 비활성화
+//        http.csrf().disable();
+//        //H2-console 진입을 위해 frameOptions 비활성화
+//        http.headers().frameOptions().disable();
     }
 }
