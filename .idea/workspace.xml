@@ -4,10 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5516b63c-5307-4618-9186-894a5cde9a21" name="Changes" comment="[#5] feature : H2DB test Complete">
+    <list default="true" id="5516b63c-5307-4618-9186-894a5cde9a21" name="Changes" comment="[#7] dev때는 SpringSecurity 모든 요청 허용.">
+      <change afterPath="$PROJECT_DIR$/moira/src/main/java/com/example/moira/entity/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/moira/src/main/java/com/example/moira/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/moira/src/main/java/com/example/moira/MoiraApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/moira/src/main/java/com/example/moira/MoiraApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/moira/src/main/java/com/example/moira/conf/SpringSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/moira/src/main/java/com/example/moira/conf/SpringSecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/moira/src/main/java/com/example/moira/controller/TestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/moira/src/main/java/com/example/moira/controller/TestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/moira/src/main/java/com/example/moira/entity/TestUser.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,13 +23,14 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="feature/#5" />
+        <entry key="$PROJECT_DIR$" value="develop" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -95,7 +101,8 @@
       <workItem from="1662712425469" duration="1368000" />
       <workItem from="1662714526606" duration="486000" />
       <workItem from="1662715043469" duration="2719000" />
-      <workItem from="1662797696077" duration="7027000" />
+      <workItem from="1662797696077" duration="11549000" />
+      <workItem from="1663852693677" duration="4742000" />
     </task>
     <task id="LOCAL-00001" summary="[#1] feature - create new Springboot module">
       <created>1662711096230</created>
@@ -160,7 +167,14 @@
       <option name="project" value="LOCAL" />
       <updated>1663079701209</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="[#7] dev때는 SpringSecurity 모든 요청 허용.">
+      <created>1663159104662</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1663159104662</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -177,7 +191,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/develop" />
+                        <option value="feature/#7" />
                       </list>
                     </value>
                   </entry>
@@ -213,6 +227,7 @@
     <MESSAGE value="[#5] feature : inMemory User 생성 및 권한 부여" />
     <MESSAGE value="[#5] refactor : update git ignore" />
     <MESSAGE value="[#5] feature : H2DB test Complete" />
-    <option name="LAST_COMMIT_MESSAGE" value="[#5] feature : H2DB test Complete" />
+    <MESSAGE value="[#7] dev때는 SpringSecurity 모든 요청 허용." />
+    <option name="LAST_COMMIT_MESSAGE" value="[#7] dev때는 SpringSecurity 모든 요청 허용." />
   </component>
 </project>

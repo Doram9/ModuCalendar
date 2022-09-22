@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -36,7 +37,11 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .anyRequest()
             .permitAll()
-            ;
+                .and()
+                .csrf() // 추가
+                .ignoringAntMatchers("/h2-console/**").disable() // 추가
+                .httpBasic();
+
 
         /**
          * 어느 요청이건 인증로직 처리
@@ -55,5 +60,10 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
 //        http.csrf().disable();
 //        //H2-console 진입을 위해 frameOptions 비활성화
 //        http.headers().frameOptions().disable();
+    }
+
+    // Security 무시하기
+    public void configure(WebSecurity web)throws Exception{
+        web.ignoring().antMatchers("/h2-console/**");
     }
 }
