@@ -34,6 +34,29 @@ public class TestController {
                 .id(user.getId())
                 .pw(user.getPw())
                 .name(user.getName())
+                .age(user.getAge()).build();
+
+        userRepository.save(newUser);
+
+        return true;
+    }
+
+
+
+    @GetMapping(value = "/user")
+    public ResponseEntity<User> getAllUser() {
+
+        ResponseEntity<User> user = null;
+        return user;
+    }
+
+    @PostMapping(value = "/user")
+    public boolean insertUser(@RequestBody User user) {
+
+        User newUser = User.builder()
+                .id(user.getId())
+                .pw(user.getPw())
+                .name(user.getName())
                 .role(0).build();
 
         userRepository.save(newUser);
@@ -69,5 +92,5 @@ public class TestController {
         return true;
     }
 
-    
+
 }
