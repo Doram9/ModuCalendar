@@ -1,0 +1,267 @@
+Index: moira/src/main/java/com/example/moira/entity/MileInfo.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/moira/src/main/java/com/example/moira/entity/MileInfo.java b/moira/src/main/java/com/example/moira/entity/MileInfo.java
+new file mode 100644
+--- /dev/null	
++++ b/moira/src/main/java/com/example/moira/entity/MileInfo.java	
+@@ -0,0 +1,33 @@
++package com.example.moira.entity;
++
++import lombok.Getter;
++import lombok.NoArgsConstructor;
++
++import javax.persistence.*;
++
++@Entity
++@Getter
++@NoArgsConstructor
++@Table(name = "mileinfo")
++public class MileInfo {
++
++    @Id
++    @GeneratedValue(strategy = GenerationType.AUTO)
++    private Integer seq;
++
++    @Column(nullable = false)
++    private String startDate;
++
++    @Column(nullable = false)
++    private String endDate;
++
++    @Column(nullable = false)
++    private String title;
++
++    @Column(nullable = true)
++    private String progress;
++
++    @ManyToOne
++    @JoinColumn(name = "code")
++    private TeamPrj prj;
++}
+Index: moira/src/main/java/com/example/moira/entity/UserAppoEntity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/moira/src/main/java/com/example/moira/entity/UserAppoEntity.java b/moira/src/main/java/com/example/moira/entity/UserAppoEntity.java
+new file mode 100644
+--- /dev/null	
++++ b/moira/src/main/java/com/example/moira/entity/UserAppoEntity.java	
+@@ -0,0 +1,23 @@
++package com.example.moira.entity;
++
++import lombok.Getter;
++import lombok.NoArgsConstructor;
++
++import javax.persistence.*;
++
++@Entity
++@Getter
++@NoArgsConstructor
++@Table(name = "userAppo")
++public class UserAppoEntity {
++
++    @Id
++    @GeneratedValue(strategy = GenerationType.AUTO)
++    private Integer seq;
++
++    @ManyToOne
++    private User user;
++
++    @ManyToOne
++    private Appointment appo;
++}
+Index: moira/src/main/java/com/example/moira/entity/VoteInfo.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/moira/src/main/java/com/example/moira/entity/VoteInfo.java b/moira/src/main/java/com/example/moira/entity/VoteInfo.java
+new file mode 100644
+--- /dev/null	
++++ b/moira/src/main/java/com/example/moira/entity/VoteInfo.java	
+@@ -0,0 +1,31 @@
++package com.example.moira.entity;
++
++
++import lombok.Getter;
++import lombok.NoArgsConstructor;
++
++import javax.persistence.*;
++
++@Entity
++@Getter
++@NoArgsConstructor
++@Table(name = "voteinfo")
++public class VoteInfo extends TimeEntity{
++
++    @Id
++    @GeneratedValue(strategy = GenerationType.AUTO)
++    private int seq;
++
++    @Column(nullable = true)
++    private String posDate;
++
++    @Column(nullable = true)
++    private String negDate;
++
++    @Column(nullable = false)
++    private String userId;
++
++    @ManyToOne
++    @JoinColumn(name = "code")
++    private Appointment appo;
++}
+Index: moira/src/main/java/com/example/moira/entity/TeamPrj.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/moira/src/main/java/com/example/moira/entity/TeamPrj.java b/moira/src/main/java/com/example/moira/entity/TeamPrj.java
+new file mode 100644
+--- /dev/null	
++++ b/moira/src/main/java/com/example/moira/entity/TeamPrj.java	
+@@ -0,0 +1,34 @@
++package com.example.moira.entity;
++
++
++import lombok.Getter;
++import lombok.NoArgsConstructor;
++
++import javax.persistence.*;
++import java.util.Date;
++
++@Entity
++@Getter
++@NoArgsConstructor
++@Table(name = "prjinfo")
++public class TeamPrj extends TimeEntity{
++
++    @Id
++    @GeneratedValue(strategy = GenerationType.AUTO)
++    private int seq;
++
++    @Column(unique = true)
++    private String code;
++
++    @Column(nullable = false)
++    private String managerId;
++
++    @Column(length = 20)
++    private String startDate;
++
++    @Column(length = 20)
++    private String endDate;
++
++
++
++}
+Index: moira/src/main/java/com/example/moira/entity/TimeEntity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/moira/src/main/java/com/example/moira/entity/TimeEntity.java b/moira/src/main/java/com/example/moira/entity/TimeEntity.java
+new file mode 100644
+--- /dev/null	
++++ b/moira/src/main/java/com/example/moira/entity/TimeEntity.java	
+@@ -0,0 +1,21 @@
++package com.example.moira.entity;
++
++import lombok.Getter;
++import org.springframework.data.annotation.CreatedDate;
++import org.springframework.data.jpa.domain.support.AuditingEntityListener;
++
++import javax.persistence.Column;
++import javax.persistence.EntityListeners;
++import javax.persistence.MappedSuperclass;
++import java.time.LocalDateTime;
++
++@Getter
++@MappedSuperclass
++@EntityListeners(AuditingEntityListener.class)
++public abstract class TimeEntity {
++
++    @Column(name = "reg_date", nullable = false, updatable = false)
++    @CreatedDate
++    private LocalDateTime regDate;
++
++}
+Index: moira/src/main/java/com/example/moira/entity/Appointment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/moira/src/main/java/com/example/moira/entity/Appointment.java b/moira/src/main/java/com/example/moira/entity/Appointment.java
+new file mode 100644
+--- /dev/null	
++++ b/moira/src/main/java/com/example/moira/entity/Appointment.java	
+@@ -0,0 +1,41 @@
++package com.example.moira.entity;
++
++
++import lombok.Getter;
++import lombok.NoArgsConstructor;
++
++import javax.persistence.*;
++import java.util.ArrayList;
++import java.util.Date;
++import java.util.List;
++
++@Entity
++@Getter
++@NoArgsConstructor
++@Table(name = "appoinfo")
++public class Appointment extends TimeEntity{
++
++    @Id
++    @GeneratedValue(strategy = GenerationType.AUTO)
++    private int seq;
++
++    @Column(unique = true)
++    private String code;
++
++    @Column(nullable = false)
++    private String managerId;
++
++    @Column(nullable = false)
++    private String meetMonth;
++
++    @Column(nullable = false)
++    private int voteLimit;
++
++    @Column(nullable = true)
++    private String bestDate;
++
++    @OneToMany
++    @JoinColumn(name = "appoinfo_code")
++    private List<UserAppoEntity> userAppoEntities = new ArrayList<>();
++
++}
+Index: .idea/libraries/Maven__org_mariadb_jdbc_mariadb_java_client_3_0_7.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__org_mariadb_jdbc_mariadb_java_client_3_0_7.xml b/.idea/libraries/Maven__org_mariadb_jdbc_mariadb_java_client_3_0_7.xml
+new file mode 100644
+--- /dev/null	
++++ b/.idea/libraries/Maven__org_mariadb_jdbc_mariadb_java_client_3_0_7.xml	
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: org.mariadb.jdbc:mariadb-java-client:3.0.7">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/mariadb/jdbc/mariadb-java-client/3.0.7/mariadb-java-client-3.0.7.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/org/mariadb/jdbc/mariadb-java-client/3.0.7/mariadb-java-client-3.0.7-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/mariadb/jdbc/mariadb-java-client/3.0.7/mariadb-java-client-3.0.7-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
