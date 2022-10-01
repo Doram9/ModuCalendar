@@ -34,9 +34,37 @@ public class TestController {
                 .id(user.getId())
                 .pw(user.getPw())
                 .name(user.getName())
-                .age(user.getAge()).build();
+                .role(0).build();
 
         userRepository.save(newUser);
+
+        return true;
+    }
+
+    @PostMapping(value = "/test")
+    public boolean insertTest() {
+        User newUser = User.builder()
+                .id("test")
+                .pw("1111")
+                .name("foobar")
+                .role(0).build();
+
+        userRepository.save(newUser);
+
+        return true;
+    }
+
+    @PatchMapping(value = "/test")
+    public ResponseEntity<User> updateTest() {
+        User newUser = userRepository.findById("test").get();
+
+        return ResponseEntity.ok().body(newUser);
+    }
+
+    @DeleteMapping(value = "/test")
+    public boolean deleteTest() {
+        User newUser = userRepository.findById("test").get();
+        userRepository.delete(newUser);
 
         return true;
     }
