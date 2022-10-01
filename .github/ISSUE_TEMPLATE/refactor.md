@@ -2,9 +2,9 @@
 name: Refactor
 about: 리팩토링 issue
 title: ''
-labels: ''
-assignees: ''
+labels: refactor
+assignees: Doram9
 
 ---
 
-
+- [ ] refactor
