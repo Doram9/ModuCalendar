@@ -14,8 +14,7 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class TimeEntity {
 
-    @Column(name = "reg_date", nullable = false, updatable = false)
-    @CreatedDate
+    @Column(name = "reg_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime regDate;
 
 }

@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class VoteInfo extends TimeEntity{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int seq;
 
     @Column(nullable = true)
@@ -23,9 +23,9 @@ public class VoteInfo extends TimeEntity{
     private String negDate;
 
     @Column(nullable = false)
-    private String userId;
+    private String id;
 
     @ManyToOne
-    @JoinColumn(name = "code")
+    @JoinColumn(name = "appo_code")
     private Appointment appo;
 }

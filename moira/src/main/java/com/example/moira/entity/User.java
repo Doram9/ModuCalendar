@@ -7,42 +7,41 @@ import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
 @Getter
 @NoArgsConstructor
-public class User {
+@Table(name = "user")
+public class User extends TimeEntity{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer seq;
-
-    @Column
     private String id;
 
-    @Column
+    @Column(nullable = false)
     private String pw;
 
-    @Column
+    @Column(nullable = false)
     private String name;
 
-    @Column
-    private int age;
-
-    @CreatedDate
-    private LocalDateTime regDt;
-
-    @Column(columnDefinition = "int(10) default '0'")
+    @Column(nullable = false)
     private int role;
 
     @Builder
-    public User(String id, String pw, String name, int age) {
+    public User(String id, String pw, String name, int role) {
         this.id = id;
         this.pw = pw;
         this.name = name;
-        this.age = age;
+        this.role = role;
     }
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<UserAppoEntity> userappo = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<UserPrjEntity> userprj = new ArrayList<>();
 
 }
