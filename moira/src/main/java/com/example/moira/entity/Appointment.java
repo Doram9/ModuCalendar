@@ -22,6 +22,9 @@ public class Appointment extends TimeEntity{
     private UUID code;
 
     @Column(nullable = false)
+    private String title;
+
+    @Column(nullable = false)
     private String managerId;
 
     @Column(nullable = false)
@@ -37,7 +40,8 @@ public class Appointment extends TimeEntity{
     private String bestDate;
 
     @Builder
-    private Appointment(String managerId, String meetMonth, int voteLimit, String location, String bestDate) {
+    private Appointment(String title, String managerId, String meetMonth, int voteLimit, String location, String bestDate) {
+        this.title = title;
         this.managerId = managerId;
         this.meetMonth = meetMonth;
         this.voteLimit = voteLimit;

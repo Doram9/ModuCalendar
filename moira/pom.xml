@@ -40,6 +40,11 @@
 			<artifactId>mariadb-java-client</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+
 
 		<!-- Springboot 프로젝트 개발 편의를 위한 dependency, 다음과 같은 기능을 제공한다.
 			Property Defaults
@@ -62,6 +67,19 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<!-- json 사용을 위한 라이브러리 -->
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+
+		<!-- 메일 발송 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+
 		<!-- VO, DTO, Entity 관련 작업을 쉽게 할 수 있게 해주는 라이브러리
 			Getter, Setter, ToString, hashCode 등의 메소드들을 간편하게 사용 -->
 		<dependency>
@@ -70,10 +88,30 @@
 			<optional>true</optional>
 		</dependency>
 
+		<!--jsp파일 서버 재시작 없이 바로 적용하기 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+		</dependency>
+
+		<!-- web socket-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+			<version>2.6.2</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<!-- 메일 발송-->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-email</artifactId>
+			<version>1.5</version>
 		</dependency>
 
 		<!-- Spring security 사용을 위한 dependency -->

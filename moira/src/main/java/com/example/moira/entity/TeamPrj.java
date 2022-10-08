@@ -21,6 +21,9 @@ public class TeamPrj extends TimeEntity{
     private UUID code;
 
     @Column(nullable = false)
+    private String title;
+
+    @Column(nullable = false)
     private String managerId;
 
     @Column(length = 20)
@@ -31,5 +34,6 @@ public class TeamPrj extends TimeEntity{
 
     @OneToMany(mappedBy = "teamprj", fetch = FetchType.LAZY)
     private List<UserPrjEntity> userprj = new ArrayList<>();
+
 
 }

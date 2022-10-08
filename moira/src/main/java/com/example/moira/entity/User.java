@@ -21,6 +21,7 @@ public class User extends TimeEntity{
     @Id
     private String id;
 
+    private String userEmail;
     @Column(nullable = false)
     private String pw;
 
